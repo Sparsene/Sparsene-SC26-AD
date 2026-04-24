@@ -1,0 +1,9 @@
+
+FP16-32-0.01 minutes
+FP16-128-0.01 minutes
+TF32-32-0.01 minutes
+TF32-128-0.01 minutes
+FP16-32-50.42 minutes
+FP16-128-54.71 minutes
+TF32-32-49.36 minutes
+TF32-128-54.45 minutes

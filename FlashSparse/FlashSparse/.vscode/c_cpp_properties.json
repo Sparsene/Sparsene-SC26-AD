@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/local/cuda-11.8/include",
+                "/home/shijinliang/.conda/envs/sjlpy39pro/lib/python3.9/site-packages/torch/include",
+                "/home/shijinliang/.conda/envs/sjlpy39pro/lib/python3.9/site-packages/torch/include/torch/csrc/api/include",
+                "/home/shijinliang/.conda/envs/sjlpy39pro/include/python3.9",
+                "/home/shijinliang/module/sputnik-master/"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++14",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}

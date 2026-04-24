@@ -1,0 +1,7 @@
+
+spmm-256-216.28 minutes
+sddmm-128-335.5 minutes
+spmm-128-12.92 minutes
+spmm-256-23.08 minutes
+spmm-256-23.39 minutes
+spmm-256-43.41 minutes

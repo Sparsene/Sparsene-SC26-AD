@@ -1,0 +1,25 @@
+{
+    //    IntelliSense       。 
+    //             。
+    //        ，   : https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": "CUDA Debug with CUDA-GDB",
+            "type": "cuda-gdb",
+            "request": "launch",
+             
+            //"args": ["/home/shijinliang/tools/dlmc/rn50/random_pruning/0.5/a.smtx 64 2 "],
+             "args": ["/home/shijinliang/tools/dlmc/rn50/random_pruning/0.7/bottleneck_2_block_group3_5_1.smtx 512 2 "],
+            //"args": ["/home/shijinliang/tools/dlmc/rn50/random_pruning/0.5/a.smtx 512 2 "],
+            "program": "/home/shijinliang/module/Magicube-master/SpMM/ablation_study/8b8b/SpMM_conflict_free/spmm_benchmark"
+
+        },
+        {
+            "name": "CUDA C++: Attach",
+            "type": "cuda-gdb",
+            "request": "attach"
+        }
+    ]
+}

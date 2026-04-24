@@ -1,0 +1,3742 @@
+python: can't open file '/home/shijinliang/module/flashsparse-ae/eva/kernel/spmm/sddmm_baselines.py': [Errno 2] No such file or directory
+test_spmm_shell_base.sh: line 6: 3810475 Segmentation fault      (core dumped) python spmm_baselines.py 128
+NVIDIA H100 PCIe
+dimN: 128
+128-144 tcgnn-0.4763
+128-144 gespmm-0.1943
+144 is success
+
+128-2D_27628_bjtcai tcgnn-0.1099
+128-2D_27628_bjtcai gespmm-0.0474
+2D_27628_bjtcai is success
+
+128-2D_54019_highK tcgnn-0.7723
+128-2D_54019_highK gespmm-0.1184
+2D_54019_highK is success
+
+128-333SP gespmm-4.6677
+333SP is success
+
+128-3D_28984_Tetra tcgnn-3.831
+128-3D_28984_Tetra gespmm-0.0636
+3D_28984_Tetra is success
+
+128-3D_51448_3D tcgnn-6.0194
+128-3D_51448_3D gespmm-0.1252
+3D_51448_3D is success
+
+128-3Dspectralwave gespmm-1.9101
+3Dspectralwave is success
+
+128-3Dspectralwave2 gespmm-0.8148
+3Dspectralwave2 is success
+
+128-3dtube tcgnn-1.3778
+128-3dtube gespmm-0.1593
+3dtube is success
+
+128-598a tcgnn-0.3755
+128-598a gespmm-0.1556
+598a is success
+
+128-a0nsdsil tcgnn-6.315
+128-a0nsdsil gespmm-0.0744
+a0nsdsil is success
+
+128-a2nnsnsl tcgnn-6.3223
+128-a2nnsnsl gespmm-0.074
+a2nnsnsl is success
+
+128-a5esindl tcgnn-2.2199
+128-a5esindl gespmm-0.0569
+a5esindl is success
+
+128-adaptive gespmm-7.6126
+adaptive is success
+
+128-af_0_k101 gespmm-0.9532
+af_0_k101 is success
+
+128-af_1_k101 gespmm-0.9536
+af_1_k101 is success
+
+128-af_2_k101 gespmm-0.9532
+af_2_k101 is success
+
+128-af_3_k101 gespmm-0.9536
+af_3_k101 is success
+
+128-af_4_k101 gespmm-0.9526
+af_4_k101 is success
+
+128-af_5_k101 gespmm-0.9536
+af_5_k101 is success
+
+128-af_shell1 gespmm-0.9535
+af_shell1 is success
+
+128-af_shell10 gespmm-2.8484
+af_shell10 is success
+
+128-af_shell2 gespmm-0.9516
+af_shell2 is success
+
+128-af_shell3 gespmm-0.9545
+af_shell3 is success
+
+128-af_shell4 gespmm-0.9545
+af_shell4 is success
+
+128-af_shell5 gespmm-0.9543
+af_shell5 is success
+
+128-af_shell6 gespmm-0.9533
+af_shell6 is success
+
+128-af_shell7 gespmm-0.9539
+af_shell7 is success
+
+128-af_shell8 gespmm-0.9542
+af_shell8 is success
+
+128-af_shell9 gespmm-0.9545
+af_shell9 is success
+
+128-ak2010 tcgnn-0.1629
+128-ak2010 gespmm-0.0258
+ak2010 is success
+
+128-amazon0505 tcgnn-2.8156
+128-amazon0505 gespmm-0.9114
+amazon0505 is success
+
+128-Andrews tcgnn-0.2325
+128-Andrews gespmm-0.0791
+Andrews is success
+
+128-AS365 gespmm-5.2509
+AS365 is success
+
+128-as-caida tcgnn-1.1386
+128-as-caida gespmm-0.022
+as-caida is success
+
+128-as-Skitter gespmm-2.139
+as-Skitter is success
+
+128-astro-ph tcgnn-0.0691
+128-astro-ph gespmm-0.0242
+astro-ph is success
+
+128-auto tcgnn-1.4422
+128-auto gespmm-0.6538
+auto is success
+
+128-barrier2-1 tcgnn-6.6849
+128-barrier2-1 gespmm-0.4485
+barrier2-1 is success
+
+128-barrier2-10 tcgnn-10.1797
+128-barrier2-10 gespmm-0.4595
+barrier2-10 is success
+
+128-barrier2-11 tcgnn-10.1665
+128-barrier2-11 gespmm-0.46
+barrier2-11 is success
+
+128-barrier2-12 tcgnn-10.1731
+128-barrier2-12 gespmm-0.4604
+barrier2-12 is success
+
+128-barrier2-2 tcgnn-6.6744
+128-barrier2-2 gespmm-0.4483
+barrier2-2 is success
+
+128-barrier2-3 tcgnn-6.6746
+128-barrier2-3 gespmm-0.4488
+barrier2-3 is success
+
+128-barrier2-4 tcgnn-6.6791
+128-barrier2-4 gespmm-0.4481
+barrier2-4 is success
+
+128-barrier2-9 tcgnn-10.1686
+128-barrier2-9 gespmm-0.4606
+barrier2-9 is success
+
+128-bauru5727 tcgnn-0.0794
+128-bauru5727 gespmm-0.0381
+bauru5727 is success
+
+128-bbmat tcgnn-0.2307
+128-bbmat gespmm-0.1699
+bbmat is success
+
+128-bcsstk17 tcgnn-0.0514
+128-bcsstk17 gespmm-0.026
+bcsstk17 is success
+
+128-bcsstk18 tcgnn-0.0375
+128-bcsstk18 gespmm-0.0182
+bcsstk18 is success
+
+128-bcsstk25 tcgnn-0.0398
+128-bcsstk25 gespmm-0.023
+bcsstk25 is success
+
+128-bcsstk29 tcgnn-0.0562
+128-bcsstk29 gespmm-0.0346
+bcsstk29 is success
+
+128-bcsstk30 tcgnn-0.1716
+128-bcsstk30 gespmm-0.0997
+bcsstk30 is success
+
+128-bcsstk31 tcgnn-0.1044
+128-bcsstk31 gespmm-0.068
+bcsstk31 is success
+
+128-bcsstk32 tcgnn-0.1686
+128-bcsstk32 gespmm-0.1085
+bcsstk32 is success
+
+128-bcsstk35 tcgnn-0.1264
+128-bcsstk35 gespmm-0.0739
+bcsstk35 is success
+
+128-bcsstk36 tcgnn-0.0881
+128-bcsstk36 gespmm-0.0572
+bcsstk36 is success
+
+128-bcsstk37 tcgnn-0.0829
+128-bcsstk37 gespmm-0.0575
+bcsstk37 is success
+
+128-bcsstk39 tcgnn-0.1294
+128-bcsstk39 gespmm-0.11
+bcsstk39 is success
+
+128-bcsstm36 tcgnn-0.0449
+128-bcsstm36 gespmm-0.0235
+bcsstm36 is success
+
+128-belgium_osm tcgnn-1.0661
+128-belgium_osm gespmm-1.4311
+belgium_osm is success
+
+128-BenElechi1 gespmm-0.6486
+BenElechi1 is success
+
+128-blockqp1 tcgnn-121.2765
+128-blockqp1 gespmm-0.0688
+blockqp1 is success
+
+128-bloweya tcgnn-5.8569
+128-bloweya gespmm-0.0178
+bloweya is success
+
+128-bloweybl tcgnn-5.8228
+128-bloweybl gespmm-0.0245
+bloweybl is success
+
+128-bmw3_2 gespmm-0.6065
+bmw3_2 is success
+
+128-bmw7st_1 tcgnn-0.6345
+128-bmw7st_1 gespmm-0.3931
+bmw7st_1 is success
+
+128-bmwcra_1 gespmm-0.5304
+bmwcra_1 is success
+
+128-bone010 gespmm-3.4384
+bone010 is success
+
+128-boneS01 tcgnn-0.3939
+128-boneS01 gespmm-0.3548
+boneS01 is success
+
+128-boneS10 gespmm-2.8072
+boneS10 is success
+
+128-boyd1 tcgnn-3695.8032
+128-boyd1 gespmm-0.2084
+boyd1 is success
+
+128-boyd2 tcgnn-62.8052
+128-boyd2 gespmm-0.5165
+boyd2 is success
+
+128-brack2 tcgnn-0.1647
+128-brack2 gespmm-0.0762
+brack2 is success
+
+128-brainpc2 tcgnn-0.0304
+128-brainpc2 gespmm-0.0239
+brainpc2 is success
+
+128-bratu3d tcgnn-0.0479
+128-bratu3d gespmm-0.0234
+bratu3d is success
+
+128-Bump_2911 gespmm-6.9626
+Bump_2911 is success
+
+128-bundle1 tcgnn-0.1073
+128-bundle1 gespmm-0.0387
+bundle1 is success
+
+128-bundle_adj gespmm-1.0153
+bundle_adj is success
+
+128-c-42 tcgnn-0.2028
+128-c-42 gespmm-0.0212
+c-42 is success
+
+128-c-43 tcgnn-0.0634
+128-c-43 gespmm-0.0219
+c-43 is success
+
+128-c-45 tcgnn-0.027
+128-c-45 gespmm-0.0221
+c-45 is success
+
+128-c-46 tcgnn-0.053
+128-c-46 gespmm-0.0218
+c-46 is success
+
+128-c-47 tcgnn-0.1608
+128-c-47 gespmm-0.0227
+c-47 is success
+
+128-c-48 tcgnn-0.246
+128-c-48 gespmm-0.0226
+c-48 is success
+
+128-c-49 tcgnn-0.4306
+128-c-49 gespmm-0.0231
+c-49 is success
+
+128-c-50 tcgnn-0.4295
+128-c-50 gespmm-0.0235
+c-50 is success
+
+128-c-51 tcgnn-0.4482
+128-c-51 gespmm-0.0236
+c-51 is success
+
+128-c-52 tcgnn-0.4976
+128-c-52 gespmm-0.0236
+c-52 is success
+
+128-c-53 tcgnn-0.1295
+128-c-53 gespmm-0.0363
+c-53 is success
+
+128-c-54 tcgnn-0.5315
+128-c-54 gespmm-0.0383
+c-54 is success
+
+128-c-55 tcgnn-1.014
+128-c-55 gespmm-0.041
+c-55 is success
+
+128-c-56 tcgnn-0.4512
+128-c-56 gespmm-0.0414
+c-56 is success
+
+128-c-57 tcgnn-0.0791
+128-c-57 gespmm-0.0435
+c-57 is success
+
+128-c-58 tcgnn-2.2646
+128-c-58 gespmm-0.0475
+c-58 is success
+
+128-c-59 tcgnn-1.1057
+128-c-59 gespmm-0.0514
+c-59 is success
+
+128-c-60 tcgnn-0.7355
+128-c-60 gespmm-0.0494
+c-60 is success
+
+128-c-61 tcgnn-0.9949
+128-c-61 gespmm-0.0495
+c-61 is success
+
+128-c-62 tcgnn-2.2399
+128-c-62 gespmm-0.0535
+c-62 is success
+
+128-c-62ghs tcgnn-2.2491
+128-c-62ghs gespmm-0.0529
+c-62ghs is success
+
+128-c-63 tcgnn-1.195
+128-c-63 gespmm-0.0537
+c-63 is success
+
+128-c-64 tcgnn-0.1409
+128-c-64 gespmm-0.0658
+c-64 is success
+
+128-c-64b tcgnn-0.1409
+128-c-64b gespmm-0.0658
+c-64b is success
+
+128-c-65 tcgnn-1.2075
+128-c-65 gespmm-0.0573
+c-65 is success
+
+128-c-66 tcgnn-1.0642
+128-c-66 gespmm-0.0619
+c-66 is success
+
+128-c-66b tcgnn-1.0602
+128-c-66b gespmm-0.0618
+c-66b is success
+
+128-c-67b tcgnn-0.2047
+128-c-67b gespmm-0.07
+c-67b is success
+
+128-c-68 tcgnn-1.0117
+128-c-68 gespmm-0.0773
+c-68 is success
+
+128-c-69 tcgnn-1.8018
+128-c-69 gespmm-0.0811
+c-69 is success
+
+128-c-70 tcgnn-1.8546
+128-c-70 gespmm-0.0836
+c-70 is success
+
+128-c-71 tcgnn-3.4437
+128-c-71 gespmm-0.1004
+c-71 is success
+
+128-c-73 tcgnn-0.248
+128-c-73 gespmm-0.1948
+c-73 is success
+
+128-c-73b tcgnn-0.2483
+128-c-73b gespmm-0.1951
+c-73b is success
+
+128-ca-AstroPh tcgnn-0.2776
+128-ca-AstroPh gespmm-0.0275
+ca-AstroPh is success
+
+128-ca-CondMat tcgnn-0.1287
+128-ca-CondMat gespmm-0.0209
+ca-CondMat is success
+
+128-cage14 gespmm-4.1995
+cage14 is success
+
+128-caidaRouterLevel tcgnn-0.2905
+128-caidaRouterLevel gespmm-0.1856
+caidaRouterLevel is success
+
+128-cant tcgnn-0.2499
+128-cant gespmm-0.2057
+cant is success
+
+128-case39 tcgnn-0.077
+128-case39 gespmm-0.053
+case39 is success
+
+128-case9 tcgnn-0.0211
+128-case9 gespmm-0.0148
+case9 is success
+
+128-c-big tcgnn-19.7692
+128-c-big gespmm-0.4352
+c-big is success
+
+128-cbuckle tcgnn-0.1648
+128-cbuckle gespmm-0.0362
+cbuckle is success
+
+128-ccc tcgnn-0.0546
+128-ccc gespmm-0.0594
+ccc is success
+
+128-cfd1 tcgnn-0.2097
+128-cfd1 gespmm-0.1244
+cfd1 is success
+
+128-Chebyshev4 gespmm-0.6143
+Chebyshev4 is success
+
+128-circuit_4 tcgnn-4.0373
+128-circuit_4 gespmm-0.0906
+circuit_4 is success
+
+128-circuit5M_dc gespmm-5.3875
+circuit5M_dc is success
+
+128-citationCiteseer tcgnn-0.8592
+128-citationCiteseer gespmm-0.2918
+citationCiteseer is success
+
+128-cit-Patents gespmm-5.8624
+cit-Patents is success
+
+128-ckt11752_dc_1 tcgnn-1.3112
+128-ckt11752_dc_1 gespmm-0.0748
+ckt11752_dc_1 is success
+
+128-ckt11752_tr_0 tcgnn-1.3122
+128-ckt11752_tr_0 gespmm-0.0753
+ckt11752_tr_0 is success
+
+128-cnr-2000 tcgnn-1.3304
+128-cnr-2000 gespmm-0.4243
+cnr-2000 is success
+
+128-CO tcgnn-1.2947
+128-CO gespmm-0.481
+CO is success
+
+128-coAuthorsCiteseer tcgnn-0.2319
+128-coAuthorsCiteseer gespmm-0.216
+coAuthorsCiteseer is success
+
+128-coAuthorsDBLP tcgnn-0.3259
+128-coAuthorsDBLP gespmm-0.2838
+coAuthorsDBLP is success
+
+128-cond-mat-2003 tcgnn-0.0532
+128-cond-mat-2003 gespmm-0.027
+cond-mat-2003 is success
+
+128-cond-mat-2005 tcgnn-0.074
+128-cond-mat-2005 gespmm-0.0297
+cond-mat-2005 is success
+
+128-conf5_4-8x8-05 tcgnn-0.2968
+128-conf5_4-8x8-05 gespmm-0.1966
+conf5_4-8x8-05 is success
+
+128-conf5_4-8x8-10 tcgnn-0.2978
+128-conf5_4-8x8-10 gespmm-0.1965
+conf5_4-8x8-10 is success
+
+128-conf5_4-8x8-15 tcgnn-0.2972
+128-conf5_4-8x8-15 gespmm-0.1961
+conf5_4-8x8-15 is success
+
+128-conf5_4-8x8-20 tcgnn-0.2972
+128-conf5_4-8x8-20 gespmm-0.196
+conf5_4-8x8-20 is success
+
+128-conf6_0-8x8-20 tcgnn-0.2967
+128-conf6_0-8x8-20 gespmm-0.1961
+conf6_0-8x8-20 is success
+
+128-conf6_0-8x8-30 tcgnn-0.2979
+128-conf6_0-8x8-30 gespmm-0.1959
+conf6_0-8x8-30 is success
+
+128-conf6_0-8x8-80 tcgnn-0.298
+128-conf6_0-8x8-80 gespmm-0.1956
+conf6_0-8x8-80 is success
+
+128-consph tcgnn-0.3544
+128-consph gespmm-0.2975
+consph is success
+
+128-cont-201 tcgnn-0.1011
+128-cont-201 gespmm-0.0812
+cont-201 is success
+
+128-cont-300 tcgnn-0.2185
+128-cont-300 gespmm-0.1769
+cont-300 is success
+
+128-coPapersCiteseer gespmm-1.6463
+coPapersCiteseer is success
+
+128-coPapersDBLP gespmm-1.6944
+coPapersDBLP is success
+
+128-copter1 tcgnn-0.0468
+128-copter1 gespmm-0.0172
+copter1 is success
+
+128-CoupCons3D gespmm-2.1439
+CoupCons3D is success
+
+128-crankseg_1 gespmm-0.4983
+crankseg_1 is success
+
+128-crankseg_2 gespmm-0.6617
+crankseg_2 is success
+
+128-crplat2 tcgnn-0.0614
+128-crplat2 gespmm-0.049
+crplat2 is success
+
+128-crystk02 tcgnn-0.0659
+128-crystk02 gespmm-0.0483
+crystk02 is success
+
+128-crystk03 tcgnn-0.1142
+128-crystk03 gespmm-0.0809
+crystk03 is success
+
+128-crystm02 tcgnn-0.053
+128-crystm02 gespmm-0.0248
+crystm02 is success
+
+128-crystm03 tcgnn-0.0891
+128-crystm03 gespmm-0.0387
+crystm03 is success
+
+128-ct2010 tcgnn-0.102
+128-ct2010 gespmm-0.0606
+ct2010 is success
+
+128-ct20stif tcgnn-0.2909
+128-ct20stif gespmm-0.1435
+ct20stif is success
+
+128-Cube_Coup_dt0 gespmm-6.9345
+Cube_Coup_dt0 is success
+
+128-Cube_Coup_dt6 gespmm-6.9451
+Cube_Coup_dt6 is success
+
+128-CurlCurl_0 tcgnn-0.0224
+128-CurlCurl_0 gespmm-0.0139
+CurlCurl_0 is success
+
+128-CurlCurl_4 gespmm-2.7811
+CurlCurl_4 is success
+
+128-cvxqp3 tcgnn-0.0408
+128-cvxqp3 gespmm-0.0183
+cvxqp3 is success
+
+128-cyl6 tcgnn-0.1944
+128-cyl6 gespmm-0.0397
+cyl6 is success
+
+128-darcy003 tcgnn-0.5091
+128-darcy003 gespmm-0.4947
+darcy003 is success
+
+128-dawson5 tcgnn-0.121
+128-dawson5 gespmm-0.0939
+dawson5 is success
+
+128-dblp-2010 tcgnn-0.3807
+128-dblp-2010 gespmm-0.2683
+dblp-2010 is success
+
+128-dc3 tcgnn-1962.3245
+128-dc3 gespmm-0.1827
+dc3 is success
+
+128-de2010 tcgnn-0.0463
+128-de2010 gespmm-0.0212
+de2010 is success
+
+128-debr tcgnn-1.0853
+128-debr gespmm-1.2166
+debr is success
+
+128-delaunay_n15 tcgnn-0.0404
+128-delaunay_n15 gespmm-0.0235
+delaunay_n15 is success
+
+128-delaunay_n16 tcgnn-0.076
+128-delaunay_n16 gespmm-0.0624
+delaunay_n16 is success
+
+128-delaunay_n17 tcgnn-0.1394
+128-delaunay_n17 gespmm-0.1244
+delaunay_n17 is success
+
+128-delaunay_n18 tcgnn-0.2683
+128-delaunay_n18 gespmm-0.2474
+delaunay_n18 is success
+
+128-delaunay_n19 tcgnn-0.5258
+128-delaunay_n19 gespmm-0.5064
+delaunay_n19 is success
+
+128-delaunay_n20 tcgnn-1.0393
+128-delaunay_n20 gespmm-1.0242
+delaunay_n20 is success
+
+128-delaunay_n21 gespmm-2.076
+delaunay_n21 is success
+
+128-delaunay_n22 gespmm-4.1708
+delaunay_n22 is success
+
+128-denormal tcgnn-0.1612
+128-denormal gespmm-0.1125
+denormal is success
+
+128-dictionary28 tcgnn-0.0717
+128-dictionary28 gespmm-0.0279
+dictionary28 is success
+
+128-dielFilterV2clx gespmm-1.4614
+dielFilterV2clx is success
+
+128-dielFilterV2real gespmm-2.8074
+dielFilterV2real is success
+
+128-dielFilterV3clx gespmm-1.6744
+dielFilterV3clx is success
+
+128-Dubcova1 tcgnn-0.0444
+128-Dubcova1 gespmm-0.0228
+Dubcova1 is success
+
+128-Dubcova3 tcgnn-0.2744
+128-Dubcova3 gespmm-0.2436
+Dubcova3 is success
+
+128-e40r0100 tcgnn-0.1316
+128-e40r0100 gespmm-0.0555
+e40r0100 is success
+
+128-EAT_RS tcgnn-0.4192
+128-EAT_RS gespmm-0.0422
+EAT_RS is success
+
+128-ecology1 tcgnn-1.2029
+128-ecology1 gespmm-1.0836
+ecology1 is success
+
+128-ecology2 tcgnn-1.2004
+128-ecology2 gespmm-1.0851
+ecology2 is success
+
+128-email-Enron tcgnn-1.2661
+128-email-Enron gespmm-0.068
+email-Enron is success
+
+128-Emilia_923 gespmm-2.2612
+Emilia_923 is success
+
+128-engine tcgnn-0.5631
+128-engine gespmm-0.3184
+engine is success
+
+128-enron tcgnn-0.8637
+128-enron gespmm-0.0663
+enron is success
+
+128-eu-2005 gespmm-2.0729
+eu-2005 is success
+
+128-ex11 tcgnn-0.1671
+128-ex11 gespmm-0.101
+ex11 is success
+
+128-ex19 tcgnn-0.0602
+128-ex19 gespmm-0.0335
+ex19 is success
+
+128-F1 gespmm-1.4657
+F1 is success
+
+128-F2 tcgnn-0.4458
+128-F2 gespmm-0.2771
+F2 is success
+
+128-Fault_639 gespmm-1.5463
+Fault_639 is success
+
+128-fcondp2 gespmm-0.5833
+fcondp2 is success
+
+128-fem_hifreq_circuit gespmm-2.3066
+fem_hifreq_circuit is success
+
+128-filter3D tcgnn-0.4117
+128-filter3D gespmm-0.1881
+filter3D is success
+
+128-finance256 tcgnn-0.0742
+128-finance256 gespmm-0.0294
+finance256 is success
+
+128-Flan_1565 gespmm-5.7169
+Flan_1565 is success
+
+128-flickr gespmm-1.5507
+flickr is success
+
+128-foldoc tcgnn-0.1031
+128-foldoc gespmm-0.0226
+foldoc is success
+
+128-Freescale1 gespmm-5.7976
+Freescale1 is success
+
+128-fullb gespmm-0.6229
+fullb is success
+
+128-fxm4_6 tcgnn-0.1074
+128-fxm4_6 gespmm-0.0332
+fxm4_6 is success
+
+128-G2_circuit tcgnn-0.1889
+128-G2_circuit gespmm-0.1662
+G2_circuit is success
+
+128-G3_circuit tcgnn-1.8746
+128-G3_circuit gespmm-1.7817
+G3_circuit is success
+
+128-Ga10As10H30 tcgnn-0.8408
+128-Ga10As10H30 gespmm-0.356
+Ga10As10H30 is success
+
+128-Ga19As19H42 tcgnn-1.1365
+128-Ga19As19H42 gespmm-0.4956
+Ga19As19H42 is success
+
+128-Ga3As3H12 tcgnn-1.2126
+128-Ga3As3H12 gespmm-0.3047
+Ga3As3H12 is success
+
+128-Ga41As41H72 gespmm-1.0187
+Ga41As41H72 is success
+
+128-GaAsH6 tcgnn-1.0978
+128-GaAsH6 gespmm-0.1962
+GaAsH6 is success
+
+128-gas_sensor tcgnn-0.2131
+128-gas_sensor gespmm-0.118
+gas_sensor is success
+
+128-Ge87H76 tcgnn-1.0074
+128-Ge87H76 gespmm-0.435
+Ge87H76 is success
+
+128-Ge99H100 tcgnn-1.0683
+128-Ge99H100 gespmm-0.4589
+Ge99H100 is success
+
+128-gearbox tcgnn-0.55
+128-gearbox gespmm-0.4806
+gearbox is success
+
+128-Geo_1438 gespmm-3.5083
+Geo_1438 is success
+
+128-gridgena tcgnn-0.0721
+128-gridgena gespmm-0.0591
+gridgena is success
+
+128-gsm_106857 gespmm-2.1327
+gsm_106857 is success
+
+128-gupta1 tcgnn-0.2059
+128-gupta1 gespmm-0.096
+gupta1 is success
+
+128-gupta2 tcgnn-0.3521
+128-gupta2 gespmm-0.201
+gupta2 is success
+
+128-gupta3 tcgnn-290.4022
+128-gupta3 gespmm-0.4568
+gupta3 is success
+
+128-gyro tcgnn-0.0883
+128-gyro gespmm-0.0522
+gyro is success
+
+128-gyro_k tcgnn-0.0891
+128-gyro_k gespmm-0.0521
+gyro_k is success
+
+128-gyro_m tcgnn-0.0699
+128-gyro_m gespmm-0.0261
+gyro_m is success
+
+128-H2O tcgnn-0.3919
+128-H2O gespmm-0.1435
+H2O is success
+
+128-halfb gespmm-0.6558
+halfb is success
+
+128-Hamrle3 gespmm-1.9087
+Hamrle3 is success
+
+128-hangGlider_4 tcgnn-3.2388
+128-hangGlider_4 gespmm-0.0219
+hangGlider_4 is success
+
+128-hangGlider_5 tcgnn-3.3633
+128-hangGlider_5 gespmm-0.0222
+hangGlider_5 is success
+
+128-helm2d03 tcgnn-0.4901
+128-helm2d03 gespmm-0.4446
+helm2d03 is success
+
+128-helm3d01 tcgnn-0.0878
+128-helm3d01 gespmm-0.0344
+helm3d01 is success
+
+128-hi2010 tcgnn-0.0492
+128-hi2010 gespmm-0.021
+hi2010 is success
+
+128-hollywood-2009 gespmm-6.6332
+hollywood-2009 is success
+
+128-hood gespmm-0.6083
+hood is success
+
+128-Hook_1498 gespmm-3.4472
+Hook_1498 is success
+
+128-HTC_336_4438 tcgnn-0.3641
+128-HTC_336_4438 gespmm-0.258
+HTC_336_4438 is success
+
+128-HTC_336_9129 tcgnn-0.3637
+128-HTC_336_9129 gespmm-0.259
+HTC_336_9129 is success
+
+128-human_gene1 gespmm-1.1789
+human_gene1 is success
+
+128-human_gene2 gespmm-0.8408
+human_gene2 is success
+
+128-ibm_matrix_2 tcgnn-6.0103
+128-ibm_matrix_2 gespmm-0.1258
+ibm_matrix_2 is success
+
+128-igbt3 tcgnn-0.1056
+128-igbt3 gespmm-0.0336
+igbt3 is success
+
+128-in-2004 gespmm-2.0858
+in-2004 is success
+
+128-inlet tcgnn-0.0465
+128-inlet gespmm-0.0345
+inlet is success
+
+128-inline_1 gespmm-1.8867
+inline_1 is success
+
+128-jan99jac120sc tcgnn-0.1021
+128-jan99jac120sc gespmm-0.0478
+jan99jac120sc is success
+
+128-juba40k tcgnn-0.0796
+128-juba40k gespmm-0.0368
+juba40k is success
+
+128-k3plates tcgnn-0.0531
+128-k3plates gespmm-0.041
+k3plates is success
+
+128-kim1 tcgnn-0.141
+128-kim1 gespmm-0.1012
+kim1 is success
+
+128-kkt_power gespmm-2.5952
+kkt_power is success
+
+128-kron_g500-logn16 tcgnn-7.5548
+128-kron_g500-logn16 gespmm-0.2584
+kron_g500-logn16 is success
+
+128-kron_g500-logn17 gespmm-0.5438
+kron_g500-logn17 is success
+
+128-kron_g500-logn18 gespmm-1.1432
+kron_g500-logn18 is success
+
+128-kron_g500-logn19 gespmm-2.4872
+kron_g500-logn19 is success
+
+128-kron_g500-logn20 gespmm-5.7206
+kron_g500-logn20 is success
+
+128-laminar_duct3D tcgnn-0.5125
+128-laminar_duct3D gespmm-0.3719
+laminar_duct3D is success
+
+128-language tcgnn-8.4258
+128-language gespmm-0.4666
+language is success
+
+128-largebasis gespmm-0.8514
+largebasis is success
+
+128-ldoor gespmm-2.6715
+ldoor is success
+
+128-lhr34 tcgnn-0.1124
+128-lhr34 gespmm-0.0849
+lhr34 is success
+
+128-lhr34c tcgnn-0.1137
+128-lhr34c gespmm-0.0844
+lhr34c is success
+
+128-lhr71 tcgnn-0.2003
+128-lhr71 gespmm-0.1783
+lhr71 is success
+
+128-lhr71c tcgnn-0.1994
+128-lhr71c gespmm-0.1781
+lhr71c is success
+
+128-li tcgnn-0.2449
+128-li gespmm-0.1247
+li is success
+
+128-Long_Coup_dt0 gespmm-4.6788
+Long_Coup_dt0 is success
+
+128-Long_Coup_dt6 gespmm-4.6815
+Long_Coup_dt6 is success
+
+128-lowThrust_10 tcgnn-0.0539
+128-lowThrust_10 gespmm-0.0233
+lowThrust_10 is success
+
+128-lowThrust_11 tcgnn-0.0544
+128-lowThrust_11 gespmm-0.0238
+lowThrust_11 is success
+
+128-lowThrust_12 tcgnn-0.0539
+128-lowThrust_12 gespmm-0.0243
+lowThrust_12 is success
+
+128-lowThrust_13 tcgnn-0.0544
+128-lowThrust_13 gespmm-0.0243
+lowThrust_13 is success
+
+128-lowThrust_4 tcgnn-0.0485
+128-lowThrust_4 gespmm-0.0219
+lowThrust_4 is success
+
+128-lowThrust_5 tcgnn-0.0498
+128-lowThrust_5 gespmm-0.0226
+lowThrust_5 is success
+
+128-lowThrust_6 tcgnn-0.0522
+128-lowThrust_6 gespmm-0.023
+lowThrust_6 is success
+
+128-lowThrust_7 tcgnn-0.0526
+128-lowThrust_7 gespmm-0.0228
+lowThrust_7 is success
+
+128-lowThrust_8 tcgnn-0.0529
+128-lowThrust_8 gespmm-0.0231
+lowThrust_8 is success
+
+128-lowThrust_9 tcgnn-0.0531
+128-lowThrust_9 gespmm-0.0232
+lowThrust_9 is success
+
+128-lp1 tcgnn-0.4519
+128-lp1 gespmm-0.5329
+lp1 is success
+
+128-luxembourg_osm tcgnn-0.0917
+128-luxembourg_osm gespmm-0.125
+luxembourg_osm is success
+
+128-m14b tcgnn-0.6607
+128-m14b gespmm-0.2999
+m14b is success
+
+128-mario001 tcgnn-0.0559
+128-mario001 gespmm-0.0248
+mario001 is success
+
+128-mario002 tcgnn-0.5092
+128-mario002 gespmm-0.4945
+mario002 is success
+
+128-mark3jac040sc tcgnn-0.061
+128-mark3jac040sc gespmm-0.0185
+mark3jac040sc is success
+
+128-mark3jac060sc tcgnn-0.0789
+128-mark3jac060sc gespmm-0.0259
+mark3jac060sc is success
+
+128-me2010 tcgnn-0.1197
+128-me2010 gespmm-0.0603
+me2010 is success
+
+128-memplus tcgnn-0.5786
+128-memplus gespmm-0.0222
+memplus is success
+
+128-mip1 gespmm-0.4695
+mip1 is success
+
+128-ML_Laplace gespmm-2.468
+ML_Laplace is success
+
+128-mouse_gene gespmm-1.3613
+mouse_gene is success
+
+128-msc10848 tcgnn-0.1968
+128-msc10848 gespmm-0.0627
+msc10848 is success
+
+128-msc23052 tcgnn-0.1809
+128-msc23052 gespmm-0.0592
+msc23052 is success
+
+128-msdoor gespmm-1.1345
+msdoor is success
+
+128-m_t1 tcgnn-0.5222
+128-m_t1 gespmm-0.4633
+m_t1 is success
+
+128-mult_dcop_01 tcgnn-24.7287
+128-mult_dcop_01 gespmm-0.0329
+mult_dcop_01 is success
+
+128-mult_dcop_02 tcgnn-24.7032
+128-mult_dcop_02 gespmm-0.0335
+mult_dcop_02 is success
+
+128-mult_dcop_03 tcgnn-24.6371
+128-mult_dcop_03 gespmm-0.0333
+mult_dcop_03 is success
+
+128-NACA0015 tcgnn-1.4647
+128-NACA0015 gespmm-1.3871
+NACA0015 is success
+
+128-nasasrb tcgnn-0.1703
+128-nasasrb gespmm-0.1444
+nasasrb is success
+
+128-nd12k gespmm-0.6712
+nd12k is success
+
+128-nd24k gespmm-1.3469
+nd24k is success
+
+128-nd6k tcgnn-0.6691
+128-nd6k gespmm-0.3331
+nd6k is success
+
+128-net100 tcgnn-0.586
+128-net100 gespmm-0.103
+net100 is success
+
+128-net125 tcgnn-0.6716
+128-net125 gespmm-0.1318
+net125 is success
+
+128-net150 tcgnn-0.7259
+128-net150 gespmm-0.1623
+net150 is success
+
+128-net4-1 tcgnn-0.7241
+128-net4-1 gespmm-0.1811
+net4-1 is success
+
+128-net50 tcgnn-0.4049
+128-net50 gespmm-0.0549
+net50 is success
+
+128-net75 tcgnn-0.4918
+128-net75 gespmm-0.0792
+net75 is success
+
+128-netherlands_osm tcgnn-1.6391
+128-netherlands_osm gespmm-2.1071
+netherlands_osm is success
+
+128-nh2010 tcgnn-0.0781
+128-nh2010 gespmm-0.0344
+nh2010 is success
+
+128-NLR gespmm-5.7874
+NLR is success
+
+128-NotreDame_www tcgnn-0.3501
+128-NotreDame_www gespmm-0.2176
+NotreDame_www is success
+
+128-nv2010 tcgnn-0.1323
+128-nv2010 gespmm-0.0743
+nv2010 is success
+
+128-ohne2 gespmm-1.1025
+ohne2 is success
+
+128-oilpan tcgnn-0.168
+128-oilpan gespmm-0.2033
+oilpan is success
+
+128-olafu tcgnn-0.063
+128-olafu gespmm-0.0508
+olafu is success
+
+128-onetone2 tcgnn-0.0774
+128-onetone2 gespmm-0.0347
+onetone2 is success
+
+128-OPF_10000 tcgnn-0.1081
+128-OPF_10000 gespmm-0.0557
+OPF_10000 is success
+
+128-opt1 tcgnn-0.1526
+128-opt1 gespmm-0.0928
+opt1 is success
+
+128-p2p-Gnutella31 tcgnn-0.1042
+128-p2p-Gnutella31 gespmm-0.0389
+p2p-Gnutella31 is success
+
+128-parabolic_fem tcgnn-0.8039
+128-parabolic_fem gespmm-0.7545
+parabolic_fem is success
+
+128-patents gespmm-5.5063
+patents is success
+
+128-pattern1 tcgnn-10.7094
+128-pattern1 gespmm-0.4635
+pattern1 is success
+
+128-pcrystk02 tcgnn-0.0662
+128-pcrystk02 gespmm-0.0483
+pcrystk02 is success
+
+128-pcrystk03 tcgnn-0.1148
+128-pcrystk03 gespmm-0.0814
+pcrystk03 is success
+
+128-pct20stif tcgnn-0.2888
+128-pct20stif gespmm-0.1432
+pct20stif is success
+
+128-pdb1HYS tcgnn-0.2454
+128-pdb1HYS gespmm-0.1999
+pdb1HYS is success
+
+128-pds10 tcgnn-0.0957
+128-pds10 gespmm-0.0219
+pds10 is success
+
+128-PFlow_742 gespmm-1.9565
+PFlow_742 is success
+
+128-pkustk01 tcgnn-0.1371
+128-pkustk01 gespmm-0.053
+pkustk01 is success
+
+128-pkustk02 tcgnn-0.1417
+128-pkustk02 gespmm-0.0434
+pkustk02 is success
+
+128-pkustk03 tcgnn-0.2327
+128-pkustk03 gespmm-0.1743
+pkustk03 is success
+
+128-pkustk04 tcgnn-4.5103
+128-pkustk04 gespmm-0.225
+pkustk04 is success
+
+128-pkustk05 tcgnn-0.2344
+128-pkustk05 gespmm-0.1165
+pkustk05 is success
+
+128-pkustk06 tcgnn-0.2356
+128-pkustk06 gespmm-0.1369
+pkustk06 is success
+
+128-pkustk07 tcgnn-0.5017
+128-pkustk07 gespmm-0.1189
+pkustk07 is success
+
+128-pkustk08 tcgnn-0.5786
+128-pkustk08 gespmm-0.1569
+pkustk08 is success
+
+128-pkustk09 tcgnn-0.144
+128-pkustk09 gespmm-0.0842
+pkustk09 is success
+
+128-pkustk10 tcgnn-0.3307
+128-pkustk10 gespmm-0.236
+pkustk10 is success
+
+128-pkustk11 tcgnn-0.3962
+128-pkustk11 gespmm-0.2842
+pkustk11 is success
+
+128-pkustk12 tcgnn-13.9439
+128-pkustk12 gespmm-0.3924
+pkustk12 is success
+
+128-pkustk13 tcgnn-0.6696
+128-pkustk13 gespmm-0.3548
+pkustk13 is success
+
+128-pkustk14 gespmm-0.7253
+pkustk14 is success
+
+128-pli tcgnn-0.1255
+128-pli gespmm-0.0656
+pli is success
+
+128-PR02R gespmm-0.7577
+PR02R is success
+
+128-Pres_Poisson tcgnn-0.0723
+128-Pres_Poisson gespmm-0.0401
+Pres_Poisson is success
+
+128-pwtk gespmm-0.5846
+pwtk is success
+
+128-qa8fk tcgnn-0.1902
+128-qa8fk gespmm-0.1122
+qa8fk is success
+
+128-qa8fm tcgnn-0.1893
+128-qa8fm gespmm-0.1125
+qa8fm is success
+
+128-raefsky3 tcgnn-0.1198
+128-raefsky3 gespmm-0.1346
+raefsky3 is success
+
+128-raefsky4 tcgnn-0.1056
+128-raefsky4 gespmm-0.0637
+raefsky4 is success
+
+128-rajat15 tcgnn-1.2463
+128-rajat15 gespmm-0.0593
+rajat15 is success
+
+128-rajat22 tcgnn-2.5022
+128-rajat22 gespmm-0.0495
+rajat22 is success
+
+128-rajat26 tcgnn-2.5396
+128-rajat26 gespmm-0.0749
+rajat26 is success
+
+128-ramage02 tcgnn-0.2073
+128-ramage02 gespmm-0.1374
+ramage02 is success
+
+128-Reuters911 tcgnn-0.6975
+128-Reuters911 gespmm-0.0245
+Reuters911 is success
+
+128-rgg_n_2_15_s0 tcgnn-0.0793
+128-rgg_n_2_15_s0 gespmm-0.0277
+rgg_n_2_15_s0 is success
+
+128-rgg_n_2_22_s0 gespmm-5.5744
+rgg_n_2_22_s0 is success
+
+128-ri2010 tcgnn-0.0559
+128-ri2010 gespmm-0.0212
+ri2010 is success
+
+128-rim tcgnn-0.1344
+128-rim gespmm-0.0939
+rim is success
+
+128-RM07R gespmm-3.6345
+RM07R is success
+
+128-rma10 tcgnn-0.2734
+128-rma10 gespmm-0.2276
+rma10 is success
+
+128-roadNet-CA tcgnn-2.2965
+128-roadNet-CA gespmm-2.0821
+roadNet-CA is success
+
+128-roadNet-PA tcgnn-1.2953
+128-roadNet-PA gespmm-1.1522
+roadNet-PA is success
+
+128-roadNet-TX tcgnn-1.6299
+128-roadNet-TX gespmm-1.4741
+roadNet-TX is success
+
+128-s3dkq4m2 tcgnn-0.2007
+128-s3dkq4m2 gespmm-0.2463
+s3dkq4m2 is success
+
+128-s3dkt3m2 tcgnn-0.1777
+128-s3dkt3m2 gespmm-0.2142
+s3dkt3m2 is success
+
+128-s4dkt3m2 tcgnn-0.1769
+128-s4dkt3m2 gespmm-0.2137
+s4dkt3m2 is success
+
+128-Serena gespmm-3.6671
+Serena is success
+
+128-shermanACb tcgnn-6.2835
+128-shermanACb gespmm-0.0253
+shermanACb is success
+
+128-ship_001 tcgnn-0.2915
+128-ship_001 gespmm-0.2188
+ship_001 is success
+
+128-ship_003 tcgnn-0.4581
+128-ship_003 gespmm-0.4188
+ship_003 is success
+
+128-shipsec1 tcgnn-0.4953
+128-shipsec1 gespmm-0.4201
+shipsec1 is success
+
+128-shipsec5 gespmm-0.5376
+shipsec5 is success
+
+128-shipsec8 tcgnn-0.3931
+128-shipsec8 gespmm-0.3528
+shipsec8 is success
+
+128-Si10H16 tcgnn-0.1917
+128-Si10H16 gespmm-0.048
+Si10H16 is success
+
+128-Si34H36 tcgnn-0.7581
+128-Si34H36 gespmm-0.3023
+Si34H36 is success
+
+128-Si41Ge41H72 gespmm-0.7994
+Si41Ge41H72 is success
+
+128-Si5H12 tcgnn-0.1945
+128-Si5H12 gespmm-0.0444
+Si5H12 is success
+
+128-Si87H76 gespmm-0.6325
+Si87H76 is success
+
+128-sinc15 tcgnn-0.3751
+128-sinc15 gespmm-0.0613
+sinc15 is success
+
+128-SiO tcgnn-0.3807
+128-SiO gespmm-0.0755
+SiO is success
+
+128-SiO2 gespmm-0.5969
+SiO2 is success
+
+128-skirt tcgnn-0.0348
+128-skirt gespmm-0.0168
+skirt is success
+
+128-smallworld tcgnn-0.1385
+128-smallworld gespmm-0.1298
+smallworld is success
+
+128-sme3Dc tcgnn-2.444
+128-sme3Dc gespmm-0.3253
+sme3Dc is success
+
+128-smt tcgnn-0.247
+128-smt gespmm-0.1745
+smt is success
+
+128-soc-sign-Slashdot090221 tcgnn-0.5404
+128-soc-sign-Slashdot090221 gespmm-0.0968
+soc-sign-Slashdot090221 is success
+
+128-sparsine tcgnn-0.4413
+128-sparsine gespmm-0.1093
+sparsine is success
+
+128-srb1 tcgnn-0.3896
+128-srb1 gespmm-0.1552
+srb1 is success
+
+128-Stanford tcgnn-117.831
+128-Stanford gespmm-0.5174
+Stanford is success
+
+128-std1_Jac2 tcgnn-1.2285
+128-std1_Jac2 gespmm-0.1291
+std1_Jac2 is success
+
+128-std1_Jac3 tcgnn-1.6342
+128-std1_Jac3 gespmm-0.1438
+std1_Jac3 is success
+
+128-stokes128 tcgnn-0.0888
+128-stokes128 gespmm-0.0515
+stokes128 is success
+
+128-stokes64 tcgnn-0.0275
+128-stokes64 gespmm-0.0151
+stokes64 is success
+
+128-struct3 tcgnn-0.1005
+128-struct3 gespmm-0.0777
+struct3 is success
+
+128-t2dah tcgnn-0.0246
+128-t2dah gespmm-0.0152
+t2dah is success
+
+128-t2dah_a tcgnn-0.0246
+128-t2dah_a gespmm-0.0153
+t2dah_a is success
+
+128-t2dah_e tcgnn-0.0246
+128-t2dah_e gespmm-0.0152
+t2dah_e is success
+
+128-t3dh tcgnn-0.3758
+128-t3dh gespmm-0.2397
+t3dh is success
+
+128-t3dh_a tcgnn-0.3768
+128-t3dh_a gespmm-0.2399
+t3dh_a is success
+
+128-t3dh_e tcgnn-0.3766
+128-t3dh_e gespmm-0.2401
+t3dh_e is success
+
+128-t3dl tcgnn-0.0814
+128-t3dl gespmm-0.0356
+t3dl is success
+
+128-t3dl_a tcgnn-0.0821
+128-t3dl_a gespmm-0.0357
+t3dl_a is success
+
+128-tandem_vtx tcgnn-0.0636
+128-tandem_vtx gespmm-0.024
+tandem_vtx is success
+
+128-ted_A tcgnn-0.0607
+128-ted_A gespmm-0.0434
+ted_A is success
+
+128-ted_AB tcgnn-0.095
+128-ted_AB gespmm-0.0538
+ted_AB is success
+
+128-ted_AB_unscaled tcgnn-0.0963
+128-ted_AB_unscaled gespmm-0.0539
+ted_AB_unscaled is success
+
+128-ted_A_unscaled tcgnn-0.0602
+128-ted_A_unscaled gespmm-0.0436
+ted_A_unscaled is success
+
+128-ted_B_unscaled tcgnn-0.0205
+128-ted_B_unscaled gespmm-0.0215
+ted_B_unscaled is success
+
+128-thread tcgnn-0.3597
+128-thread gespmm-0.2147
+thread is success
+
+128-tmt_sym tcgnn-0.8836
+128-tmt_sym gespmm-0.7894
+tmt_sym is success
+
+128-torso1 gespmm-0.8248
+torso1 is success
+
+128-transient tcgnn-714.0403
+128-transient gespmm-0.2521
+transient is success
+
+128-trdheim tcgnn-0.0977
+128-trdheim gespmm-0.0859
+trdheim is success
+
+128-Trefethen_20000 tcgnn-0.1167
+128-Trefethen_20000 gespmm-0.036
+Trefethen_20000 is success
+
+128-Trefethen_20000b tcgnn-0.1151
+128-Trefethen_20000b gespmm-0.036
+Trefethen_20000b is success
+
+128-troll gespmm-0.6151
+troll is success
+
+128-TSOPF_FS_b162_c1 tcgnn-0.0543
+128-TSOPF_FS_b162_c1 gespmm-0.0325
+TSOPF_FS_b162_c1 is success
+
+128-TSOPF_FS_b162_c3 tcgnn-0.1085
+128-TSOPF_FS_b162_c3 gespmm-0.0808
+TSOPF_FS_b162_c3 is success
+
+128-TSOPF_FS_b162_c4 tcgnn-0.1435
+128-TSOPF_FS_b162_c4 gespmm-0.1062
+TSOPF_FS_b162_c4 is success
+
+128-TSOPF_FS_b300 tcgnn-0.243
+128-TSOPF_FS_b300 gespmm-0.1952
+TSOPF_FS_b300 is success
+
+128-TSOPF_FS_b300_c1 tcgnn-0.2437
+128-TSOPF_FS_b300_c1 gespmm-0.1955
+TSOPF_FS_b300_c1 is success
+
+128-TSOPF_FS_b300_c2 tcgnn-0.3864
+128-TSOPF_FS_b300_c2 gespmm-0.3866
+TSOPF_FS_b300_c2 is success
+
+128-TSOPF_FS_b300_c3 gespmm-0.574
+TSOPF_FS_b300_c3 is success
+
+128-TSOPF_FS_b39_c19 tcgnn-0.1345
+128-TSOPF_FS_b39_c19 gespmm-0.109
+TSOPF_FS_b39_c19 is success
+
+128-TSOPF_FS_b39_c30 tcgnn-0.2044
+128-TSOPF_FS_b39_c30 gespmm-0.187
+TSOPF_FS_b39_c30 is success
+
+128-TSOPF_FS_b39_c7 tcgnn-0.0551
+128-TSOPF_FS_b39_c7 gespmm-0.0405
+TSOPF_FS_b39_c7 is success
+
+128-TSOPF_FS_b9_c6 tcgnn-0.0212
+128-TSOPF_FS_b9_c6 gespmm-0.0151
+TSOPF_FS_b9_c6 is success
+
+128-TSOPF_RS_b162_c3 tcgnn-0.0814
+128-TSOPF_RS_b162_c3 gespmm-0.0568
+TSOPF_RS_b162_c3 is success
+
+128-TSOPF_RS_b162_c4 tcgnn-0.0987
+128-TSOPF_RS_b162_c4 gespmm-0.0724
+TSOPF_RS_b162_c4 is success
+
+128-TSOPF_RS_b2052_c1 gespmm-0.6094
+TSOPF_RS_b2052_c1 is success
+
+128-TSOPF_RS_b2383 gespmm-1.4406
+TSOPF_RS_b2383 is success
+
+128-TSOPF_RS_b2383_c1 gespmm-1.4415
+TSOPF_RS_b2383_c1 is success
+
+128-TSOPF_RS_b300_c1 tcgnn-0.1735
+128-TSOPF_RS_b300_c1 gespmm-0.1409
+TSOPF_RS_b300_c1 is success
+
+128-TSOPF_RS_b300_c2 tcgnn-0.2903
+128-TSOPF_RS_b300_c2 gespmm-0.2713
+TSOPF_RS_b300_c2 is success
+
+128-TSOPF_RS_b300_c3 tcgnn-0.4266
+128-TSOPF_RS_b300_c3 gespmm-0.4026
+TSOPF_RS_b300_c3 is success
+
+128-TSOPF_RS_b39_c19 tcgnn-0.097
+128-TSOPF_RS_b39_c19 gespmm-0.0781
+TSOPF_RS_b39_c19 is success
+
+128-TSOPF_RS_b39_c30 tcgnn-0.1485
+128-TSOPF_RS_b39_c30 gespmm-0.1376
+TSOPF_RS_b39_c30 is success
+
+128-TSOPF_RS_b39_c7 tcgnn-0.0398
+128-TSOPF_RS_b39_c7 gespmm-0.0318
+TSOPF_RS_b39_c7 is success
+
+128-TSOPF_RS_b678_c1 tcgnn-1.1248
+128-TSOPF_RS_b678_c1 gespmm-0.4364
+TSOPF_RS_b678_c1 is success
+
+128-TSOPF_RS_b678_c2 gespmm-0.787
+TSOPF_RS_b678_c2 is success
+
+128-tsyl201 tcgnn-0.2729
+128-tsyl201 gespmm-0.1132
+tsyl201 is success
+
+128-tube1 tcgnn-0.0555
+128-tube1 gespmm-0.0452
+tube1 is success
+
+128-tube2 tcgnn-0.0623
+128-tube2 gespmm-0.0467
+tube2 is success
+
+128-turon_m tcgnn-0.2753
+128-turon_m gespmm-0.2335
+turon_m is success
+
+128-usroads tcgnn-0.1138
+128-usroads gespmm-0.13
+usroads is success
+
+128-usroads-48 tcgnn-0.1124
+128-usroads-48 gespmm-0.1276
+usroads-48 is success
+
+128-vanbody tcgnn-0.1594
+128-vanbody gespmm-0.124
+vanbody is success
+
+128-venturiLevel3 gespmm-4.264
+venturiLevel3 is success
+
+128-vibrobox tcgnn-0.1
+128-vibrobox gespmm-0.0245
+vibrobox is success
+
+128-viscorocks tcgnn-0.1407
+128-viscorocks gespmm-0.1142
+viscorocks is success
+
+128-vsp_barth5_1Ksep_50in_5Kout tcgnn-0.069
+128-vsp_barth5_1Ksep_50in_5Kout gespmm-0.0231
+vsp_barth5_1Ksep_50in_5Kout is success
+
+128-vsp_bcsstk30_500sep_10in_1Kout tcgnn-1.2853
+128-vsp_bcsstk30_500sep_10in_1Kout gespmm-0.2367
+vsp_bcsstk30_500sep_10in_1Kout is success
+
+128-vsp_befref_fxm_2_4_air02 tcgnn-0.0662
+128-vsp_befref_fxm_2_4_air02 gespmm-0.0201
+vsp_befref_fxm_2_4_air02 is success
+
+128-vsp_bump2_e18_aa01_model1_crew1 tcgnn-0.1215
+128-vsp_bump2_e18_aa01_model1_crew1 gespmm-0.0465
+vsp_bump2_e18_aa01_model1_crew1 is success
+
+128-vsp_c-30_data_data tcgnn-0.0201
+128-vsp_c-30_data_data gespmm-0.0139
+vsp_c-30_data_data is success
+
+128-vsp_c-60_data_cti_cs4 tcgnn-0.8134
+128-vsp_c-60_data_cti_cs4 gespmm-0.0718
+vsp_c-60_data_cti_cs4 is success
+
+128-vsp_finan512_scagr7-2c_rlfddd tcgnn-0.1878
+128-vsp_finan512_scagr7-2c_rlfddd gespmm-0.1402
+vsp_finan512_scagr7-2c_rlfddd is success
+
+128-vsp_mod2_pgp2_slptsk tcgnn-0.3332
+128-vsp_mod2_pgp2_slptsk gespmm-0.0895
+vsp_mod2_pgp2_slptsk is success
+
+128-vsp_model1_crew1_cr42_south31 tcgnn-0.0844
+128-vsp_model1_crew1_cr42_south31 gespmm-0.03
+vsp_model1_crew1_cr42_south31 is success
+
+128-vsp_msc10848_300sep_100in_1Kout tcgnn-1.1078
+128-vsp_msc10848_300sep_100in_1Kout gespmm-0.125
+vsp_msc10848_300sep_100in_1Kout is success
+
+128-vsp_p0291_seymourl_iiasa tcgnn-0.267
+128-vsp_p0291_seymourl_iiasa gespmm-0.0183
+vsp_p0291_seymourl_iiasa is success
+
+128-vsp_sctap1-2b_and_seymourl tcgnn-0.5308
+128-vsp_sctap1-2b_and_seymourl gespmm-0.029
+vsp_sctap1-2b_and_seymourl is success
+
+128-vsp_south31_slptsk tcgnn-0.0999
+128-vsp_south31_slptsk gespmm-0.0289
+vsp_south31_slptsk is success
+
+128-vsp_vibrobox_scagr7-2c_rlfddd tcgnn-0.1344
+128-vsp_vibrobox_scagr7-2c_rlfddd gespmm-0.0694
+vsp_vibrobox_scagr7-2c_rlfddd is success
+
+128-vt2010 tcgnn-0.06
+128-vt2010 gespmm-0.0213
+vt2010 is success
+
+128-wathen100 tcgnn-0.0586
+128-wathen100 gespmm-0.0354
+wathen100 is success
+
+128-wathen120 tcgnn-0.068
+128-wathen120 gespmm-0.0406
+wathen120 is success
+
+128-web-Google gespmm-1.4001
+web-Google is success
+
+128-web-NotreDame tcgnn-2.9057
+128-web-NotreDame gespmm-0.2836
+web-NotreDame is success
+
+128-wikipedia-20051105 gespmm-3.7254
+wikipedia-20051105 is success
+
+128-wikipedia-20060925 gespmm-7.6347
+wikipedia-20060925 is success
+
+128-wikipedia-20061104 gespmm-8.1228
+wikipedia-20061104 is success
+
+128-wikipedia-20070206 gespmm-9.4064
+wikipedia-20070206 is success
+
+128-wiki-Talk gespmm-1.5081
+wiki-Talk is success
+
+128-windscreen tcgnn-0.1001
+128-windscreen gespmm-0.0684
+windscreen is success
+
+128-wing_nodal tcgnn-0.0606
+128-wing_nodal gespmm-0.018
+wing_nodal is success
+
+128-wy2010 tcgnn-0.1505
+128-wy2010 gespmm-0.077
+wy2010 is success
+
+128-x104 gespmm-0.4853
+x104 is success
+
+128-Zd_Jac2 tcgnn-1.3892
+128-Zd_Jac2 gespmm-0.1605
+Zd_Jac2 is success
+
+128-ogb gespmm-32.3455
+ogb is success
+
+128-reddit gespmm-12.9316
+reddit is success
+
+128-GitHub tcgnn-6.0844
+128-GitHub gespmm-0.0779
+GitHub is success
+
+128-artist tcgnn-1.344
+128-artist gespmm-0.1954
+artist is success
+
+128-ell tcgnn-0.3805
+128-ell gespmm-0.2223
+ell is success
+
+128-amazon gespmm-1.3202
+amazon is success
+
+128-amazon0505 tcgnn-2.815
+128-amazon0505 gespmm-0.9119
+amazon0505 is success
+
+128-dd tcgnn-0.5173
+128-dd gespmm-0.3755
+dd is success
+
+128-yelp gespmm-2.734
+yelp is success
+
+128-comamazon tcgnn-1.0703
+128-comamazon gespmm-0.5891
+comamazon is success
+
+128-IGB_small gespmm-3.9202
+IGB_small is success
+
+All is success
+NVIDIA H100 PCIe
+dimN: 256
+256-144 tcgnn-0.5076
+256-144 gespmm-0.3759
+144 is success
+
+256-2D_27628_bjtcai tcgnn-0.116
+256-2D_27628_bjtcai gespmm-0.0945
+2D_27628_bjtcai is success
+
+256-2D_54019_highK tcgnn-0.803
+256-2D_54019_highK gespmm-0.2196
+2D_54019_highK is success
+
+256-333SP gespmm-9.3297
+333SP is success
+
+256-3D_28984_Tetra tcgnn-3.9393
+256-3D_28984_Tetra gespmm-0.1213
+3D_28984_Tetra is success
+
+256-3D_51448_3D tcgnn-6.3064
+256-3D_51448_3D gespmm-0.2283
+3D_51448_3D is success
+
+256-3Dspectralwave gespmm-3.8357
+3Dspectralwave is success
+
+256-3Dspectralwave2 gespmm-1.6105
+3Dspectralwave2 is success
+
+256-3dtube tcgnn-1.4693
+256-3dtube gespmm-0.3012
+3dtube is success
+
+256-598a tcgnn-0.397
+256-598a gespmm-0.2901
+598a is success
+
+256-a0nsdsil tcgnn-6.7796
+256-a0nsdsil gespmm-0.1318
+a0nsdsil is success
+
+256-a2nnsnsl tcgnn-6.5833
+256-a2nnsnsl gespmm-0.1314
+a2nnsnsl is success
+
+256-a5esindl tcgnn-2.3051
+256-a5esindl gespmm-0.1048
+a5esindl is success
+
+256-adaptive gespmm-15.1956
+adaptive is success
+
+256-af_0_k101 gespmm-1.8874
+af_0_k101 is success
+
+256-af_1_k101 gespmm-1.884
+af_1_k101 is success
+
+256-af_2_k101 gespmm-1.8877
+af_2_k101 is success
+
+256-af_3_k101 gespmm-1.8879
+af_3_k101 is success
+
+256-af_4_k101 gespmm-1.8872
+af_4_k101 is success
+
+256-af_5_k101 gespmm-1.8873
+af_5_k101 is success
+
+256-af_shell1 gespmm-1.8918
+af_shell1 is success
+
+256-af_shell10 gespmm-5.7118
+af_shell10 is success
+
+256-af_shell2 gespmm-1.8916
+af_shell2 is success
+
+256-af_shell3 gespmm-1.8878
+af_shell3 is success
+
+256-af_shell4 gespmm-1.8912
+af_shell4 is success
+
+256-af_shell5 gespmm-1.8912
+af_shell5 is success
+
+256-af_shell6 gespmm-1.8914
+af_shell6 is success
+
+256-af_shell7 gespmm-1.8911
+af_shell7 is success
+
+256-af_shell8 gespmm-1.891
+af_shell8 is success
+
+256-af_shell9 gespmm-1.891
+af_shell9 is success
+
+256-ak2010 tcgnn-0.1681
+256-ak2010 gespmm-0.0752
+ak2010 is success
+
+256-amazon0505 tcgnn-2.962
+256-amazon0505 gespmm-1.8102
+amazon0505 is success
+
+256-Andrews tcgnn-0.2448
+256-Andrews gespmm-0.1485
+Andrews is success
+
+256-AS365 gespmm-10.4843
+AS365 is success
+
+256-as-caida tcgnn-1.1771
+256-as-caida gespmm-0.0594
+as-caida is success
+
+256-as-Skitter gespmm-4.2602
+as-Skitter is success
+
+256-astro-ph tcgnn-0.0735
+256-astro-ph gespmm-0.0356
+astro-ph is success
+
+256-auto tcgnn-1.5266
+256-auto gespmm-1.3037
+auto is success
+
+256-barrier2-1 tcgnn-6.9395
+256-barrier2-1 gespmm-0.876
+barrier2-1 is success
+
+256-barrier2-10 tcgnn-10.5663
+256-barrier2-10 gespmm-0.8964
+barrier2-10 is success
+
+256-barrier2-11 tcgnn-10.5723
+256-barrier2-11 gespmm-0.8985
+barrier2-11 is success
+
+256-barrier2-12 tcgnn-10.5464
+256-barrier2-12 gespmm-0.8991
+barrier2-12 is success
+
+256-barrier2-2 tcgnn-6.9079
+256-barrier2-2 gespmm-0.8762
+barrier2-2 is success
+
+256-barrier2-3 tcgnn-6.9191
+256-barrier2-3 gespmm-0.8759
+barrier2-3 is success
+
+256-barrier2-4 tcgnn-6.945
+256-barrier2-4 gespmm-0.8754
+barrier2-4 is success
+
+256-barrier2-9 tcgnn-10.5863
+256-barrier2-9 gespmm-0.8984
+barrier2-9 is success
+
+256-bauru5727 tcgnn-0.0837
+256-bauru5727 gespmm-0.088
+bauru5727 is success
+
+256-bbmat tcgnn-0.2408
+256-bbmat gespmm-0.3285
+bbmat is success
+
+256-bcsstk17 tcgnn-0.0534
+256-bcsstk17 gespmm-0.0433
+bcsstk17 is success
+
+256-bcsstk18 tcgnn-0.0396
+256-bcsstk18 gespmm-0.0272
+bcsstk18 is success
+
+256-bcsstk25 tcgnn-0.0414
+256-bcsstk25 gespmm-0.0337
+bcsstk25 is success
+
+256-bcsstk29 tcgnn-0.0575
+256-bcsstk29 gespmm-0.0602
+bcsstk29 is success
+
+256-bcsstk30 tcgnn-0.1794
+256-bcsstk30 gespmm-0.1907
+bcsstk30 is success
+
+256-bcsstk31 tcgnn-0.109
+256-bcsstk31 gespmm-0.125
+bcsstk31 is success
+
+256-bcsstk32 tcgnn-0.1757
+256-bcsstk32 gespmm-0.2028
+bcsstk32 is success
+
+256-bcsstk35 tcgnn-0.1324
+256-bcsstk35 gespmm-0.1413
+bcsstk35 is success
+
+256-bcsstk36 tcgnn-0.0926
+256-bcsstk36 gespmm-0.1114
+bcsstk36 is success
+
+256-bcsstk37 tcgnn-0.0888
+256-bcsstk37 gespmm-0.1126
+bcsstk37 is success
+
+256-bcsstk39 tcgnn-0.1366
+256-bcsstk39 gespmm-0.2098
+bcsstk39 is success
+
+256-bcsstm36 tcgnn-0.0467
+256-bcsstm36 gespmm-0.0377
+bcsstm36 is success
+
+256-belgium_osm tcgnn-1.1033
+256-belgium_osm gespmm-2.828
+belgium_osm is success
+
+256-BenElechi1 gespmm-1.2776
+BenElechi1 is success
+
+256-blockqp1 tcgnn-163.5651
+256-blockqp1 gespmm-0.1273
+blockqp1 is success
+
+256-bloweya tcgnn-6.0546
+256-bloweya gespmm-0.057
+bloweya is success
+
+256-bloweybl tcgnn-6.0778
+256-bloweybl gespmm-0.0641
+bloweybl is success
+
+256-bmw3_2 gespmm-1.1889
+bmw3_2 is success
+
+256-bmw7st_1 tcgnn-0.6651
+256-bmw7st_1 gespmm-0.7676
+bmw7st_1 is success
+
+256-bmwcra_1 gespmm-1.0414
+bmwcra_1 is success
+
+256-bone010 gespmm-6.8777
+bone010 is success
+
+256-boneS01 tcgnn-0.4185
+256-boneS01 gespmm-0.6933
+boneS01 is success
+
+256-boneS10 gespmm-5.5787
+boneS10 is success
+
+256-boyd1 tcgnn-3716.1199
+256-boyd1 gespmm-0.3391
+boyd1 is success
+
+256-boyd2 tcgnn-102.1008
+256-boyd2 gespmm-1.0193
+boyd2 is success
+
+256-brack2 tcgnn-0.1734
+256-brack2 gespmm-0.1406
+brack2 is success
+
+256-brainpc2 tcgnn-0.0319
+256-brainpc2 gespmm-0.0513
+brainpc2 is success
+
+256-bratu3d tcgnn-0.051
+256-bratu3d gespmm-0.0408
+bratu3d is success
+
+256-Bump_2911 gespmm-13.9933
+Bump_2911 is success
+
+256-bundle1 tcgnn-0.1125
+256-bundle1 gespmm-0.0668
+bundle1 is success
+
+256-bundle_adj gespmm-2.0158
+bundle_adj is success
+
+256-c-42 tcgnn-0.2114
+256-c-42 gespmm-0.0263
+c-42 is success
+
+256-c-43 tcgnn-0.0662
+256-c-43 gespmm-0.027
+c-43 is success
+
+256-c-45 tcgnn-0.0287
+256-c-45 gespmm-0.0316
+c-45 is success
+
+256-c-46 tcgnn-0.0559
+256-c-46 gespmm-0.0338
+c-46 is success
+
+256-c-47 tcgnn-0.1708
+256-c-47 gespmm-0.0362
+c-47 is success
+
+256-c-48 tcgnn-0.2545
+256-c-48 gespmm-0.0422
+c-48 is success
+
+256-c-49 tcgnn-0.4491
+256-c-49 gespmm-0.0493
+c-49 is success
+
+256-c-50 tcgnn-0.4459
+256-c-50 gespmm-0.0545
+c-50 is success
+
+256-c-51 tcgnn-0.4679
+256-c-51 gespmm-0.0575
+c-51 is success
+
+256-c-52 tcgnn-0.5174
+256-c-52 gespmm-0.0595
+c-52 is success
+
+256-c-53 tcgnn-0.1321
+256-c-53 gespmm-0.0751
+c-53 is success
+
+256-c-54 tcgnn-0.5558
+256-c-54 gespmm-0.0772
+c-54 is success
+
+256-c-55 tcgnn-1.0508
+256-c-55 gespmm-0.0808
+c-55 is success
+
+256-c-56 tcgnn-0.4712
+256-c-56 gespmm-0.0832
+c-56 is success
+
+256-c-57 tcgnn-0.0826
+256-c-57 gespmm-0.0869
+c-57 is success
+
+256-c-58 tcgnn-2.342
+256-c-58 gespmm-0.0945
+c-58 is success
+
+256-c-59 tcgnn-1.1377
+256-c-59 gespmm-0.0979
+c-59 is success
+
+256-c-60 tcgnn-0.7577
+256-c-60 gespmm-0.0955
+c-60 is success
+
+256-c-61 tcgnn-1.0349
+256-c-61 gespmm-0.0956
+c-61 is success
+
+256-c-62 tcgnn-2.3089
+256-c-62 gespmm-0.1012
+c-62 is success
+
+256-c-62ghs tcgnn-2.3066
+256-c-62ghs gespmm-0.1014
+c-62ghs is success
+
+256-c-63 tcgnn-1.2358
+256-c-63 gespmm-0.1004
+c-63 is success
+
+256-c-64 tcgnn-0.1486
+256-c-64 gespmm-0.1169
+c-64 is success
+
+256-c-64b tcgnn-0.1489
+256-c-64b gespmm-0.117
+c-64b is success
+
+256-c-65 tcgnn-1.2405
+256-c-65 gespmm-0.1039
+c-65 is success
+
+256-c-66 tcgnn-1.0985
+256-c-66 gespmm-0.1083
+c-66 is success
+
+256-c-66b tcgnn-1.0971
+256-c-66b gespmm-0.1081
+c-66b is success
+
+256-c-67b tcgnn-0.2137
+256-c-67b gespmm-0.1238
+c-67b is success
+
+256-c-68 tcgnn-1.0493
+256-c-68 gespmm-0.1422
+c-68 is success
+
+256-c-69 tcgnn-1.8527
+256-c-69 gespmm-0.1471
+c-69 is success
+
+256-c-70 tcgnn-1.9131
+256-c-70 gespmm-0.1525
+c-70 is success
+
+256-c-71 tcgnn-3.5451
+256-c-71 gespmm-0.1857
+c-71 is success
+
+256-c-73 tcgnn-0.2611
+256-c-73 gespmm-0.3844
+c-73 is success
+
+256-c-73b tcgnn-0.2619
+256-c-73b gespmm-0.3835
+c-73b is success
+
+256-ca-AstroPh tcgnn-0.291
+256-ca-AstroPh gespmm-0.0498
+ca-AstroPh is success
+
+256-ca-CondMat tcgnn-0.1326
+256-ca-CondMat gespmm-0.0366
+ca-CondMat is success
+
+256-cage14 gespmm-8.4787
+cage14 is success
+
+256-caidaRouterLevel tcgnn-0.3066
+256-caidaRouterLevel gespmm-0.3441
+caidaRouterLevel is success
+
+256-cant tcgnn-0.2653
+256-cant gespmm-0.3925
+cant is success
+
+256-case39 tcgnn-0.0809
+256-case39 gespmm-0.1041
+case39 is success
+
+256-case9 tcgnn-0.022
+256-case9 gespmm-0.0245
+case9 is success
+
+256-c-big tcgnn-22.6598
+256-c-big gespmm-0.8625
+c-big is success
+
+256-cbuckle tcgnn-0.1714
+256-cbuckle gespmm-0.0644
+cbuckle is success
+
+256-ccc tcgnn-0.0573
+256-ccc gespmm-0.1088
+ccc is success
+
+256-cfd1 tcgnn-0.2227
+256-cfd1 gespmm-0.2374
+cfd1 is success
+
+256-Chebyshev4 gespmm-1.1196
+Chebyshev4 is success
+
+256-circuit_4 tcgnn-4.2063
+256-circuit_4 gespmm-0.1697
+circuit_4 is success
+
+256-circuit5M_dc gespmm-10.6909
+circuit5M_dc is success
+
+256-citationCiteseer tcgnn-0.9002
+256-citationCiteseer gespmm-0.5735
+citationCiteseer is success
+
+256-cit-Patents gespmm-11.6464
+cit-Patents is success
+
+256-ckt11752_dc_1 tcgnn-1.3588
+256-ckt11752_dc_1 gespmm-0.1305
+ckt11752_dc_1 is success
+
+256-ckt11752_tr_0 tcgnn-1.3598
+256-ckt11752_tr_0 gespmm-0.1305
+ckt11752_tr_0 is success
+
+256-cnr-2000 tcgnn-1.4082
+256-cnr-2000 gespmm-0.8339
+cnr-2000 is success
+
+256-CO tcgnn-1.3814
+256-CO gespmm-0.9456
+CO is success
+
+256-coAuthorsCiteseer tcgnn-0.2428
+256-coAuthorsCiteseer gespmm-0.4116
+coAuthorsCiteseer is success
+
+256-coAuthorsDBLP tcgnn-0.3416
+256-coAuthorsDBLP gespmm-0.5509
+coAuthorsDBLP is success
+
+256-cond-mat-2003 tcgnn-0.0569
+256-cond-mat-2003 gespmm-0.0591
+cond-mat-2003 is success
+
+256-cond-mat-2005 tcgnn-0.0782
+256-cond-mat-2005 gespmm-0.076
+cond-mat-2005 is success
+
+256-conf5_4-8x8-05 tcgnn-0.3151
+256-conf5_4-8x8-05 gespmm-0.3786
+conf5_4-8x8-05 is success
+
+256-conf5_4-8x8-10 tcgnn-0.3161
+256-conf5_4-8x8-10 gespmm-0.3787
+conf5_4-8x8-10 is success
+
+256-conf5_4-8x8-15 tcgnn-0.3153
+256-conf5_4-8x8-15 gespmm-0.3784
+conf5_4-8x8-15 is success
+
+256-conf5_4-8x8-20 tcgnn-0.316
+256-conf5_4-8x8-20 gespmm-0.3781
+conf5_4-8x8-20 is success
+
+256-conf6_0-8x8-20 tcgnn-0.3155
+256-conf6_0-8x8-20 gespmm-0.3787
+conf6_0-8x8-20 is success
+
+256-conf6_0-8x8-30 tcgnn-0.3146
+256-conf6_0-8x8-30 gespmm-0.3784
+conf6_0-8x8-30 is success
+
+256-conf6_0-8x8-80 tcgnn-0.3149
+256-conf6_0-8x8-80 gespmm-0.3786
+conf6_0-8x8-80 is success
+
+256-consph tcgnn-0.3756
+256-consph gespmm-0.5778
+consph is success
+
+256-cont-201 tcgnn-0.1061
+256-cont-201 gespmm-0.1509
+cont-201 is success
+
+256-cont-300 tcgnn-0.231
+256-cont-300 gespmm-0.3432
+cont-300 is success
+
+256-coPapersCiteseer gespmm-3.249
+coPapersCiteseer is success
+
+256-coPapersDBLP gespmm-3.3387
+coPapersDBLP is success
+
+256-copter1 tcgnn-0.0495
+256-copter1 gespmm-0.0304
+copter1 is success
+
+256-CoupCons3D gespmm-4.2881
+CoupCons3D is success
+
+256-crankseg_1 gespmm-0.9632
+crankseg_1 is success
+
+256-crankseg_2 gespmm-1.2867
+crankseg_2 is success
+
+256-crplat2 tcgnn-0.0654
+256-crplat2 gespmm-0.0922
+crplat2 is success
+
+256-crystk02 tcgnn-0.0704
+256-crystk02 gespmm-0.0865
+crystk02 is success
+
+256-crystk03 tcgnn-0.1216
+256-crystk03 gespmm-0.1596
+crystk03 is success
+
+256-crystm02 tcgnn-0.0562
+256-crystm02 gespmm-0.0388
+crystm02 is success
+
+256-crystm03 tcgnn-0.0951
+256-crystm03 gespmm-0.0786
+crystm03 is success
+
+256-ct2010 tcgnn-0.1084
+256-ct2010 gespmm-0.1122
+ct2010 is success
+
+256-ct20stif tcgnn-0.3044
+256-ct20stif gespmm-0.2706
+ct20stif is success
+
+256-Cube_Coup_dt0 gespmm-13.7935
+Cube_Coup_dt0 is success
+
+256-Cube_Coup_dt6 gespmm-13.7925
+Cube_Coup_dt6 is success
+
+256-CurlCurl_0 tcgnn-0.0235
+256-CurlCurl_0 gespmm-0.0214
+CurlCurl_0 is success
+
+256-CurlCurl_4 gespmm-5.5437
+CurlCurl_4 is success
+
+256-cvxqp3 tcgnn-0.0432
+256-cvxqp3 gespmm-0.03
+cvxqp3 is success
+
+256-cyl6 tcgnn-0.201
+256-cyl6 gespmm-0.0667
+cyl6 is success
+
+256-darcy003 tcgnn-0.534
+256-darcy003 gespmm-0.9817
+darcy003 is success
+
+256-dawson5 tcgnn-0.1278
+256-dawson5 gespmm-0.1575
+dawson5 is success
+
+256-dblp-2010 tcgnn-0.3984
+256-dblp-2010 gespmm-0.5152
+dblp-2010 is success
+
+256-dc3 tcgnn-1975.7043
+256-dc3 gespmm-0.3279
+dc3 is success
+
+256-de2010 tcgnn-0.0488
+256-de2010 gespmm-0.0349
+de2010 is success
+
+256-debr tcgnn-1.1383
+256-debr gespmm-2.4088
+debr is success
+
+256-delaunay_n15 tcgnn-0.0427
+256-delaunay_n15 gespmm-0.0629
+delaunay_n15 is success
+
+256-delaunay_n16 tcgnn-0.0795
+256-delaunay_n16 gespmm-0.1169
+delaunay_n16 is success
+
+256-delaunay_n17 tcgnn-0.1458
+256-delaunay_n17 gespmm-0.2375
+delaunay_n17 is success
+
+256-delaunay_n18 tcgnn-0.2811
+256-delaunay_n18 gespmm-0.4937
+delaunay_n18 is success
+
+256-delaunay_n19 tcgnn-0.5506
+256-delaunay_n19 gespmm-1.0061
+delaunay_n19 is success
+
+256-delaunay_n20 tcgnn-1.0892
+256-delaunay_n20 gespmm-2.0448
+delaunay_n20 is success
+
+256-delaunay_n21 gespmm-4.1511
+delaunay_n21 is success
+
+256-delaunay_n22 gespmm-8.3093
+delaunay_n22 is success
+
+256-denormal tcgnn-0.17
+256-denormal gespmm-0.2135
+denormal is success
+
+256-dictionary28 tcgnn-0.0754
+256-dictionary28 gespmm-0.0778
+dictionary28 is success
+
+256-dielFilterV2clx gespmm-2.9026
+dielFilterV2clx is success
+
+256-dielFilterV2real gespmm-5.6596
+dielFilterV2real is success
+
+256-dielFilterV3clx gespmm-3.313
+dielFilterV3clx is success
+
+256-Dubcova1 tcgnn-0.0475
+256-Dubcova1 gespmm-0.0351
+Dubcova1 is success
+
+256-Dubcova3 tcgnn-0.2892
+256-Dubcova3 gespmm-0.4755
+Dubcova3 is success
+
+256-e40r0100 tcgnn-0.1365
+256-e40r0100 gespmm-0.1063
+e40r0100 is success
+
+256-EAT_RS tcgnn-0.435
+256-EAT_RS gespmm-0.0755
+EAT_RS is success
+
+256-ecology1 tcgnn-1.2724
+256-ecology1 gespmm-2.1526
+ecology1 is success
+
+256-ecology2 tcgnn-1.2694
+256-ecology2 gespmm-2.1524
+ecology2 is success
+
+256-email-Enron tcgnn-1.3243
+256-email-Enron gespmm-0.1219
+email-Enron is success
+
+256-Emilia_923 gespmm-4.4985
+Emilia_923 is success
+
+256-engine tcgnn-0.5806
+256-engine gespmm-0.6189
+engine is success
+
+256-enron tcgnn-0.9046
+256-enron gespmm-0.1121
+enron is success
+
+256-eu-2005 gespmm-4.1151
+eu-2005 is success
+
+256-ex11 tcgnn-0.1788
+256-ex11 gespmm-0.1931
+ex11 is success
+
+256-ex19 tcgnn-0.0638
+256-ex19 gespmm-0.0544
+ex19 is success
+
+256-F1 gespmm-2.8957
+F1 is success
+
+256-F2 tcgnn-0.4719
+256-F2 gespmm-0.536
+F2 is success
+
+256-Fault_639 gespmm-3.0642
+Fault_639 is success
+
+256-fcondp2 gespmm-1.1436
+fcondp2 is success
+
+256-fem_hifreq_circuit gespmm-4.5783
+fem_hifreq_circuit is success
+
+256-filter3D tcgnn-0.4358
+256-filter3D gespmm-0.3626
+filter3D is success
+
+256-finance256 tcgnn-0.0781
+256-finance256 gespmm-0.0772
+finance256 is success
+
+256-Flan_1565 gespmm-11.4724
+Flan_1565 is success
+
+256-flickr gespmm-3.0807
+flickr is success
+
+256-foldoc tcgnn-0.1114
+256-foldoc gespmm-0.0328
+foldoc is success
+
+256-Freescale1 gespmm-11.5306
+Freescale1 is success
+
+256-fullb gespmm-1.2212
+fullb is success
+
+256-fxm4_6 tcgnn-0.1163
+256-fxm4_6 gespmm-0.0575
+fxm4_6 is success
+
+256-G2_circuit tcgnn-0.1986
+256-G2_circuit gespmm-0.3198
+G2_circuit is success
+
+256-G3_circuit tcgnn-1.9737
+256-G3_circuit gespmm-3.5442
+G3_circuit is success
+
+256-Ga10As10H30 tcgnn-0.9001
+256-Ga10As10H30 gespmm-0.6932
+Ga10As10H30 is success
+
+256-Ga19As19H42 tcgnn-1.206
+256-Ga19As19H42 gespmm-0.967
+Ga19As19H42 is success
+
+256-Ga3As3H12 tcgnn-1.3059
+256-Ga3As3H12 gespmm-0.653
+Ga3As3H12 is success
+
+256-Ga41As41H72 gespmm-2.0046
+Ga41As41H72 is success
+
+256-GaAsH6 tcgnn-1.1623
+256-GaAsH6 gespmm-0.3736
+GaAsH6 is success
+
+256-gas_sensor tcgnn-0.2246
+256-gas_sensor gespmm-0.224
+gas_sensor is success
+
+256-Ge87H76 tcgnn-1.0748
+256-Ge87H76 gespmm-0.8495
+Ge87H76 is success
+
+256-Ge99H100 tcgnn-1.1311
+256-Ge99H100 gespmm-0.8959
+Ge99H100 is success
+
+256-gearbox tcgnn-0.5825
+256-gearbox gespmm-0.9363
+gearbox is success
+
+256-Geo_1438 gespmm-6.9908
+Geo_1438 is success
+
+256-gridgena tcgnn-0.0766
+256-gridgena gespmm-0.1077
+gridgena is success
+
+256-gsm_106857 gespmm-4.2507
+gsm_106857 is success
+
+256-gupta1 tcgnn-0.2205
+256-gupta1 gespmm-0.183
+gupta1 is success
+
+256-gupta2 tcgnn-0.3758
+256-gupta2 gespmm-0.3819
+gupta2 is success
+
+256-gupta3 tcgnn-289.1033
+256-gupta3 gespmm-0.8706
+gupta3 is success
+
+256-gyro tcgnn-0.0962
+256-gyro gespmm-0.0994
+gyro is success
+
+256-gyro_k tcgnn-0.0953
+256-gyro_k gespmm-0.0995
+gyro_k is success
+
+256-gyro_m tcgnn-0.0749
+256-gyro_m gespmm-0.0465
+gyro_m is success
+
+256-H2O tcgnn-0.4147
+256-H2O gespmm-0.2731
+H2O is success
+
+256-halfb gespmm-1.2909
+halfb is success
+
+256-Hamrle3 gespmm-3.789
+Hamrle3 is success
+
+256-hangGlider_4 tcgnn-3.3591
+256-hangGlider_4 gespmm-0.0317
+hangGlider_4 is success
+
+256-hangGlider_5 tcgnn-3.5148
+256-hangGlider_5 gespmm-0.0322
+hangGlider_5 is success
+
+256-helm2d03 tcgnn-0.5158
+256-helm2d03 gespmm-0.8793
+helm2d03 is success
+
+256-helm3d01 tcgnn-0.0923
+256-helm3d01 gespmm-0.0777
+helm3d01 is success
+
+256-hi2010 tcgnn-0.0514
+256-hi2010 gespmm-0.0391
+hi2010 is success
+
+256-hollywood-2009 gespmm-13.25
+hollywood-2009 is success
+
+256-hood gespmm-1.1981
+hood is success
+
+256-Hook_1498 gespmm-6.8583
+Hook_1498 is success
+
+256-HTC_336_4438 tcgnn-0.3829
+256-HTC_336_4438 gespmm-0.5017
+HTC_336_4438 is success
+
+256-HTC_336_9129 tcgnn-0.3825
+256-HTC_336_9129 gespmm-0.5041
+HTC_336_9129 is success
+
+256-human_gene1 gespmm-2.2288
+human_gene1 is success
+
+256-human_gene2 gespmm-1.6202
+human_gene2 is success
+
+256-ibm_matrix_2 tcgnn-6.3026
+256-ibm_matrix_2 gespmm-0.2284
+ibm_matrix_2 is success
+
+256-igbt3 tcgnn-0.1075
+256-igbt3 gespmm-0.055
+igbt3 is success
+
+256-in-2004 gespmm-4.1352
+in-2004 is success
+
+256-inlet tcgnn-0.0491
+256-inlet gespmm-0.0609
+inlet is success
+
+256-inline_1 gespmm-3.7356
+inline_1 is success
+
+256-jan99jac120sc tcgnn-0.1089
+256-jan99jac120sc gespmm-0.0952
+jan99jac120sc is success
+
+256-juba40k tcgnn-0.0829
+256-juba40k gespmm-0.0875
+juba40k is success
+
+256-k3plates tcgnn-0.0561
+256-k3plates gespmm-0.0708
+k3plates is success
+
+256-kim1 tcgnn-0.1499
+256-kim1 gespmm-0.1909
+kim1 is success
+
+256-kkt_power gespmm-5.1562
+kkt_power is success
+
+256-kron_g500-logn16 tcgnn-7.835
+256-kron_g500-logn16 gespmm-0.5017
+kron_g500-logn16 is success
+
+256-kron_g500-logn17 gespmm-1.064
+kron_g500-logn17 is success
+
+256-kron_g500-logn18 gespmm-2.2593
+kron_g500-logn18 is success
+
+256-kron_g500-logn19 gespmm-5.1373
+kron_g500-logn19 is success
+
+256-kron_g500-logn20 gespmm-11.6119
+kron_g500-logn20 is success
+
+256-laminar_duct3D tcgnn-0.5482
+256-laminar_duct3D gespmm-0.7223
+laminar_duct3D is success
+
+256-language tcgnn-8.7019
+256-language gespmm-0.9228
+language is success
+
+256-largebasis gespmm-1.6904
+largebasis is success
+
+256-ldoor gespmm-5.3001
+ldoor is success
+
+256-lhr34 tcgnn-0.1188
+256-lhr34 gespmm-0.1603
+lhr34 is success
+
+256-lhr34c tcgnn-0.1197
+256-lhr34c gespmm-0.1604
+lhr34c is success
+
+256-lhr71 tcgnn-0.2126
+256-lhr71 gespmm-0.3395
+lhr71 is success
+
+256-lhr71c tcgnn-0.2127
+256-lhr71c gespmm-0.3387
+lhr71c is success
+
+256-li tcgnn-0.2614
+256-li gespmm-0.2414
+li is success
+
+256-Long_Coup_dt0 gespmm-9.2956
+Long_Coup_dt0 is success
+
+256-Long_Coup_dt6 gespmm-9.2951
+Long_Coup_dt6 is success
+
+256-lowThrust_10 tcgnn-0.0573
+256-lowThrust_10 gespmm-0.035
+lowThrust_10 is success
+
+256-lowThrust_11 tcgnn-0.0571
+256-lowThrust_11 gespmm-0.0356
+lowThrust_11 is success
+
+256-lowThrust_12 tcgnn-0.0574
+256-lowThrust_12 gespmm-0.0356
+lowThrust_12 is success
+
+256-lowThrust_13 tcgnn-0.0583
+256-lowThrust_13 gespmm-0.0359
+lowThrust_13 is success
+
+256-lowThrust_4 tcgnn-0.0504
+256-lowThrust_4 gespmm-0.0327
+lowThrust_4 is success
+
+256-lowThrust_5 tcgnn-0.0526
+256-lowThrust_5 gespmm-0.0335
+lowThrust_5 is success
+
+256-lowThrust_6 tcgnn-0.0548
+256-lowThrust_6 gespmm-0.0342
+lowThrust_6 is success
+
+256-lowThrust_7 tcgnn-0.0553
+256-lowThrust_7 gespmm-0.0345
+lowThrust_7 is success
+
+256-lowThrust_8 tcgnn-0.0556
+256-lowThrust_8 gespmm-0.0349
+lowThrust_8 is success
+
+256-lowThrust_9 tcgnn-0.0566
+256-lowThrust_9 gespmm-0.0351
+lowThrust_9 is success
+
+256-lp1 tcgnn-0.4736
+256-lp1 gespmm-1.0617
+lp1 is success
+
+256-luxembourg_osm tcgnn-0.0943
+256-luxembourg_osm gespmm-0.2194
+luxembourg_osm is success
+
+256-m14b tcgnn-0.6992
+256-m14b gespmm-0.5931
+m14b is success
+
+256-mario001 tcgnn-0.0586
+256-mario001 gespmm-0.0775
+mario001 is success
+
+256-mario002 tcgnn-0.5339
+256-mario002 gespmm-0.9829
+mario002 is success
+
+256-mark3jac040sc tcgnn-0.0638
+256-mark3jac040sc gespmm-0.0324
+mark3jac040sc is success
+
+256-mark3jac060sc tcgnn-0.0843
+256-mark3jac060sc gespmm-0.0627
+mark3jac060sc is success
+
+256-me2010 tcgnn-0.1272
+256-me2010 gespmm-0.1126
+me2010 is success
+
+256-memplus tcgnn-0.6121
+256-memplus gespmm-0.0362
+memplus is success
+
+256-mip1 gespmm-0.9145
+mip1 is success
+
+256-ML_Laplace gespmm-5.0152
+ML_Laplace is success
+
+256-mouse_gene gespmm-2.7298
+mouse_gene is success
+
+256-msc10848 tcgnn-0.2091
+256-msc10848 gespmm-0.1155
+msc10848 is success
+
+256-msc23052 tcgnn-0.1883
+256-msc23052 gespmm-0.1172
+msc23052 is success
+
+256-msdoor gespmm-2.2423
+msdoor is success
+
+256-m_t1 tcgnn-0.5556
+256-m_t1 gespmm-0.9048
+m_t1 is success
+
+256-mult_dcop_01 tcgnn-29.9057
+256-mult_dcop_01 gespmm-0.0796
+mult_dcop_01 is success
+
+256-mult_dcop_02 tcgnn-29.9824
+256-mult_dcop_02 gespmm-0.0792
+mult_dcop_02 is success
+
+256-mult_dcop_03 tcgnn-28.3767
+256-mult_dcop_03 gespmm-0.079
+mult_dcop_03 is success
+
+256-NACA0015 tcgnn-1.5395
+256-NACA0015 gespmm-2.7573
+NACA0015 is success
+
+256-nasasrb tcgnn-0.1799
+256-nasasrb gespmm-0.2714
+nasasrb is success
+
+256-nd12k gespmm-1.2972
+nd12k is success
+
+256-nd24k gespmm-2.67
+nd24k is success
+
+256-nd6k tcgnn-0.7411
+256-nd6k gespmm-0.6339
+nd6k is success
+
+256-net100 tcgnn-0.6352
+256-net100 gespmm-0.1982
+net100 is success
+
+256-net125 tcgnn-0.6975
+256-net125 gespmm-0.2529
+net125 is success
+
+256-net150 tcgnn-0.7641
+256-net150 gespmm-0.3118
+net150 is success
+
+256-net4-1 tcgnn-0.7693
+256-net4-1 gespmm-0.3462
+net4-1 is success
+
+256-net50 tcgnn-0.4283
+256-net50 gespmm-0.0999
+net50 is success
+
+256-net75 tcgnn-0.5217
+256-net75 gespmm-0.1545
+net75 is success
+
+256-netherlands_osm tcgnn-1.699
+256-netherlands_osm gespmm-4.1699
+netherlands_osm is success
+
+256-nh2010 tcgnn-0.0827
+256-nh2010 gespmm-0.0903
+nh2010 is success
+
+256-NLR gespmm-11.5412
+NLR is success
+
+256-NotreDame_www tcgnn-0.368
+256-NotreDame_www gespmm-0.4257
+NotreDame_www is success
+
+256-nv2010 tcgnn-0.1393
+256-nv2010 gespmm-0.1372
+nv2010 is success
+
+256-ohne2 gespmm-2.1747
+ohne2 is success
+
+256-oilpan tcgnn-0.1772
+256-oilpan gespmm-0.3908
+oilpan is success
+
+256-olafu tcgnn-0.0662
+256-olafu gespmm-0.0948
+olafu is success
+
+256-onetone2 tcgnn-0.0808
+256-onetone2 gespmm-0.0833
+onetone2 is success
+
+256-OPF_10000 tcgnn-0.113
+256-OPF_10000 gespmm-0.1083
+OPF_10000 is success
+
+256-opt1 tcgnn-0.1656
+256-opt1 gespmm-0.1755
+opt1 is success
+
+256-p2p-Gnutella31 tcgnn-0.1094
+256-p2p-Gnutella31 gespmm-0.0744
+p2p-Gnutella31 is success
+
+256-parabolic_fem tcgnn-0.85
+256-parabolic_fem gespmm-1.499
+parabolic_fem is success
+
+256-patents gespmm-10.9232
+patents is success
+
+256-pattern1 tcgnn-12.1458
+256-pattern1 gespmm-0.861
+pattern1 is success
+
+256-pcrystk02 tcgnn-0.0707
+256-pcrystk02 gespmm-0.0865
+pcrystk02 is success
+
+256-pcrystk03 tcgnn-0.1218
+256-pcrystk03 gespmm-0.1599
+pcrystk03 is success
+
+256-pct20stif tcgnn-0.3034
+256-pct20stif gespmm-0.2709
+pct20stif is success
+
+256-pdb1HYS tcgnn-0.2595
+256-pdb1HYS gespmm-0.3827
+pdb1HYS is success
+
+256-pds10 tcgnn-0.1028
+256-pds10 gespmm-0.0334
+pds10 is success
+
+256-PFlow_742 gespmm-3.8551
+PFlow_742 is success
+
+256-pkustk01 tcgnn-0.1393
+256-pkustk01 gespmm-0.1033
+pkustk01 is success
+
+256-pkustk02 tcgnn-0.1512
+256-pkustk02 gespmm-0.0767
+pkustk02 is success
+
+256-pkustk03 tcgnn-0.2457
+256-pkustk03 gespmm-0.3321
+pkustk03 is success
+
+256-pkustk04 tcgnn-4.8514
+256-pkustk04 gespmm-0.4323
+pkustk04 is success
+
+256-pkustk05 tcgnn-0.2435
+256-pkustk05 gespmm-0.2212
+pkustk05 is success
+
+256-pkustk06 tcgnn-0.2445
+256-pkustk06 gespmm-0.2595
+pkustk06 is success
+
+256-pkustk07 tcgnn-0.5106
+256-pkustk07 gespmm-0.2259
+pkustk07 is success
+
+256-pkustk08 tcgnn-0.6086
+256-pkustk08 gespmm-0.2987
+pkustk08 is success
+
+256-pkustk09 tcgnn-0.1533
+256-pkustk09 gespmm-0.1591
+pkustk09 is success
+
+256-pkustk10 tcgnn-0.3461
+256-pkustk10 gespmm-0.4535
+pkustk10 is success
+
+256-pkustk11 tcgnn-0.4152
+256-pkustk11 gespmm-0.5504
+pkustk11 is success
+
+256-pkustk12 tcgnn-18.9998
+256-pkustk12 gespmm-0.7634
+pkustk12 is success
+
+256-pkustk13 tcgnn-0.7118
+256-pkustk13 gespmm-0.6903
+pkustk13 is success
+
+256-pkustk14 gespmm-1.4245
+pkustk14 is success
+
+256-pli tcgnn-0.1338
+256-pli gespmm-0.1303
+pli is success
+
+256-PR02R gespmm-1.4888
+PR02R is success
+
+256-Pres_Poisson tcgnn-0.0771
+256-Pres_Poisson gespmm-0.0692
+Pres_Poisson is success
+
+256-pwtk gespmm-1.1491
+pwtk is success
+
+256-qa8fk tcgnn-0.2018
+256-qa8fk gespmm-0.2145
+qa8fk is success
+
+256-qa8fm tcgnn-0.2016
+256-qa8fm gespmm-0.2145
+qa8fm is success
+
+256-raefsky3 tcgnn-0.127
+256-raefsky3 gespmm-0.2594
+raefsky3 is success
+
+256-raefsky4 tcgnn-0.1125
+256-raefsky4 gespmm-0.1247
+raefsky4 is success
+
+256-rajat15 tcgnn-1.278
+256-rajat15 gespmm-0.113
+rajat15 is success
+
+256-rajat22 tcgnn-2.594
+256-rajat22 gespmm-0.1006
+rajat22 is success
+
+256-rajat26 tcgnn-2.5829
+256-rajat26 gespmm-0.1265
+rajat26 is success
+
+256-ramage02 tcgnn-0.219
+256-ramage02 gespmm-0.2617
+ramage02 is success
+
+256-Reuters911 tcgnn-0.717
+256-Reuters911 gespmm-0.0366
+Reuters911 is success
+
+256-rgg_n_2_15_s0 tcgnn-0.085
+256-rgg_n_2_15_s0 gespmm-0.0709
+rgg_n_2_15_s0 is success
+
+256-rgg_n_2_22_s0 gespmm-11.1162
+rgg_n_2_22_s0 is success
+
+256-ri2010 tcgnn-0.0571
+256-ri2010 gespmm-0.0396
+ri2010 is success
+
+256-rim tcgnn-0.1421
+256-rim gespmm-0.1837
+rim is success
+
+256-RM07R gespmm-7.3979
+RM07R is success
+
+256-rma10 tcgnn-0.2853
+256-rma10 gespmm-0.4369
+rma10 is success
+
+256-roadNet-CA tcgnn-2.4159
+256-roadNet-CA gespmm-4.1535
+roadNet-CA is success
+
+256-roadNet-PA tcgnn-1.3623
+256-roadNet-PA gespmm-2.2996
+roadNet-PA is success
+
+256-roadNet-TX tcgnn-1.7162
+256-roadNet-TX gespmm-2.9463
+roadNet-TX is success
+
+256-s3dkq4m2 tcgnn-0.2123
+256-s3dkq4m2 gespmm-0.4759
+s3dkq4m2 is success
+
+256-s3dkt3m2 tcgnn-0.1874
+256-s3dkt3m2 gespmm-0.4138
+s3dkt3m2 is success
+
+256-s4dkt3m2 tcgnn-0.1868
+256-s4dkt3m2 gespmm-0.4152
+s4dkt3m2 is success
+
+256-Serena gespmm-7.2754
+Serena is success
+
+256-shermanACb tcgnn-6.7288
+256-shermanACb gespmm-0.0553
+shermanACb is success
+
+256-ship_001 tcgnn-0.3072
+256-ship_001 gespmm-0.4172
+ship_001 is success
+
+256-ship_003 tcgnn-0.4851
+256-ship_003 gespmm-0.8184
+ship_003 is success
+
+256-shipsec1 tcgnn-0.5231
+256-shipsec1 gespmm-0.8225
+shipsec1 is success
+
+256-shipsec5 gespmm-1.0557
+shipsec5 is success
+
+256-shipsec8 tcgnn-0.4152
+256-shipsec8 gespmm-0.6876
+shipsec8 is success
+
+256-Si10H16 tcgnn-0.2036
+256-Si10H16 gespmm-0.0929
+Si10H16 is success
+
+256-Si34H36 tcgnn-0.8086
+256-Si34H36 gespmm-0.5872
+Si34H36 is success
+
+256-Si41Ge41H72 gespmm-1.5707
+Si41Ge41H72 is success
+
+256-Si5H12 tcgnn-0.2089
+256-Si5H12 gespmm-0.0845
+Si5H12 is success
+
+256-Si87H76 gespmm-1.2426
+Si87H76 is success
+
+256-sinc15 tcgnn-0.4006
+256-sinc15 gespmm-0.1106
+sinc15 is success
+
+256-SiO tcgnn-0.4043
+256-SiO gespmm-0.145
+SiO is success
+
+256-SiO2 gespmm-1.1665
+SiO2 is success
+
+256-skirt tcgnn-0.0362
+256-skirt gespmm-0.0269
+skirt is success
+
+256-smallworld tcgnn-0.1453
+256-smallworld gespmm-0.233
+smallworld is success
+
+256-sme3Dc tcgnn-2.5947
+256-sme3Dc gespmm-0.6265
+sme3Dc is success
+
+256-smt tcgnn-0.2623
+256-smt gespmm-0.3315
+smt is success
+
+256-soc-sign-Slashdot090221 tcgnn-0.5707
+256-soc-sign-Slashdot090221 gespmm-0.1748
+soc-sign-Slashdot090221 is success
+
+256-sparsine tcgnn-0.4694
+256-sparsine gespmm-0.2071
+sparsine is success
+
+256-srb1 tcgnn-0.4044
+256-srb1 gespmm-0.2931
+srb1 is success
+
+256-Stanford tcgnn-159.7054
+256-Stanford gespmm-1.0172
+Stanford is success
+
+256-std1_Jac2 tcgnn-1.3598
+256-std1_Jac2 gespmm-0.2442
+std1_Jac2 is success
+
+256-std1_Jac3 tcgnn-1.8087
+256-std1_Jac3 gespmm-0.2732
+std1_Jac3 is success
+
+256-stokes128 tcgnn-0.0938
+256-stokes128 gespmm-0.1077
+stokes128 is success
+
+256-stokes64 tcgnn-0.0289
+256-stokes64 gespmm-0.0246
+stokes64 is success
+
+256-struct3 tcgnn-0.1064
+256-struct3 gespmm-0.1424
+struct3 is success
+
+256-t2dah tcgnn-0.0258
+256-t2dah gespmm-0.0243
+t2dah is success
+
+256-t2dah_a tcgnn-0.0259
+256-t2dah_a gespmm-0.0243
+t2dah_a is success
+
+256-t2dah_e tcgnn-0.0259
+256-t2dah_e gespmm-0.0244
+t2dah_e is success
+
+256-t3dh tcgnn-0.3989
+256-t3dh gespmm-0.4624
+t3dh is success
+
+256-t3dh_a tcgnn-0.3994
+256-t3dh_a gespmm-0.4621
+t3dh_a is success
+
+256-t3dh_e tcgnn-0.399
+256-t3dh_e gespmm-0.4614
+t3dh_e is success
+
+256-t3dl tcgnn-0.0867
+256-t3dl gespmm-0.0671
+t3dl is success
+
+256-t3dl_a tcgnn-0.0862
+256-t3dl_a gespmm-0.0672
+t3dl_a is success
+
+256-tandem_vtx tcgnn-0.0661
+256-tandem_vtx gespmm-0.0398
+tandem_vtx is success
+
+256-ted_A tcgnn-0.0629
+256-ted_A gespmm-0.0788
+ted_A is success
+
+256-ted_AB tcgnn-0.1037
+256-ted_AB gespmm-0.0977
+ted_AB is success
+
+256-ted_AB_unscaled tcgnn-0.1033
+256-ted_AB_unscaled gespmm-0.0977
+ted_AB_unscaled is success
+
+256-ted_A_unscaled tcgnn-0.0629
+256-ted_A_unscaled gespmm-0.0788
+ted_A_unscaled is success
+
+256-ted_B_unscaled tcgnn-0.0213
+256-ted_B_unscaled gespmm-0.0304
+ted_B_unscaled is success
+
+256-thread tcgnn-0.3831
+256-thread gespmm-0.408
+thread is success
+
+256-tmt_sym tcgnn-0.9319
+256-tmt_sym gespmm-1.5722
+tmt_sym is success
+
+256-torso1 gespmm-1.6187
+torso1 is success
+
+256-transient tcgnn-721.5431
+256-transient gespmm-0.4933
+transient is success
+
+256-trdheim tcgnn-0.105
+256-trdheim gespmm-0.1667
+trdheim is success
+
+256-Trefethen_20000 tcgnn-0.1255
+256-Trefethen_20000 gespmm-0.0691
+Trefethen_20000 is success
+
+256-Trefethen_20000b tcgnn-0.1236
+256-Trefethen_20000b gespmm-0.0683
+Trefethen_20000b is success
+
+256-troll gespmm-1.2081
+troll is success
+
+256-TSOPF_FS_b162_c1 tcgnn-0.0575
+256-TSOPF_FS_b162_c1 gespmm-0.0562
+TSOPF_FS_b162_c1 is success
+
+256-TSOPF_FS_b162_c3 tcgnn-0.1133
+256-TSOPF_FS_b162_c3 gespmm-0.1553
+TSOPF_FS_b162_c3 is success
+
+256-TSOPF_FS_b162_c4 tcgnn-0.1511
+256-TSOPF_FS_b162_c4 gespmm-0.2066
+TSOPF_FS_b162_c4 is success
+
+256-TSOPF_FS_b300 tcgnn-0.26
+256-TSOPF_FS_b300 gespmm-0.3702
+TSOPF_FS_b300 is success
+
+256-TSOPF_FS_b300_c1 tcgnn-0.2599
+256-TSOPF_FS_b300_c1 gespmm-0.3701
+TSOPF_FS_b300_c1 is success
+
+256-TSOPF_FS_b300_c2 tcgnn-0.4045
+256-TSOPF_FS_b300_c2 gespmm-0.7476
+TSOPF_FS_b300_c2 is success
+
+256-TSOPF_FS_b300_c3 gespmm-1.1177
+TSOPF_FS_b300_c3 is success
+
+256-TSOPF_FS_b39_c19 tcgnn-0.1417
+256-TSOPF_FS_b39_c19 gespmm-0.2064
+TSOPF_FS_b39_c19 is success
+
+256-TSOPF_FS_b39_c30 tcgnn-0.2148
+256-TSOPF_FS_b39_c30 gespmm-0.3604
+TSOPF_FS_b39_c30 is success
+
+256-TSOPF_FS_b39_c7 tcgnn-0.058
+256-TSOPF_FS_b39_c7 gespmm-0.0715
+TSOPF_FS_b39_c7 is success
+
+256-TSOPF_FS_b9_c6 tcgnn-0.0221
+256-TSOPF_FS_b9_c6 gespmm-0.0237
+TSOPF_FS_b9_c6 is success
+
+256-TSOPF_RS_b162_c3 tcgnn-0.0861
+256-TSOPF_RS_b162_c3 gespmm-0.1046
+TSOPF_RS_b162_c3 is success
+
+256-TSOPF_RS_b162_c4 tcgnn-0.1029
+256-TSOPF_RS_b162_c4 gespmm-0.1393
+TSOPF_RS_b162_c4 is success
+
+256-TSOPF_RS_b2052_c1 gespmm-1.1573
+TSOPF_RS_b2052_c1 is success
+
+256-TSOPF_RS_b2383 gespmm-2.8618
+TSOPF_RS_b2383 is success
+
+256-TSOPF_RS_b2383_c1 gespmm-2.8464
+TSOPF_RS_b2383_c1 is success
+
+256-TSOPF_RS_b300_c1 tcgnn-0.1963
+256-TSOPF_RS_b300_c1 gespmm-0.2626
+TSOPF_RS_b300_c1 is success
+
+256-TSOPF_RS_b300_c2 tcgnn-0.3049
+256-TSOPF_RS_b300_c2 gespmm-0.5175
+TSOPF_RS_b300_c2 is success
+
+256-TSOPF_RS_b300_c3 tcgnn-0.4591
+256-TSOPF_RS_b300_c3 gespmm-0.7777
+TSOPF_RS_b300_c3 is success
+
+256-TSOPF_RS_b39_c19 tcgnn-0.1022
+256-TSOPF_RS_b39_c19 gespmm-0.1494
+TSOPF_RS_b39_c19 is success
+
+256-TSOPF_RS_b39_c30 tcgnn-0.1567
+256-TSOPF_RS_b39_c30 gespmm-0.2613
+TSOPF_RS_b39_c30 is success
+
+256-TSOPF_RS_b39_c7 tcgnn-0.0421
+256-TSOPF_RS_b39_c7 gespmm-0.0532
+TSOPF_RS_b39_c7 is success
+
+256-TSOPF_RS_b678_c1 tcgnn-1.1677
+256-TSOPF_RS_b678_c1 gespmm-0.8042
+TSOPF_RS_b678_c1 is success
+
+256-TSOPF_RS_b678_c2 gespmm-1.5242
+TSOPF_RS_b678_c2 is success
+
+256-tsyl201 tcgnn-0.286
+256-tsyl201 gespmm-0.2209
+tsyl201 is success
+
+256-tube1 tcgnn-0.0577
+256-tube1 gespmm-0.0897
+tube1 is success
+
+256-tube2 tcgnn-0.0648
+256-tube2 gespmm-0.0925
+tube2 is success
+
+256-turon_m tcgnn-0.2906
+256-turon_m gespmm-0.4558
+turon_m is success
+
+256-usroads tcgnn-0.1175
+256-usroads gespmm-0.2381
+usroads is success
+
+256-usroads-48 tcgnn-0.1166
+256-usroads-48 gespmm-0.2347
+usroads-48 is success
+
+256-vanbody tcgnn-0.1671
+256-vanbody gespmm-0.2362
+vanbody is success
+
+256-venturiLevel3 gespmm-8.4841
+venturiLevel3 is success
+
+256-vibrobox tcgnn-0.1092
+256-vibrobox gespmm-0.042
+vibrobox is success
+
+256-viscorocks tcgnn-0.149
+256-viscorocks gespmm-0.2172
+viscorocks is success
+
+256-vsp_barth5_1Ksep_50in_5Kout tcgnn-0.0735
+256-vsp_barth5_1Ksep_50in_5Kout gespmm-0.0611
+vsp_barth5_1Ksep_50in_5Kout is success
+
+256-vsp_bcsstk30_500sep_10in_1Kout tcgnn-1.3842
+256-vsp_bcsstk30_500sep_10in_1Kout gespmm-0.4513
+vsp_bcsstk30_500sep_10in_1Kout is success
+
+256-vsp_befref_fxm_2_4_air02 tcgnn-0.07
+256-vsp_befref_fxm_2_4_air02 gespmm-0.0298
+vsp_befref_fxm_2_4_air02 is success
+
+256-vsp_bump2_e18_aa01_model1_crew1 tcgnn-0.1273
+256-vsp_bump2_e18_aa01_model1_crew1 gespmm-0.103
+vsp_bump2_e18_aa01_model1_crew1 is success
+
+256-vsp_c-30_data_data tcgnn-0.021
+256-vsp_c-30_data_data gespmm-0.0207
+vsp_c-30_data_data is success
+
+256-vsp_c-60_data_cti_cs4 tcgnn-0.8455
+256-vsp_c-60_data_cti_cs4 gespmm-0.1279
+vsp_c-60_data_cti_cs4 is success
+
+256-vsp_finan512_scagr7-2c_rlfddd tcgnn-0.1978
+256-vsp_finan512_scagr7-2c_rlfddd gespmm-0.2711
+vsp_finan512_scagr7-2c_rlfddd is success
+
+256-vsp_mod2_pgp2_slptsk tcgnn-0.3481
+256-vsp_mod2_pgp2_slptsk gespmm-0.1636
+vsp_mod2_pgp2_slptsk is success
+
+256-vsp_model1_crew1_cr42_south31 tcgnn-0.0886
+256-vsp_model1_crew1_cr42_south31 gespmm-0.0804
+vsp_model1_crew1_cr42_south31 is success
+
+256-vsp_msc10848_300sep_100in_1Kout tcgnn-1.1937
+256-vsp_msc10848_300sep_100in_1Kout gespmm-0.2433
+vsp_msc10848_300sep_100in_1Kout is success
+
+256-vsp_p0291_seymourl_iiasa tcgnn-0.277
+256-vsp_p0291_seymourl_iiasa gespmm-0.0219
+vsp_p0291_seymourl_iiasa is success
+
+256-vsp_sctap1-2b_and_seymourl tcgnn-0.5528
+256-vsp_sctap1-2b_and_seymourl gespmm-0.0742
+vsp_sctap1-2b_and_seymourl is success
+
+256-vsp_south31_slptsk tcgnn-0.104
+256-vsp_south31_slptsk gespmm-0.0743
+vsp_south31_slptsk is success
+
+256-vsp_vibrobox_scagr7-2c_rlfddd tcgnn-0.1425
+256-vsp_vibrobox_scagr7-2c_rlfddd gespmm-0.1324
+vsp_vibrobox_scagr7-2c_rlfddd is success
+
+256-vt2010 tcgnn-0.0617
+256-vt2010 gespmm-0.0561
+vt2010 is success
+
+256-wathen100 tcgnn-0.0618
+256-wathen100 gespmm-0.0786
+wathen100 is success
+
+256-wathen120 tcgnn-0.0713
+256-wathen120 gespmm-0.0852
+wathen120 is success
+
+256-web-Google gespmm-2.7754
+web-Google is success
+
+256-web-NotreDame tcgnn-3.0319
+256-web-NotreDame gespmm-0.5602
+web-NotreDame is success
+
+256-wikipedia-20051105 gespmm-7.4094
+wikipedia-20051105 is success
+
+256-wikipedia-20060925 gespmm-15.1878
+wikipedia-20060925 is success
+
+256-wikipedia-20061104 gespmm-16.1763
+wikipedia-20061104 is success
+
+256-wikipedia-20070206 gespmm-18.7131
+wikipedia-20070206 is success
+
+256-wiki-Talk gespmm-3.0046
+wiki-Talk is success
+
+256-windscreen tcgnn-0.1063
+256-windscreen gespmm-0.1349
+windscreen is success
+
+256-wing_nodal tcgnn-0.064
+256-wing_nodal gespmm-0.0281
+wing_nodal is success
+
+256-wy2010 tcgnn-0.1584
+256-wy2010 gespmm-0.141
+wy2010 is success
+
+256-x104 gespmm-0.9467
+x104 is success
+
+256-Zd_Jac2 tcgnn-1.5246
+256-Zd_Jac2 gespmm-0.2992
+Zd_Jac2 is success
+
+256-ogb gespmm-65.0498
+ogb is success
+
+256-reddit gespmm-25.7073
+reddit is success
+
+256-GitHub tcgnn-6.3466
+256-GitHub gespmm-0.1476
+GitHub is success
+
+256-artist tcgnn-1.4234
+256-artist gespmm-0.3727
+artist is success
+
+256-ell tcgnn-0.4003
+256-ell gespmm-0.4382
+ell is success
+
+256-amazon gespmm-2.6098
+amazon is success
+
+256-amazon0505 tcgnn-2.9583
+256-amazon0505 gespmm-1.8106
+amazon0505 is success
+
+256-dd tcgnn-0.5461
+256-dd gespmm-0.742
+dd is success
+
+256-yelp gespmm-5.4423
+yelp is success
+
+256-comamazon tcgnn-1.1251
+256-comamazon gespmm-1.1677
+comamazon is success
+
+256-IGB_small gespmm-7.7964
+IGB_small is success
+
+All is success
