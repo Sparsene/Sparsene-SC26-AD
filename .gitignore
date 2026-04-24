@@ -1,0 +1,8 @@
+private/
+dataset/selected_mtx/*
+dataset/selected_npz/*
+dataset/flashsparse_npz/*
+dataset/sparsene_sc26_dataset.tar.gz
+__pycache__/
+build/
+build_test/
