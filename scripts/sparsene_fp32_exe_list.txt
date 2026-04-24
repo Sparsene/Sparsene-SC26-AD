@@ -1,0 +1,9 @@
+examples/src_fp32/acc/testbed/build/demo-acc-tf32
+examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32
+examples/src_fp32/dtc/testbed/build/demo-dtc-tf32
+examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32
+examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32
+examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32
+examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32
+examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32
+examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32
