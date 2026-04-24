@@ -1,0 +1,9 @@
+[submodule "sparsene/examples/cutlass"]
+	path = sparsene/examples/cutlass
+	url = https://github.com/NVIDIA/cutlass.git
+[submodule "DTC-SpMM_ASPLOS24/third_party/sputnik"]
+	path = third_party/sputnik
+	url = https://github.com/google-research/sputnik.git
+[submodule "DTC-SpMM_ASPLOS24/third_party/glog"]
+	path = third_party/glog
+	url = https://github.com/google/glog
