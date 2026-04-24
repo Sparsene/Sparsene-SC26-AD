@@ -1,0 +1,48 @@
+{
+    "ddi": {
+        "128": {
+            "demo-acc-nopipe-fp16": 0.462164,
+            "demo-acc-mco-smem-fp16": 0.312534,
+            "demo-acc-fp16": 0.284432,
+            "speedup_strict_lb": 2.252833142077514,
+            "speedup_multi_binding": 0.9992939476536074
+        },
+        "256": {
+            "demo-acc-nopipe-fp16": 0.482193,
+            "demo-acc-mco-smem-fp16": 0.333047,
+            "demo-acc-fp16": 0.301331,
+            "speedup_strict_lb": 1.5151602291651525,
+            "speedup_multi_binding": 1.0003985094494727
+        },
+        "512": {
+            "demo-acc-nopipe-fp16": 0.559912,
+            "demo-acc-mco-smem-fp16": 0.39258,
+            "demo-acc-fp16": 0.496934,
+            "speedup_strict_lb": 1.1464041292045652,
+            "speedup_multi_binding": 1.0022089330166815
+        }
+    },
+    "mip1": {
+        "128": {
+            "demo-acc-nopipe-fp16": 12.053809,
+            "demo-acc-mco-smem-fp16": 6.028141,
+            "demo-acc-fp16": 5.54959,
+            "speedup_strict_lb": 23.60378643169635,
+            "speedup_multi_binding": 23.491532543671102
+        },
+        "256": {
+            "demo-acc-nopipe-fp16": 12.967765,
+            "demo-acc-mco-smem-fp16": 6.129221,
+            "demo-acc-fp16": 5.553622,
+            "speedup_strict_lb": 12.606982523519825,
+            "speedup_multi_binding": 12.804938453721459
+        },
+        "512": {
+            "demo-acc-nopipe-fp16": 14.972572,
+            "demo-acc-mco-smem-fp16": 6.421429,
+            "demo-acc-fp16": 5.636983,
+            "speedup_strict_lb": 6.898612203664908,
+            "speedup_multi_binding": 6.978271758395288
+        }
+    }
+}
