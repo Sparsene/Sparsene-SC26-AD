@@ -1,0 +1,2 @@
+python bench_spmm_naive.py
+python bench_tc_spmm.py
