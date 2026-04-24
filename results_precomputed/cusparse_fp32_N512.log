@@ -1,0 +1,182 @@
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ASIC_680k.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ASIC_680k.mtx
+N: 512
+FLOAT: Sparse A[682862,682862] x B[682862,512] = C[682862,512]
+1776996691
+mykernel_time: 4.940881 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cant.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cant.mtx
+N: 512
+FLOAT: Sparse A[62451,62451] x B[62451,512] = C[62451,512]
+1776996711
+mykernel_time: 1.892522 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/conf5_4-8x8-10.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/conf5_4-8x8-10.mtx
+N: 512
+FLOAT: Sparse A[49152,49152] x B[49152,512] = C[49152,512]
+1776996716
+mykernel_time: 1.039353 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/consph.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/consph.mtx
+N: 512
+FLOAT: Sparse A[83334,83334] x B[83334,512] = C[83334,512]
+1776996719
+mykernel_time: 3.093985 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cop20k_A.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cop20k_A.mtx
+N: 512
+FLOAT: Sparse A[121192,121192] x B[121192,512] = C[121192,512]
+1776996725
+mykernel_time: 3.231990 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/dc2.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/dc2.mtx
+N: 512
+FLOAT: Sparse A[116835,116835] x B[116835,512] = C[116835,512]
+1776996731
+mykernel_time: 0.791754 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/DD.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/DD.mtx
+N: 512
+FLOAT: Sparse A[334925,334925] x B[334925,512] = C[334925,512]
+1776996735
+mykernel_time: 1.617395 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ddi.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ddi.mtx
+N: 512
+FLOAT: Sparse A[4267,4267] x B[4267,512] = C[4267,512]
+1776996744
+mykernel_time: 0.907003 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/eu-2005.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/eu-2005.mtx
+N: 512
+FLOAT: Sparse A[862664,862664] x B[862664,512] = C[862664,512]
+1776996749
+mykernel_time: 9.542577 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Ga41As41H72.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Ga41As41H72.mtx
+N: 512
+FLOAT: Sparse A[268096,268096] x B[268096,512] = C[268096,512]
+1776996781
+mykernel_time: 10.431687 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mac_econ_fwd500.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mac_econ_fwd500.mtx
+N: 512
+FLOAT: Sparse A[206500,206500] x B[206500,512] = C[206500,512]
+1776996798
+mykernel_time: 1.114806 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mc2depi.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mc2depi.mtx
+N: 512
+FLOAT: Sparse A[525825,525825] x B[525825,512] = C[525825,512]
+1776996804
+mykernel_time: 2.438698 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mip1.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mip1.mtx
+N: 512
+FLOAT: Sparse A[66463,66463] x B[66463,512] = C[66463,512]
+1776996818
+mykernel_time: 4.380963 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/OVCAR-8H.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/OVCAR-8H.mtx
+N: 512
+FLOAT: Sparse A[1889542,1889542] x B[1889542,512] = C[1889542,512]
+1776996826
+mykernel_time: 7.736568 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pdb1HYS.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pdb1HYS.mtx
+N: 512
+FLOAT: Sparse A[36417,36417] x B[36417,512] = C[36417,512]
+1776996874
+mykernel_time: 2.095181 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/protein.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/protein.mtx
+N: 512
+FLOAT: Sparse A[132534,132534] x B[132534,512] = C[132534,512]
+1776996893
+mykernel_time: 39.499158 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pwtk.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pwtk.mtx
+N: 512
+FLOAT: Sparse A[217918,217918] x B[217918,512] = C[217918,512]
+1776996942
+mykernel_time: 5.727608 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/reddit.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/reddit.mtx
+N: 512
+FLOAT: Sparse A[232965,232965] x B[232965,512] = C[232965,512]
+1776996979
+mykernel_time: 69.132929 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/rma10.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/rma10.mtx
+N: 512
+FLOAT: Sparse A[46835,46835] x B[46835,512] = C[46835,512]
+1776997061
+mykernel_time: 1.215546 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/scircuit.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/scircuit.mtx
+N: 512
+FLOAT: Sparse A[170998,170998] x B[170998,512] = C[170998,512]
+1776997064
+mykernel_time: 0.992167 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/shipsec1.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/shipsec1.mtx
+N: 512
+FLOAT: Sparse A[140874,140874] x B[140874,512] = C[140874,512]
+1776997070
+mykernel_time: 4.063287 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Si41Ge41H72.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Si41Ge41H72.mtx
+N: 512
+FLOAT: Sparse A[185639,185639] x B[185639,512] = C[185639,512]
+1776997081
+mykernel_time: 8.130272 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/web-BerkStan.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/web-BerkStan.mtx
+N: 512
+FLOAT: Sparse A[685230,685230] x B[685230,512] = C[685230,512]
+1776997095
+mykernel_time: 4.285159 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/webbase-1M.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/webbase-1M.mtx
+N: 512
+FLOAT: Sparse A[1000005,1000005] x B[1000005,512] = C[1000005,512]
+1776997115
+mykernel_time: 4.281881 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Yeast.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Yeast.mtx
+N: 512
+FLOAT: Sparse A[1710902,1710902] x B[1710902,512] = C[1710902,512]
+1776997141
+mykernel_time: 7.177195 ms
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/YeastH.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/cusparse/testbed/build/demo-cusp-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/YeastH.mtx
+N: 512
+FLOAT: Sparse A[3138114,3138114] x B[3138114,512] = C[3138114,512]
+1776997185
+mykernel_time: 12.842382 ms
+

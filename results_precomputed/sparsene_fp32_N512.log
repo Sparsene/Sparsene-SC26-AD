@@ -1,0 +1,2940 @@
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ASIC_680k.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ASIC_680k.mtx
+N: 512
+FLOAT: Sparse A[682862,682862] x B[682862,512] = C[682862,512]
+1776967811
+No checkpoint found, start preprocessing...
+mykernel_time: 50.680570 ms
+active block num: 16
+check nan: cusp 43.0 mykernel 43.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/ASIC_680kM682862K682862Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ASIC_680k.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ASIC_680k.mtx
+N: 512
+FLOAT: Sparse A[682862,682862] x B[682862,512] = C[682862,512]
+1776967885
+mykernel_time: 52.636838 ms
+check nan: cusp 43.0 mykernel 43.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ASIC_680k.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ASIC_680k.mtx
+N: 512
+FLOAT: Sparse A[682862,682862] x B[682862,512] = C[682862,512]
+1776967961
+total_TCBlock_num = 325165, nnz = 3871773, nnz_pad=4238776
+mykernel_time: 49.511083 ms
+check nan: cusp 43.0 mykernel 43.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ASIC_680k.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ASIC_680k.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[682862,682862] x B[682862,512] = C[682862,512]
+1776968037
+total_TCBlock_num = 325165, nnz = 3871773, nnz_pad=4238776
+total_tcblock_num = 325165
+slb_tb_offset(5082) push a new value 47121: current thread block from 47106 to 47121
+slb_tb_offset size = 5082
+slb_block_dim_size = 5081
+row_block_offset size = 47121
+row_block_to_row_window_id size = 47120
+mykernel_time: 9.070355 ms
+check nan: cusp 43.0 mykernel 43.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ASIC_680k.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ASIC_680k.mtx
+N: 512
+FLOAT: Sparse A[682862,682862] x B[682862,512] = C[682862,512]
+1776968064
+total_TCBlock_num = 325165, nnz = 3871773, nnz_pad=4238776
+multi_binding sum = 325165
+mykernel_time: 5.810577 ms
+check nan: cusp 43.0 mykernel 43.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ASIC_680k.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ASIC_680k.mtx
+N: 512
+HALF: Sparse A[682862,682862] x B[682862,512] = C[682862,512]
+1776968088
+total_BCRS_Block_num = 88978
+mykernel_time: 25.463816 ms
+check nan: cusp 43.0 mykernel 43.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ASIC_680k.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ASIC_680k.mtx
+N: 512
+HALF: Sparse A[682862,682862] x B[682862,512] = C[682862,512]
+1776968134
+total_BCRS_Block_num = 325165
+mykernel_time: 30.970024 ms
+check nan: cusp 43.0 mykernel 43.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ASIC_680k.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ASIC_680k.mtx
+N: 512
+FLOAT: Sparse A[682862,682862] x B[682862,512] = C[682862,512]
+1776968186
+total_BCRS_Block_num = 325165
+mykernel_time: 4.843788 ms
+check nan: cusp 43.0 mykernel 43.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ASIC_680k.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ASIC_680k.mtx
+N: 512
+FLOAT: Sparse A[682862,682862] x B[682862,512] = C[682862,512]
+1776968209
+total_BCRS_Block_num = 325165
+mykernel_time: 5.937634 ms
+check nan: cusp 43.0 mykernel 43.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cant.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cant.mtx
+N: 512
+FLOAT: Sparse A[62451,62451] x B[62451,512] = C[62451,512]
+1776968232
+No checkpoint found, start preprocessing...
+mykernel_time: 0.767394 ms
+active block num: 16
+check nan: cusp 216.0 mykernel 216.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/cantM62451K62451Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cant.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cant.mtx
+N: 512
+FLOAT: Sparse A[62451,62451] x B[62451,512] = C[62451,512]
+1776968236
+mykernel_time: 0.891751 ms
+check nan: cusp 216.0 mykernel 216.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cant.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cant.mtx
+N: 512
+FLOAT: Sparse A[62451,62451] x B[62451,512] = C[62451,512]
+1776968239
+total_TCBlock_num = 94807, nnz = 4007383, nnz_pad=4351296
+mykernel_time: 0.810812 ms
+check nan: cusp 216.0 mykernel 216.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cant.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cant.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[62451,62451] x B[62451,512] = C[62451,512]
+1776968243
+total_TCBlock_num = 94807, nnz = 4007383, nnz_pad=4351296
+total_tcblock_num = 94807
+slb_tb_offset(1483) push a new value 5326: current thread block from 5313 to 5326
+slb_tb_offset size = 1483
+slb_block_dim_size = 1482
+row_block_offset size = 5326
+row_block_to_row_window_id size = 5325
+mykernel_time: 2.087524 ms
+check nan: cusp 216.0 mykernel 216.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cant.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cant.mtx
+N: 512
+FLOAT: Sparse A[62451,62451] x B[62451,512] = C[62451,512]
+1776968247
+total_TCBlock_num = 94807, nnz = 4007383, nnz_pad=4351296
+multi_binding sum = 94807
+mykernel_time: 0.808639 ms
+check nan: cusp 216.0 mykernel 216.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cant.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cant.mtx
+N: 512
+HALF: Sparse A[62451,62451] x B[62451,512] = C[62451,512]
+1776968251
+total_BCRS_Block_num = 16552
+mykernel_time: 0.675923 ms
+check nan: cusp 216.0 mykernel 216.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cant.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cant.mtx
+N: 512
+HALF: Sparse A[62451,62451] x B[62451,512] = C[62451,512]
+1776968254
+total_BCRS_Block_num = 94807
+mykernel_time: 0.594184 ms
+check nan: cusp 216.0 mykernel 216.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cant.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cant.mtx
+N: 512
+FLOAT: Sparse A[62451,62451] x B[62451,512] = C[62451,512]
+1776968257
+total_BCRS_Block_num = 94807
+mykernel_time: 0.752469 ms
+check nan: cusp 216.0 mykernel 216.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cant.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cant.mtx
+N: 512
+FLOAT: Sparse A[62451,62451] x B[62451,512] = C[62451,512]
+1776968260
+total_BCRS_Block_num = 94807
+mykernel_time: 0.598199 ms
+check nan: cusp 216.0 mykernel 216.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/conf5_4-8x8-10.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/conf5_4-8x8-10.mtx
+N: 512
+FLOAT: Sparse A[49152,49152] x B[49152,512] = C[49152,512]
+1776968264
+No checkpoint found, start preprocessing...
+mykernel_time: 0.539181 ms
+active block num: 16
+check nan: cusp 368.0 mykernel 368.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/conf5_4-8x8-10M49152K49152Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/conf5_4-8x8-10.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/conf5_4-8x8-10.mtx
+N: 512
+FLOAT: Sparse A[49152,49152] x B[49152,512] = C[49152,512]
+1776968267
+mykernel_time: 0.634722 ms
+check nan: cusp 368.0 mykernel 368.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/conf5_4-8x8-10.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/conf5_4-8x8-10.mtx
+N: 512
+FLOAT: Sparse A[49152,49152] x B[49152,512] = C[49152,512]
+1776968270
+total_TCBlock_num = 64512, nnz = 1916928, nnz_pad=2099680
+mykernel_time: 0.588461 ms
+check nan: cusp 368.0 mykernel 368.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/conf5_4-8x8-10.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/conf5_4-8x8-10.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[49152,49152] x B[49152,512] = C[49152,512]
+1776968273
+total_TCBlock_num = 64512, nnz = 1916928, nnz_pad=2099680
+total_tcblock_num = 64512
+slb_tb_offset(1009) push a new value 4032: current thread block from 4028 to 4032
+slb_tb_offset size = 1009
+slb_block_dim_size = 1008
+row_block_offset size = 4033
+row_block_to_row_window_id size = 4032
+mykernel_time: 1.373297 ms
+check nan: cusp 368.0 mykernel 368.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/conf5_4-8x8-10.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/conf5_4-8x8-10.mtx
+N: 512
+FLOAT: Sparse A[49152,49152] x B[49152,512] = C[49152,512]
+1776968277
+total_TCBlock_num = 64512, nnz = 1916928, nnz_pad=2099680
+multi_binding sum = 64512
+mykernel_time: 0.591708 ms
+check nan: cusp 368.0 mykernel 368.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/conf5_4-8x8-10.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/conf5_4-8x8-10.mtx
+N: 512
+HALF: Sparse A[49152,49152] x B[49152,512] = C[49152,512]
+1776968280
+total_BCRS_Block_num = 13312
+mykernel_time: 0.538832 ms
+check nan: cusp 368.0 mykernel 368.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/conf5_4-8x8-10.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/conf5_4-8x8-10.mtx
+N: 512
+HALF: Sparse A[49152,49152] x B[49152,512] = C[49152,512]
+1776968283
+total_BCRS_Block_num = 64512
+mykernel_time: 0.412629 ms
+check nan: cusp 368.0 mykernel 368.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/conf5_4-8x8-10.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/conf5_4-8x8-10.mtx
+N: 512
+FLOAT: Sparse A[49152,49152] x B[49152,512] = C[49152,512]
+1776968286
+total_BCRS_Block_num = 64512
+mykernel_time: 0.551427 ms
+check nan: cusp 368.0 mykernel 368.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/conf5_4-8x8-10.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/conf5_4-8x8-10.mtx
+N: 512
+FLOAT: Sparse A[49152,49152] x B[49152,512] = C[49152,512]
+1776968289
+total_BCRS_Block_num = 64512
+mykernel_time: 0.415555 ms
+check nan: cusp 368.0 mykernel 368.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/consph.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/consph.mtx
+N: 512
+FLOAT: Sparse A[83334,83334] x B[83334,512] = C[83334,512]
+1776968292
+No checkpoint found, start preprocessing...
+mykernel_time: 1.085030 ms
+active block num: 16
+check nan: cusp 428.0 mykernel 428.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/consphM83334K83334Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/consph.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/consph.mtx
+N: 512
+FLOAT: Sparse A[83334,83334] x B[83334,512] = C[83334,512]
+1776968296
+mykernel_time: 1.442990 ms
+check nan: cusp 428.0 mykernel 428.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/consph.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/consph.mtx
+N: 512
+FLOAT: Sparse A[83334,83334] x B[83334,512] = C[83334,512]
+1776968301
+total_TCBlock_num = 135873, nnz = 6010480, nnz_pad=6424520
+mykernel_time: 1.139895 ms
+check nan: cusp 428.0 mykernel 428.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/consph.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/consph.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[83334,83334] x B[83334,512] = C[83334,512]
+1776968306
+total_TCBlock_num = 135873, nnz = 6010480, nnz_pad=6424520
+total_tcblock_num = 135873
+slb_tb_offset(2125) push a new value 7256: current thread block from 7254 to 7256
+slb_tb_offset size = 2125
+slb_block_dim_size = 2124
+row_block_offset size = 7256
+row_block_to_row_window_id size = 7255
+mykernel_time: 2.974849 ms
+check nan: cusp 428.0 mykernel 428.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/consph.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/consph.mtx
+N: 512
+FLOAT: Sparse A[83334,83334] x B[83334,512] = C[83334,512]
+1776968312
+total_TCBlock_num = 135873, nnz = 6010480, nnz_pad=6424520
+multi_binding sum = 135873
+mykernel_time: 1.139966 ms
+check nan: cusp 428.0 mykernel 428.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/consph.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/consph.mtx
+N: 512
+HALF: Sparse A[83334,83334] x B[83334,512] = C[83334,512]
+1776968317
+total_BCRS_Block_num = 29412
+mykernel_time: 1.138254 ms
+check nan: cusp 428.0 mykernel 428.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/consph.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/consph.mtx
+N: 512
+HALF: Sparse A[83334,83334] x B[83334,512] = C[83334,512]
+1776968321
+total_BCRS_Block_num = 135873
+mykernel_time: 0.829543 ms
+check nan: cusp 428.0 mykernel 428.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/consph.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/consph.mtx
+N: 512
+FLOAT: Sparse A[83334,83334] x B[83334,512] = C[83334,512]
+1776968326
+total_BCRS_Block_num = 135873
+mykernel_time: 1.040359 ms
+check nan: cusp 428.0 mykernel 428.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/consph.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/consph.mtx
+N: 512
+FLOAT: Sparse A[83334,83334] x B[83334,512] = C[83334,512]
+1776968330
+total_BCRS_Block_num = 135873
+mykernel_time: 0.832629 ms
+check nan: cusp 428.0 mykernel 428.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cop20k_A.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cop20k_A.mtx
+N: 512
+FLOAT: Sparse A[121192,121192] x B[121192,512] = C[121192,512]
+1776968334
+No checkpoint found, start preprocessing...
+mykernel_time: 1.329070 ms
+active block num: 16
+check nan: cusp 447.0 mykernel 447.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/cop20k_AM121192K121192Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cop20k_A.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cop20k_A.mtx
+N: 512
+FLOAT: Sparse A[121192,121192] x B[121192,512] = C[121192,512]
+1776968339
+mykernel_time: 3.443906 ms
+check nan: cusp 447.0 mykernel 447.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cop20k_A.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cop20k_A.mtx
+N: 512
+FLOAT: Sparse A[121192,121192] x B[121192,512] = C[121192,512]
+1776968346
+total_TCBlock_num = 142685, nnz = 2624331, nnz_pad=2995528
+mykernel_time: 1.222242 ms
+check nan: cusp 447.0 mykernel 447.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cop20k_A.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cop20k_A.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[121192,121192] x B[121192,512] = C[121192,512]
+1776968351
+total_TCBlock_num = 142685, nnz = 2624331, nnz_pad=2995528
+total_tcblock_num = 142685
+slb_tb_offset(2231) push a new value 8361: current thread block from 8358 to 8361
+slb_tb_offset size = 2231
+slb_block_dim_size = 2230
+row_block_offset size = 8361
+row_block_to_row_window_id size = 8360
+mykernel_time: 2.945776 ms
+check nan: cusp 447.0 mykernel 447.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cop20k_A.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cop20k_A.mtx
+N: 512
+FLOAT: Sparse A[121192,121192] x B[121192,512] = C[121192,512]
+1776968358
+total_TCBlock_num = 142685, nnz = 2624331, nnz_pad=2995528
+multi_binding sum = 142685
+mykernel_time: 1.322037 ms
+check nan: cusp 447.0 mykernel 447.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cop20k_A.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cop20k_A.mtx
+N: 512
+HALF: Sparse A[121192,121192] x B[121192,512] = C[121192,512]
+1776968363
+total_BCRS_Block_num = 34341
+mykernel_time: 1.419635 ms
+check nan: cusp 447.0 mykernel 447.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cop20k_A.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cop20k_A.mtx
+N: 512
+HALF: Sparse A[121192,121192] x B[121192,512] = C[121192,512]
+1776968368
+total_BCRS_Block_num = 142685
+mykernel_time: 1.020234 ms
+check nan: cusp 447.0 mykernel 447.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cop20k_A.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cop20k_A.mtx
+N: 512
+FLOAT: Sparse A[121192,121192] x B[121192,512] = C[121192,512]
+1776968372
+total_BCRS_Block_num = 142685
+mykernel_time: 1.403215 ms
+check nan: cusp 447.0 mykernel 447.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cop20k_A.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/cop20k_A.mtx
+N: 512
+FLOAT: Sparse A[121192,121192] x B[121192,512] = C[121192,512]
+1776968377
+total_BCRS_Block_num = 142685
+mykernel_time: 1.108956 ms
+check nan: cusp 447.0 mykernel 447.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/dc2.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/dc2.mtx
+N: 512
+FLOAT: Sparse A[116835,116835] x B[116835,512] = C[116835,512]
+1776968382
+No checkpoint found, start preprocessing...
+mykernel_time: 14.005255 ms
+active block num: 16
+check nan: cusp 20.0 mykernel 20.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/dc2M116835K116835Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/dc2.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/dc2.mtx
+N: 512
+FLOAT: Sparse A[116835,116835] x B[116835,512] = C[116835,512]
+1776968401
+mykernel_time: 14.326207 ms
+check nan: cusp 20.0 mykernel 20.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/dc2.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/dc2.mtx
+N: 512
+FLOAT: Sparse A[116835,116835] x B[116835,512] = C[116835,512]
+1776968419
+total_TCBlock_num = 52966, nnz = 766396, nnz_pad=928920
+mykernel_time: 13.423608 ms
+check nan: cusp 20.0 mykernel 20.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/dc2.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/dc2.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[116835,116835] x B[116835,512] = C[116835,512]
+1776968437
+total_TCBlock_num = 52966, nnz = 766396, nnz_pad=928920
+total_tcblock_num = 52966
+slb_tb_offset(829) push a new value 8020: current thread block from 8007 to 8020
+slb_tb_offset size = 829
+slb_block_dim_size = 828
+row_block_offset size = 8020
+row_block_to_row_window_id size = 8019
+mykernel_time: 1.326254 ms
+check nan: cusp 20.0 mykernel 20.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/dc2.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/dc2.mtx
+N: 512
+FLOAT: Sparse A[116835,116835] x B[116835,512] = C[116835,512]
+1776968442
+total_TCBlock_num = 52966, nnz = 766396, nnz_pad=928920
+multi_binding sum = 52966
+mykernel_time: 0.990447 ms
+check nan: cusp 20.0 mykernel 20.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/dc2.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/dc2.mtx
+N: 512
+HALF: Sparse A[116835,116835] x B[116835,512] = C[116835,512]
+1776968446
+total_BCRS_Block_num = 12940
+mykernel_time: 6.666277 ms
+check nan: cusp 20.0 mykernel 20.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/dc2.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/dc2.mtx
+N: 512
+HALF: Sparse A[116835,116835] x B[116835,512] = C[116835,512]
+1776968457
+total_BCRS_Block_num = 52966
+mykernel_time: 8.394977 ms
+check nan: cusp 20.0 mykernel 20.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/dc2.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/dc2.mtx
+N: 512
+FLOAT: Sparse A[116835,116835] x B[116835,512] = C[116835,512]
+1776968469
+total_BCRS_Block_num = 52966
+mykernel_time: 0.736334 ms
+check nan: cusp 20.0 mykernel 20.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/dc2.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/dc2.mtx
+N: 512
+FLOAT: Sparse A[116835,116835] x B[116835,512] = C[116835,512]
+1776968473
+total_BCRS_Block_num = 52966
+mykernel_time: 0.845490 ms
+check nan: cusp 20.0 mykernel 20.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/DD.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/DD.mtx
+N: 512
+FLOAT: Sparse A[334925,334925] x B[334925,512] = C[334925,512]
+1776968478
+No checkpoint found, start preprocessing...
+mykernel_time: 1.543091 ms
+active block num: 16
+check nan: cusp 76.0 mykernel 76.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/DDM334925K334925Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/DD.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/DD.mtx
+N: 512
+FLOAT: Sparse A[334925,334925] x B[334925,512] = C[334925,512]
+1776968488
+mykernel_time: 3.355411 ms
+check nan: cusp 76.0 mykernel 76.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/DD.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/DD.mtx
+N: 512
+FLOAT: Sparse A[334925,334925] x B[334925,512] = C[334925,512]
+1776968500
+total_TCBlock_num = 130006, nnz = 1686092, nnz_pad=2198264
+mykernel_time: 1.797090 ms
+check nan: cusp 76.0 mykernel 76.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/DD.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/DD.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[334925,334925] x B[334925,512] = C[334925,512]
+1776968510
+total_TCBlock_num = 130006, nnz = 1686092, nnz_pad=2198264
+total_tcblock_num = 130006
+slb_tb_offset(2033) push a new value 22625: current thread block from 22620 to 22625
+slb_tb_offset size = 2033
+slb_block_dim_size = 2032
+row_block_offset size = 22625
+row_block_to_row_window_id size = 22624
+mykernel_time: 3.550963 ms
+check nan: cusp 76.0 mykernel 76.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/DD.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/DD.mtx
+N: 512
+FLOAT: Sparse A[334925,334925] x B[334925,512] = C[334925,512]
+1776968522
+total_TCBlock_num = 130006, nnz = 1686092, nnz_pad=2198264
+multi_binding sum = 130006
+mykernel_time: 1.811169 ms
+check nan: cusp 76.0 mykernel 76.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/DD.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/DD.mtx
+N: 512
+HALF: Sparse A[334925,334925] x B[334925,512] = C[334925,512]
+1776968532
+total_BCRS_Block_num = 32554
+mykernel_time: 1.732013 ms
+check nan: cusp 76.0 mykernel 76.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/DD.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/DD.mtx
+N: 512
+HALF: Sparse A[334925,334925] x B[334925,512] = C[334925,512]
+1776968543
+total_BCRS_Block_num = 130006
+mykernel_time: 1.266608 ms
+check nan: cusp 76.0 mykernel 76.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/DD.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/DD.mtx
+N: 512
+FLOAT: Sparse A[334925,334925] x B[334925,512] = C[334925,512]
+1776968552
+total_BCRS_Block_num = 130006
+mykernel_time: 1.892098 ms
+check nan: cusp 76.0 mykernel 76.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/DD.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/DD.mtx
+N: 512
+FLOAT: Sparse A[334925,334925] x B[334925,512] = C[334925,512]
+1776968563
+total_BCRS_Block_num = 130006
+mykernel_time: 1.282661 ms
+check nan: cusp 76.0 mykernel 76.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ddi.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ddi.mtx
+N: 512
+FLOAT: Sparse A[4267,4267] x B[4267,512] = C[4267,512]
+1776968573
+No checkpoint found, start preprocessing...
+mykernel_time: 0.830953 ms
+active block num: 16
+check nan: cusp 4087.0 mykernel 4087.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/ddiM4267K4267Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ddi.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ddi.mtx
+N: 512
+FLOAT: Sparse A[4267,4267] x B[4267,512] = C[4267,512]
+1776968574
+mykernel_time: 1.231124 ms
+check nan: cusp 4087.0 mykernel 4087.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ddi.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ddi.mtx
+N: 512
+FLOAT: Sparse A[4267,4267] x B[4267,512] = C[4267,512]
+1776968576
+total_TCBlock_num = 82680, nnz = 2140089, nnz_pad=2430496
+mykernel_time: 0.701061 ms
+check nan: cusp 4087.0 mykernel 4087.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ddi.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ddi.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[4267,4267] x B[4267,512] = C[4267,512]
+1776968578
+total_TCBlock_num = 82680, nnz = 2140089, nnz_pad=2430496
+total_tcblock_num = 82680
+slb_tb_offset(1293) push a new value 1555: current thread block from 1553 to 1555
+slb_tb_offset size = 1293
+slb_block_dim_size = 1292
+row_block_offset size = 1555
+row_block_to_row_window_id size = 1554
+mykernel_time: 1.608485 ms
+check nan: cusp 4087.0 mykernel 4087.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ddi.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ddi.mtx
+N: 512
+FLOAT: Sparse A[4267,4267] x B[4267,512] = C[4267,512]
+1776968581
+total_TCBlock_num = 82680, nnz = 2140089, nnz_pad=2430496
+multi_binding sum = 82680
+mykernel_time: 0.700266 ms
+check nan: cusp 4087.0 mykernel 4087.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ddi.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ddi.mtx
+N: 512
+HALF: Sparse A[4267,4267] x B[4267,512] = C[4267,512]
+1776968582
+total_BCRS_Block_num = 12208
+mykernel_time: 0.474900 ms
+check nan: cusp 4087.0 mykernel 4087.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ddi.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ddi.mtx
+N: 512
+HALF: Sparse A[4267,4267] x B[4267,512] = C[4267,512]
+1776968583
+total_BCRS_Block_num = 82680
+mykernel_time: 0.478206 ms
+check nan: cusp 4087.0 mykernel 4087.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ddi.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ddi.mtx
+N: 512
+FLOAT: Sparse A[4267,4267] x B[4267,512] = C[4267,512]
+1776968585
+total_BCRS_Block_num = 82680
+mykernel_time: 0.470964 ms
+check nan: cusp 4087.0 mykernel 4087.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ddi.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/ddi.mtx
+N: 512
+FLOAT: Sparse A[4267,4267] x B[4267,512] = C[4267,512]
+1776968586
+total_BCRS_Block_num = 82680
+mykernel_time: 0.480740 ms
+check nan: cusp 4087.0 mykernel 4087.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/eu-2005.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/eu-2005.mtx
+N: 512
+FLOAT: Sparse A[862664,862664] x B[862664,512] = C[862664,512]
+1776968590
+No checkpoint found, start preprocessing...
+mykernel_time: 6.844698 ms
+active block num: 16
+check nan: cusp 22.0 mykernel 22.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/eu-2005M862664K862664Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/eu-2005.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/eu-2005.mtx
+N: 512
+FLOAT: Sparse A[862664,862664] x B[862664,512] = C[862664,512]
+1776968621
+mykernel_time: 17.481584 ms
+check nan: cusp 22.0 mykernel 22.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/eu-2005.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/eu-2005.mtx
+N: 512
+FLOAT: Sparse A[862664,862664] x B[862664,512] = C[862664,512]
+1776968664
+total_TCBlock_num = 707458, nnz = 19235140, nnz_pad=20616184
+mykernel_time: 7.539002 ms
+check nan: cusp 22.0 mykernel 22.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/eu-2005.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/eu-2005.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[862664,862664] x B[862664,512] = C[862664,512]
+1776968695
+total_TCBlock_num = 707458, nnz = 19235140, nnz_pad=20616184
+total_tcblock_num = 707458
+slb_tb_offset(11056) push a new value 62938: current thread block from 62936 to 62938
+slb_tb_offset size = 11056
+slb_block_dim_size = 11055
+row_block_offset size = 62938
+row_block_to_row_window_id size = 62937
+mykernel_time: 15.979295 ms
+check nan: cusp 22.0 mykernel 22.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/eu-2005.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/eu-2005.mtx
+N: 512
+FLOAT: Sparse A[862664,862664] x B[862664,512] = C[862664,512]
+1776968736
+total_TCBlock_num = 707458, nnz = 19235140, nnz_pad=20616184
+multi_binding sum = 707458
+mykernel_time: 7.585512 ms
+check nan: cusp 22.0 mykernel 22.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/eu-2005.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/eu-2005.mtx
+N: 512
+HALF: Sparse A[862664,862664] x B[862664,512] = C[862664,512]
+1776968767
+total_BCRS_Block_num = 153698
+mykernel_time: 8.258035 ms
+check nan: cusp 22.0 mykernel 22.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/eu-2005.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/eu-2005.mtx
+N: 512
+HALF: Sparse A[862664,862664] x B[862664,512] = C[862664,512]
+1776968800
+total_BCRS_Block_num = 707458
+mykernel_time: 6.074183 ms
+check nan: cusp 22.0 mykernel 22.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/eu-2005.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/eu-2005.mtx
+N: 512
+FLOAT: Sparse A[862664,862664] x B[862664,512] = C[862664,512]
+1776968830
+total_BCRS_Block_num = 707458
+mykernel_time: 6.619980 ms
+check nan: cusp 22.0 mykernel 22.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/eu-2005.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/eu-2005.mtx
+N: 512
+FLOAT: Sparse A[862664,862664] x B[862664,512] = C[862664,512]
+1776968861
+total_BCRS_Block_num = 707458
+mykernel_time: 6.326915 ms
+check nan: cusp 22.0 mykernel 22.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Ga41As41H72.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Ga41As41H72.mtx
+N: 512
+FLOAT: Sparse A[268096,268096] x B[268096,512] = C[268096,512]
+1776968893
+No checkpoint found, start preprocessing...
+mykernel_time: 7.936002 ms
+active block num: 16
+check nan: cusp 158.0 mykernel 158.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/Ga41As41H72M268096K268096Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Ga41As41H72.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Ga41As41H72.mtx
+N: 512
+FLOAT: Sparse A[268096,268096] x B[268096,512] = C[268096,512]
+1776968912
+mykernel_time: 11.498267 ms
+check nan: cusp 158.0 mykernel 158.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Ga41As41H72.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Ga41As41H72.mtx
+N: 512
+FLOAT: Sparse A[268096,268096] x B[268096,512] = C[268096,512]
+1776968935
+total_TCBlock_num = 1013026, nnz = 18488476, nnz_pad=19454768
+mykernel_time: 7.670310 ms
+check nan: cusp 158.0 mykernel 158.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Ga41As41H72.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Ga41As41H72.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[268096,268096] x B[268096,512] = C[268096,512]
+1776968954
+total_TCBlock_num = 1013026, nnz = 18488476, nnz_pad=19454768
+total_tcblock_num = 1013026
+slb_tb_offset(15830) push a new value 32344: current thread block from 32341 to 32344
+slb_tb_offset size = 15830
+slb_block_dim_size = 15829
+row_block_offset size = 32344
+row_block_to_row_window_id size = 32343
+mykernel_time: 20.019847 ms
+check nan: cusp 158.0 mykernel 158.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Ga41As41H72.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Ga41As41H72.mtx
+N: 512
+FLOAT: Sparse A[268096,268096] x B[268096,512] = C[268096,512]
+1776968987
+total_TCBlock_num = 1013026, nnz = 18488476, nnz_pad=19454768
+multi_binding sum = 1013026
+mykernel_time: 7.708913 ms
+check nan: cusp 158.0 mykernel 158.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Ga41As41H72.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Ga41As41H72.mtx
+N: 512
+HALF: Sparse A[268096,268096] x B[268096,512] = C[268096,512]
+1776969005
+total_BCRS_Block_num = 237556
+mykernel_time: 7.894802 ms
+check nan: cusp 158.0 mykernel 158.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Ga41As41H72.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Ga41As41H72.mtx
+N: 512
+HALF: Sparse A[268096,268096] x B[268096,512] = C[268096,512]
+1776969025
+total_BCRS_Block_num = 1013026
+mykernel_time: 5.762613 ms
+check nan: cusp 158.0 mykernel 158.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Ga41As41H72.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Ga41As41H72.mtx
+N: 512
+FLOAT: Sparse A[268096,268096] x B[268096,512] = C[268096,512]
+1776969041
+total_BCRS_Block_num = 1013026
+mykernel_time: 6.686080 ms
+check nan: cusp 158.0 mykernel 158.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Ga41As41H72.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Ga41As41H72.mtx
+N: 512
+FLOAT: Sparse A[268096,268096] x B[268096,512] = C[268096,512]
+1776969059
+total_BCRS_Block_num = 1013026
+mykernel_time: 5.803732 ms
+check nan: cusp 158.0 mykernel 158.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mac_econ_fwd500.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mac_econ_fwd500.mtx
+N: 512
+FLOAT: Sparse A[206500,206500] x B[206500,512] = C[206500,512]
+1776969072
+No checkpoint found, start preprocessing...
+mykernel_time: 1.165355 ms
+active block num: 16
+check nan: cusp 34.0 mykernel 34.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/mac_econ_fwd500M206500K206500Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mac_econ_fwd500.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mac_econ_fwd500.mtx
+N: 512
+FLOAT: Sparse A[206500,206500] x B[206500,512] = C[206500,512]
+1776969079
+mykernel_time: 3.051354 ms
+check nan: cusp 34.0 mykernel 34.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mac_econ_fwd500.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mac_econ_fwd500.mtx
+N: 512
+FLOAT: Sparse A[206500,206500] x B[206500,512] = C[206500,512]
+1776969088
+total_TCBlock_num = 106755, nnz = 1273389, nnz_pad=1673208
+mykernel_time: 1.216217 ms
+check nan: cusp 34.0 mykernel 34.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mac_econ_fwd500.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mac_econ_fwd500.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[206500,206500] x B[206500,512] = C[206500,512]
+1776969095
+total_TCBlock_num = 106755, nnz = 1273389, nnz_pad=1673208
+total_tcblock_num = 106755
+slb_tb_offset(1670) push a new value 14354: current thread block from 14352 to 14354
+slb_tb_offset size = 1670
+slb_block_dim_size = 1669
+row_block_offset size = 14354
+row_block_to_row_window_id size = 14353
+mykernel_time: 2.543554 ms
+check nan: cusp 34.0 mykernel 34.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mac_econ_fwd500.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mac_econ_fwd500.mtx
+N: 512
+FLOAT: Sparse A[206500,206500] x B[206500,512] = C[206500,512]
+1776969103
+total_TCBlock_num = 106755, nnz = 1273389, nnz_pad=1673208
+multi_binding sum = 106755
+mykernel_time: 1.217463 ms
+check nan: cusp 34.0 mykernel 34.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mac_econ_fwd500.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mac_econ_fwd500.mtx
+N: 512
+HALF: Sparse A[206500,206500] x B[206500,512] = C[206500,512]
+1776969110
+total_BCRS_Block_num = 24893
+mykernel_time: 1.310500 ms
+check nan: cusp 34.0 mykernel 34.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mac_econ_fwd500.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mac_econ_fwd500.mtx
+N: 512
+HALF: Sparse A[206500,206500] x B[206500,512] = C[206500,512]
+1776969118
+total_BCRS_Block_num = 106755
+mykernel_time: 0.914652 ms
+check nan: cusp 34.0 mykernel 34.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mac_econ_fwd500.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mac_econ_fwd500.mtx
+N: 512
+FLOAT: Sparse A[206500,206500] x B[206500,512] = C[206500,512]
+1776969124
+total_BCRS_Block_num = 106755
+mykernel_time: 1.323695 ms
+check nan: cusp 34.0 mykernel 34.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mac_econ_fwd500.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mac_econ_fwd500.mtx
+N: 512
+FLOAT: Sparse A[206500,206500] x B[206500,512] = C[206500,512]
+1776969131
+total_BCRS_Block_num = 106755
+mykernel_time: 0.919981 ms
+check nan: cusp 34.0 mykernel 34.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mc2depi.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mc2depi.mtx
+N: 512
+FLOAT: Sparse A[525825,525825] x B[525825,512] = C[525825,512]
+1776969138
+No checkpoint found, start preprocessing...
+mykernel_time: 2.473904 ms
+active block num: 16
+check nan: cusp 22.0 mykernel 22.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/mc2depiM525825K525825Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mc2depi.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mc2depi.mtx
+N: 512
+FLOAT: Sparse A[525825,525825] x B[525825,512] = C[525825,512]
+1776969153
+mykernel_time: 2.677387 ms
+check nan: cusp 22.0 mykernel 22.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mc2depi.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mc2depi.mtx
+N: 512
+FLOAT: Sparse A[525825,525825] x B[525825,512] = C[525825,512]
+1776969169
+total_TCBlock_num = 229275, nnz = 2100225, nnz_pad=2360384
+mykernel_time: 4.297984 ms
+check nan: cusp 22.0 mykernel 22.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mc2depi.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mc2depi.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[525825,525825] x B[525825,512] = C[525825,512]
+1776969186
+total_TCBlock_num = 229275, nnz = 2100225, nnz_pad=2360384
+total_tcblock_num = 229275
+slb_tb_offset(3584) push a new value 35928: current thread block from 35920 to 35928
+slb_tb_offset size = 3584
+slb_block_dim_size = 3583
+row_block_offset size = 35928
+row_block_to_row_window_id size = 35927
+mykernel_time: 6.415423 ms
+check nan: cusp 22.0 mykernel 22.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mc2depi.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mc2depi.mtx
+N: 512
+FLOAT: Sparse A[525825,525825] x B[525825,512] = C[525825,512]
+1776969206
+total_TCBlock_num = 229275, nnz = 2100225, nnz_pad=2360384
+multi_binding sum = 229275
+mykernel_time: 4.320294 ms
+check nan: cusp 22.0 mykernel 22.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mc2depi.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mc2depi.mtx
+N: 512
+HALF: Sparse A[525825,525825] x B[525825,512] = C[525825,512]
+1776969224
+total_BCRS_Block_num = 65089
+mykernel_time: 2.999367 ms
+check nan: cusp 22.0 mykernel 22.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mc2depi.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mc2depi.mtx
+N: 512
+HALF: Sparse A[525825,525825] x B[525825,512] = C[525825,512]
+1776969240
+total_BCRS_Block_num = 229275
+mykernel_time: 2.078522 ms
+check nan: cusp 22.0 mykernel 22.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mc2depi.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mc2depi.mtx
+N: 512
+FLOAT: Sparse A[525825,525825] x B[525825,512] = C[525825,512]
+1776969255
+total_BCRS_Block_num = 229275
+mykernel_time: 3.337521 ms
+check nan: cusp 22.0 mykernel 22.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mc2depi.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mc2depi.mtx
+N: 512
+FLOAT: Sparse A[525825,525825] x B[525825,512] = C[525825,512]
+1776969271
+total_BCRS_Block_num = 229275
+mykernel_time: 2.110456 ms
+check nan: cusp 22.0 mykernel 22.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mip1.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mip1.mtx
+N: 512
+FLOAT: Sparse A[66463,66463] x B[66463,512] = C[66463,512]
+1776969288
+No checkpoint found, start preprocessing...
+mykernel_time: 8.266605 ms
+active block num: 16
+check nan: cusp 599376.0 mykernel 599376.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/mip1M66463K66463Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mip1.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mip1.mtx
+N: 512
+FLOAT: Sparse A[66463,66463] x B[66463,512] = C[66463,512]
+1776969300
+mykernel_time: 8.528142 ms
+check nan: cusp 599376.0 mykernel 599376.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mip1.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mip1.mtx
+N: 512
+FLOAT: Sparse A[66463,66463] x B[66463,512] = C[66463,512]
+1776969312
+total_TCBlock_num = 124332, nnz = 10352819, nnz_pad=10396488
+mykernel_time: 8.335797 ms
+check nan: cusp 599376.0 mykernel 599376.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mip1.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mip1.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[66463,66463] x B[66463,512] = C[66463,512]
+1776969324
+total_TCBlock_num = 124332, nnz = 10352819, nnz_pad=10396488
+total_tcblock_num = 124332
+slb_tb_offset(1944) push a new value 6038: current thread block from 6036 to 6038
+slb_tb_offset size = 1944
+slb_block_dim_size = 1943
+row_block_offset size = 6038
+row_block_to_row_window_id size = 6037
+mykernel_time: 2.935726 ms
+check nan: cusp 599376.0 mykernel 599376.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mip1.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mip1.mtx
+N: 512
+FLOAT: Sparse A[66463,66463] x B[66463,512] = C[66463,512]
+1776969330
+total_TCBlock_num = 124332, nnz = 10352819, nnz_pad=10396488
+multi_binding sum = 124332
+mykernel_time: 1.187600 ms
+check nan: cusp 599376.0 mykernel 599376.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mip1.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mip1.mtx
+N: 512
+HALF: Sparse A[66463,66463] x B[66463,512] = C[66463,512]
+1776969334
+total_BCRS_Block_num = 21251
+mykernel_time: 4.286415 ms
+check nan: cusp 599376.0 mykernel 599376.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mip1.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mip1.mtx
+N: 512
+HALF: Sparse A[66463,66463] x B[66463,512] = C[66463,512]
+1776969342
+total_BCRS_Block_num = 124332
+mykernel_time: 5.268561 ms
+check nan: cusp 599376.0 mykernel 599376.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mip1.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mip1.mtx
+N: 512
+FLOAT: Sparse A[66463,66463] x B[66463,512] = C[66463,512]
+1776969350
+total_BCRS_Block_num = 124332
+mykernel_time: 0.931708 ms
+check nan: cusp 599376.0 mykernel 599376.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mip1.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/mip1.mtx
+N: 512
+FLOAT: Sparse A[66463,66463] x B[66463,512] = C[66463,512]
+1776969354
+total_BCRS_Block_num = 124332
+mykernel_time: 0.904587 ms
+check nan: cusp 599376.0 mykernel 599376.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/OVCAR-8H.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/OVCAR-8H.mtx
+N: 512
+FLOAT: Sparse A[1889542,1889542] x B[1889542,512] = C[1889542,512]
+1776969358
+No checkpoint found, start preprocessing...
+mykernel_time: 0.000084 ms
+active block num: 16
+CUDA API failed at line 234 with error: invalid configuration argument (9)
+Error(0, 0): cusp(12.0) mykernel(0.0)
+Error(0, 1): cusp(16.0) mykernel(0.0)
+Error(0, 2): cusp(10.0) mykernel(0.0)
+Error(0, 3): cusp(30.0) mykernel(0.0)
+Error(0, 4): cusp(16.0) mykernel(0.0)
+Error(0, 5): cusp(20.0) mykernel(0.0)
+Error(0, 6): cusp(16.0) mykernel(0.0)
+Error(0, 7): cusp(28.0) mykernel(0.0)
+Error(0, 8): cusp(30.0) mykernel(0.0)
+Error(0, 9): cusp(22.0) mykernel(0.0)
+Error(0, 10): cusp(14.0) mykernel(0.0)
+Error(0, 11): cusp(24.0) mykernel(0.0)
+Error(0, 12): cusp(24.0) mykernel(0.0)
+Error(0, 13): cusp(28.0) mykernel(0.0)
+Error(0, 14): cusp(16.0) mykernel(0.0)
+Error(0, 15): cusp(22.0) mykernel(0.0)
+Error(0, 16): cusp(18.0) mykernel(0.0)
+Error(0, 17): cusp(20.0) mykernel(0.0)
+Error(0, 18): cusp(20.0) mykernel(0.0)
+Error(0, 19): cusp(8.0) mykernel(0.0)
+Error(0, 20): cusp(24.0) mykernel(0.0)
+Error(0, 21): cusp(26.0) mykernel(0.0)
+Error(0, 22): cusp(16.0) mykernel(0.0)
+Error(0, 23): cusp(16.0) mykernel(0.0)
+Error(0, 24): cusp(18.0) mykernel(0.0)
+Error(0, 25): cusp(22.0) mykernel(0.0)
+Error(0, 26): cusp(12.0) mykernel(0.0)
+Error(0, 27): cusp(8.0) mykernel(0.0)
+Error(0, 28): cusp(18.0) mykernel(0.0)
+Error(0, 29): cusp(8.0) mykernel(0.0)
+Error(0, 30): cusp(18.0) mykernel(0.0)
+Error(0, 31): cusp(22.0) mykernel(0.0)
+Error(0, 32): cusp(14.0) mykernel(0.0)
+Error(0, 33): cusp(22.0) mykernel(0.0)
+Error(0, 34): cusp(6.0) mykernel(0.0)
+Error(0, 35): cusp(22.0) mykernel(0.0)
+Error(0, 36): cusp(14.0) mykernel(0.0)
+Error(0, 37): cusp(26.0) mykernel(0.0)
+Error(0, 38): cusp(16.0) mykernel(0.0)
+Error(0, 39): cusp(26.0) mykernel(0.0)
+Error(0, 40): cusp(10.0) mykernel(0.0)
+Error(0, 41): cusp(12.0) mykernel(0.0)
+Error(0, 42): cusp(14.0) mykernel(0.0)
+Error(0, 43): cusp(12.0) mykernel(0.0)
+Error(0, 44): cusp(24.0) mykernel(0.0)
+Error(0, 45): cusp(12.0) mykernel(0.0)
+Error(0, 46): cusp(18.0) mykernel(0.0)
+Error(0, 47): cusp(28.0) mykernel(0.0)
+Error(0, 48): cusp(16.0) mykernel(0.0)
+Error(0, 49): cusp(26.0) mykernel(0.0)
+Error(0, 50): cusp(22.0) mykernel(0.0)
+Error(0, 51): cusp(24.0) mykernel(0.0)
+Error(0, 52): cusp(22.0) mykernel(0.0)
+Error(0, 53): cusp(22.0) mykernel(0.0)
+Error(0, 54): cusp(18.0) mykernel(0.0)
+Error(0, 55): cusp(18.0) mykernel(0.0)
+Error(0, 56): cusp(26.0) mykernel(0.0)
+Error(0, 57): cusp(20.0) mykernel(0.0)
+Error(0, 58): cusp(26.0) mykernel(0.0)
+Error(0, 59): cusp(28.0) mykernel(0.0)
+Error(0, 60): cusp(16.0) mykernel(0.0)
+Error(0, 61): cusp(10.0) mykernel(0.0)
+Error(0, 62): cusp(14.0) mykernel(0.0)
+Error(0, 63): cusp(14.0) mykernel(0.0)
+Error(0, 64): cusp(16.0) mykernel(0.0)
+Error(0, 65): cusp(30.0) mykernel(0.0)
+Error(0, 66): cusp(24.0) mykernel(0.0)
+Error(0, 67): cusp(26.0) mykernel(0.0)
+Error(0, 68): cusp(20.0) mykernel(0.0)
+Error(0, 69): cusp(12.0) mykernel(0.0)
+Error(0, 70): cusp(8.0) mykernel(0.0)
+Error(0, 71): cusp(26.0) mykernel(0.0)
+Error(0, 72): cusp(18.0) mykernel(0.0)
+Error(0, 73): cusp(24.0) mykernel(0.0)
+Error(0, 74): cusp(26.0) mykernel(0.0)
+Error(0, 75): cusp(20.0) mykernel(0.0)
+Error(0, 76): cusp(10.0) mykernel(0.0)
+Error(0, 77): cusp(16.0) mykernel(0.0)
+Error(0, 78): cusp(26.0) mykernel(0.0)
+Error(0, 79): cusp(18.0) mykernel(0.0)
+Error(0, 80): cusp(22.0) mykernel(0.0)
+Error(0, 81): cusp(22.0) mykernel(0.0)
+Error(0, 82): cusp(18.0) mykernel(0.0)
+Error(0, 83): cusp(14.0) mykernel(0.0)
+Error(0, 84): cusp(26.0) mykernel(0.0)
+Error(0, 85): cusp(26.0) mykernel(0.0)
+Error(0, 86): cusp(18.0) mykernel(0.0)
+Error(0, 87): cusp(14.0) mykernel(0.0)
+Error(0, 88): cusp(16.0) mykernel(0.0)
+Error(0, 89): cusp(12.0) mykernel(0.0)
+Error(0, 90): cusp(16.0) mykernel(0.0)
+Error(0, 91): cusp(6.0) mykernel(0.0)
+Error(0, 92): cusp(24.0) mykernel(0.0)
+Error(0, 93): cusp(14.0) mykernel(0.0)
+Error(0, 94): cusp(26.0) mykernel(0.0)
+Error(0, 95): cusp(22.0) mykernel(0.0)
+Error(0, 96): cusp(18.0) mykernel(0.0)
+Error(0, 97): cusp(14.0) mykernel(0.0)
+Error(0, 98): cusp(18.0) mykernel(0.0)
+Error(0, 99): cusp(16.0) mykernel(0.0)
+Error(0, 100): cusp(8.0) mykernel(0.0)
+Error(0, 101): cusp(22.0) mykernel(0.0)
+Error(0, 102): cusp(24.0) mykernel(0.0)
+Error(0, 103): cusp(22.0) mykernel(0.0)
+Error(0, 104): cusp(10.0) mykernel(0.0)
+Error(0, 105): cusp(24.0) mykernel(0.0)
+Error(0, 106): cusp(6.0) mykernel(0.0)
+Error(0, 107): cusp(20.0) mykernel(0.0)
+Error(0, 108): cusp(18.0) mykernel(0.0)
+Error(0, 109): cusp(10.0) mykernel(0.0)
+Error(0, 110): cusp(10.0) mykernel(0.0)
+Error(0, 111): cusp(14.0) mykernel(0.0)
+Error(0, 112): cusp(16.0) mykernel(0.0)
+Error(0, 113): cusp(18.0) mykernel(0.0)
+Error(0, 114): cusp(14.0) mykernel(0.0)
+Error(0, 115): cusp(12.0) mykernel(0.0)
+Error(0, 116): cusp(22.0) mykernel(0.0)
+Error(0, 117): cusp(26.0) mykernel(0.0)
+Error(0, 118): cusp(14.0) mykernel(0.0)
+Error(0, 119): cusp(12.0) mykernel(0.0)
+Error(0, 120): cusp(22.0) mykernel(0.0)
+Error(0, 121): cusp(18.0) mykernel(0.0)
+Error(0, 122): cusp(26.0) mykernel(0.0)
+Error(0, 123): cusp(12.0) mykernel(0.0)
+Error(0, 124): cusp(14.0) mykernel(0.0)
+Error(0, 125): cusp(14.0) mykernel(0.0)
+Error(0, 126): cusp(6.0) mykernel(0.0)
+Error(0, 127): cusp(14.0) mykernel(0.0)
+Error(0, 128): cusp(30.0) mykernel(0.0)
+Error(0, 129): cusp(14.0) mykernel(0.0)
+Error(0, 130): cusp(22.0) mykernel(0.0)
+Error(0, 131): cusp(24.0) mykernel(0.0)
+Error(0, 132): cusp(22.0) mykernel(0.0)
+Error(0, 133): cusp(8.0) mykernel(0.0)
+Error(0, 134): cusp(22.0) mykernel(0.0)
+Error(0, 135): cusp(16.0) mykernel(0.0)
+Error(0, 136): cusp(14.0) mykernel(0.0)
+Error(0, 137): cusp(6.0) mykernel(0.0)
+Error(0, 138): cusp(22.0) mykernel(0.0)
+Error(0, 139): cusp(22.0) mykernel(0.0)
+Error(0, 140): cusp(20.0) mykernel(0.0)
+Error(0, 141): cusp(30.0) mykernel(0.0)
+Error(0, 142): cusp(18.0) mykernel(0.0)
+Error(0, 143): cusp(22.0) mykernel(0.0)
+Error(0, 144): cusp(18.0) mykernel(0.0)
+Error(0, 145): cusp(22.0) mykernel(0.0)
+Error(0, 146): cusp(24.0) mykernel(0.0)
+Error(0, 147): cusp(20.0) mykernel(0.0)
+Error(0, 148): cusp(12.0) mykernel(0.0)
+Error(0, 149): cusp(18.0) mykernel(0.0)
+Error(0, 150): cusp(24.0) mykernel(0.0)
+Error(0, 151): cusp(20.0) mykernel(0.0)
+Error(0, 152): cusp(10.0) mykernel(0.0)
+Error(0, 153): cusp(22.0) mykernel(0.0)
+Error(0, 154): cusp(26.0) mykernel(0.0)
+Error(0, 155): cusp(16.0) mykernel(0.0)
+Error(0, 156): cusp(18.0) mykernel(0.0)
+Error(0, 157): cusp(12.0) mykernel(0.0)
+Error(0, 158): cusp(14.0) mykernel(0.0)
+Error(0, 159): cusp(24.0) mykernel(0.0)
+Error(0, 160): cusp(12.0) mykernel(0.0)
+Error(0, 161): cusp(20.0) mykernel(0.0)
+Error(0, 162): cusp(20.0) mykernel(0.0)
+Error(0, 163): cusp(30.0) mykernel(0.0)
+Error(0, 164): cusp(6.0) mykernel(0.0)
+Error(0, 165): cusp(18.0) mykernel(0.0)
+Error(0, 166): cusp(18.0) mykernel(0.0)
+Error(0, 167): cusp(14.0) mykernel(0.0)
+Error(0, 168): cusp(20.0) mykernel(0.0)
+Error(0, 169): cusp(20.0) mykernel(0.0)
+Error(0, 170): cusp(14.0) mykernel(0.0)
+Error(0, 171): cusp(22.0) mykernel(0.0)
+Error(0, 172): cusp(12.0) mykernel(0.0)
+Error(0, 173): cusp(16.0) mykernel(0.0)
+Error(0, 174): cusp(14.0) mykernel(0.0)
+Error(0, 175): cusp(12.0) mykernel(0.0)
+Error(0, 176): cusp(14.0) mykernel(0.0)
+Error(0, 177): cusp(20.0) mykernel(0.0)
+Error(0, 178): cusp(16.0) mykernel(0.0)
+Error(0, 179): cusp(12.0) mykernel(0.0)
+Error(0, 180): cusp(20.0) mykernel(0.0)
+Error(0, 181): cusp(18.0) mykernel(0.0)
+Error(0, 182): cusp(14.0) mykernel(0.0)
+Error(0, 183): cusp(14.0) mykernel(0.0)
+Error(0, 184): cusp(12.0) mykernel(0.0)
+Error(0, 185): cusp(8.0) mykernel(0.0)
+Error(0, 186): cusp(12.0) mykernel(0.0)
+Error(0, 187): cusp(28.0) mykernel(0.0)
+Error(0, 188): cusp(14.0) mykernel(0.0)
+Error(0, 189): cusp(18.0) mykernel(0.0)
+Error(0, 190): cusp(12.0) mykernel(0.0)
+Error(0, 191): cusp(22.0) mykernel(0.0)
+Error(0, 192): cusp(20.0) mykernel(0.0)
+Error(0, 193): cusp(24.0) mykernel(0.0)
+Error(0, 194): cusp(10.0) mykernel(0.0)
+Error(0, 195): cusp(22.0) mykernel(0.0)
+Error(0, 196): cusp(22.0) mykernel(0.0)
+Error(0, 197): cusp(18.0) mykernel(0.0)
+Error(0, 198): cusp(24.0) mykernel(0.0)
+check nan: cusp 12.0 mykernel 0.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/OVCAR-8HM1889542K1889542Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/OVCAR-8H.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/OVCAR-8H.mtx
+N: 512
+FLOAT: Sparse A[1889542,1889542] x B[1889542,512] = C[1889542,512]
+1776969403
+mykernel_time: 9.355359 ms
+check nan: cusp 12.0 mykernel 12.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/OVCAR-8H.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/OVCAR-8H.mtx
+N: 512
+FLOAT: Sparse A[1889542,1889542] x B[1889542,512] = C[1889542,512]
+1776969459
+total_TCBlock_num = 408653, nnz = 3946402, nnz_pad=5283584
+mykernel_time: 8.973491 ms
+check nan: cusp 12.0 mykernel 12.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/OVCAR-8H.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/OVCAR-8H.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[1889542,1889542] x B[1889542,512] = C[1889542,512]
+1776969514
+total_TCBlock_num = 408653, nnz = 3946402, nnz_pad=5283584
+total_tcblock_num = 408653
+slb_tb_offset(6387) push a new value 122648: current thread block from 122642 to 122648
+slb_tb_offset size = 6387
+slb_block_dim_size = 6386
+row_block_offset size = 122648
+row_block_to_row_window_id size = 122647
+mykernel_time: 13.978521 ms
+check nan: cusp 12.0 mykernel 12.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/OVCAR-8H.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/OVCAR-8H.mtx
+N: 512
+FLOAT: Sparse A[1889542,1889542] x B[1889542,512] = C[1889542,512]
+1776969576
+total_TCBlock_num = 408653, nnz = 3946402, nnz_pad=5283584
+multi_binding sum = 408653
+mykernel_time: 9.187813 ms
+check nan: cusp 12.0 mykernel 12.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/OVCAR-8H.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/OVCAR-8H.mtx
+N: 512
+HALF: Sparse A[1889542,1889542] x B[1889542,512] = C[1889542,512]
+1776969632
+total_BCRS_Block_num = 111690
+mykernel_time: 7.147170 ms
+check nan: cusp 12.0 mykernel 12.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/OVCAR-8H.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/OVCAR-8H.mtx
+N: 512
+HALF: Sparse A[1889542,1889542] x B[1889542,512] = C[1889542,512]
+1776969684
+total_BCRS_Block_num = 408653
+mykernel_time: 6.021350 ms
+check nan: cusp 12.0 mykernel 12.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/OVCAR-8H.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/OVCAR-8H.mtx
+N: 512
+FLOAT: Sparse A[1889542,1889542] x B[1889542,512] = C[1889542,512]
+1776969736
+total_BCRS_Block_num = 408653
+mykernel_time: 6.992879 ms
+check nan: cusp 12.0 mykernel 12.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/OVCAR-8H.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/OVCAR-8H.mtx
+N: 512
+FLOAT: Sparse A[1889542,1889542] x B[1889542,512] = C[1889542,512]
+1776969790
+total_BCRS_Block_num = 408653
+mykernel_time: 6.231764 ms
+check nan: cusp 12.0 mykernel 12.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pdb1HYS.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pdb1HYS.mtx
+N: 512
+FLOAT: Sparse A[36417,36417] x B[36417,512] = C[36417,512]
+1776969842
+No checkpoint found, start preprocessing...
+mykernel_time: 0.523101 ms
+active block num: 16
+check nan: cusp 519.0 mykernel 519.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/pdb1HYSM36417K36417Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pdb1HYS.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pdb1HYS.mtx
+N: 512
+FLOAT: Sparse A[36417,36417] x B[36417,512] = C[36417,512]
+1776969844
+mykernel_time: 0.676993 ms
+check nan: cusp 519.0 mykernel 519.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pdb1HYS.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pdb1HYS.mtx
+N: 512
+FLOAT: Sparse A[36417,36417] x B[36417,512] = C[36417,512]
+1776969847
+total_TCBlock_num = 63427, nnz = 4344765, nnz_pad=4527960
+mykernel_time: 0.565031 ms
+check nan: cusp 519.0 mykernel 519.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pdb1HYS.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pdb1HYS.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[36417,36417] x B[36417,512] = C[36417,512]
+1776969849
+total_TCBlock_num = 63427, nnz = 4344765, nnz_pad=4527960
+total_tcblock_num = 63427
+slb_tb_offset(993) push a new value 3234: current thread block from 3232 to 3234
+slb_tb_offset size = 993
+slb_block_dim_size = 992
+row_block_offset size = 3234
+row_block_to_row_window_id size = 3233
+mykernel_time: 1.446700 ms
+check nan: cusp 519.0 mykernel 519.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pdb1HYS.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pdb1HYS.mtx
+N: 512
+FLOAT: Sparse A[36417,36417] x B[36417,512] = C[36417,512]
+1776969853
+total_TCBlock_num = 63427, nnz = 4344765, nnz_pad=4527960
+multi_binding sum = 63427
+mykernel_time: 0.566771 ms
+check nan: cusp 519.0 mykernel 519.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pdb1HYS.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pdb1HYS.mtx
+N: 512
+HALF: Sparse A[36417,36417] x B[36417,512] = C[36417,512]
+1776969855
+total_BCRS_Block_num = 10577
+mykernel_time: 0.444798 ms
+check nan: cusp 519.0 mykernel 519.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pdb1HYS.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pdb1HYS.mtx
+N: 512
+HALF: Sparse A[36417,36417] x B[36417,512] = C[36417,512]
+1776969858
+total_BCRS_Block_num = 63427
+mykernel_time: 0.394978 ms
+check nan: cusp 519.0 mykernel 519.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pdb1HYS.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pdb1HYS.mtx
+N: 512
+FLOAT: Sparse A[36417,36417] x B[36417,512] = C[36417,512]
+1776969860
+total_BCRS_Block_num = 63427
+mykernel_time: 0.471951 ms
+check nan: cusp 519.0 mykernel 519.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pdb1HYS.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pdb1HYS.mtx
+N: 512
+FLOAT: Sparse A[36417,36417] x B[36417,512] = C[36417,512]
+1776969862
+total_BCRS_Block_num = 63427
+mykernel_time: 0.396924 ms
+check nan: cusp 519.0 mykernel 519.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/protein.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/protein.mtx
+N: 512
+FLOAT: Sparse A[132534,132534] x B[132534,512] = C[132534,512]
+1776969881
+No checkpoint found, start preprocessing...
+mykernel_time: 39.014399 ms
+active block num: 16
+check nan: cusp 1752.0 mykernel 1752.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/proteinM132534K132534Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/protein.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/protein.mtx
+N: 512
+FLOAT: Sparse A[132534,132534] x B[132534,512] = C[132534,512]
+1776969947
+mykernel_time: 120.260529 ms
+check nan: cusp 1752.0 mykernel 1752.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/protein.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/protein.mtx
+N: 512
+FLOAT: Sparse A[132534,132534] x B[132534,512] = C[132534,512]
+1776970105
+total_TCBlock_num = 5354200, nnz = 79255038, nnz_pad=96804760
+mykernel_time: 38.652511 ms
+check nan: cusp 1752.0 mykernel 1752.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/protein.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/protein.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[132534,132534] x B[132534,512] = C[132534,512]
+1776970168
+total_TCBlock_num = 5354200, nnz = 79255038, nnz_pad=96804760
+total_tcblock_num = 5354200
+slb_tb_offset(83661) push a new value 91805: current thread block from 91799 to 91805
+slb_tb_offset size = 83661
+slb_block_dim_size = 83660
+row_block_offset size = 91805
+row_block_to_row_window_id size = 91804
+mykernel_time: 102.377814 ms
+check nan: cusp 1752.0 mykernel 1752.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/protein.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/protein.mtx
+N: 512
+FLOAT: Sparse A[132534,132534] x B[132534,512] = C[132534,512]
+1776970301
+total_TCBlock_num = 5354200, nnz = 79255038, nnz_pad=96804760
+multi_binding sum = 5354200
+mykernel_time: 38.686163 ms
+check nan: cusp 1752.0 mykernel 1752.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/protein.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/protein.mtx
+N: 512
+HALF: Sparse A[132534,132534] x B[132534,512] = C[132534,512]
+1776970365
+total_BCRS_Block_num = 1018056
+mykernel_time: 31.900517 ms
+check nan: cusp 1752.0 mykernel 1752.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/protein.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/protein.mtx
+N: 512
+HALF: Sparse A[132534,132534] x B[132534,512] = C[132534,512]
+1776970421
+total_BCRS_Block_num = 5354200
+mykernel_time: 28.654596 ms
+check nan: cusp 1752.0 mykernel 1752.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/protein.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/protein.mtx
+N: 512
+FLOAT: Sparse A[132534,132534] x B[132534,512] = C[132534,512]
+1776970474
+total_BCRS_Block_num = 5354200
+mykernel_time: 30.576904 ms
+check nan: cusp 1752.0 mykernel 1752.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/protein.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/protein.mtx
+N: 512
+FLOAT: Sparse A[132534,132534] x B[132534,512] = C[132534,512]
+1776970528
+total_BCRS_Block_num = 5354200
+mykernel_time: 29.073051 ms
+check nan: cusp 1752.0 mykernel 1752.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pwtk.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pwtk.mtx
+N: 512
+FLOAT: Sparse A[217918,217918] x B[217918,512] = C[217918,512]
+1776970567
+No checkpoint found, start preprocessing...
+mykernel_time: 1.723884 ms
+active block num: 16
+check nan: cusp 487.0 mykernel 487.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/pwtkM217918K217918Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pwtk.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pwtk.mtx
+N: 512
+FLOAT: Sparse A[217918,217918] x B[217918,512] = C[217918,512]
+1776970576
+mykernel_time: 1.996840 ms
+check nan: cusp 487.0 mykernel 487.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pwtk.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pwtk.mtx
+N: 512
+FLOAT: Sparse A[217918,217918] x B[217918,512] = C[217918,512]
+1776970586
+total_TCBlock_num = 182364, nnz = 11634424, nnz_pad=12125608
+mykernel_time: 1.954823 ms
+check nan: cusp 487.0 mykernel 487.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pwtk.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pwtk.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[217918,217918] x B[217918,512] = C[217918,512]
+1776970597
+total_TCBlock_num = 182364, nnz = 11634424, nnz_pad=12125608
+total_tcblock_num = 182364
+slb_tb_offset(2851) push a new value 16260: current thread block from 16258 to 16260
+slb_tb_offset size = 2851
+slb_block_dim_size = 2850
+row_block_offset size = 16260
+row_block_to_row_window_id size = 16259
+mykernel_time: 6.045329 ms
+check nan: cusp 487.0 mykernel 487.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pwtk.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pwtk.mtx
+N: 512
+FLOAT: Sparse A[217918,217918] x B[217918,512] = C[217918,512]
+1776970611
+total_TCBlock_num = 182364, nnz = 11634424, nnz_pad=12125608
+multi_binding sum = 182364
+mykernel_time: 1.951752 ms
+check nan: cusp 487.0 mykernel 487.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pwtk.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pwtk.mtx
+N: 512
+HALF: Sparse A[217918,217918] x B[217918,512] = C[217918,512]
+1776970621
+total_BCRS_Block_num = 36198
+mykernel_time: 1.749322 ms
+check nan: cusp 487.0 mykernel 487.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pwtk.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pwtk.mtx
+N: 512
+HALF: Sparse A[217918,217918] x B[217918,512] = C[217918,512]
+1776970630
+total_BCRS_Block_num = 182364
+mykernel_time: 1.321736 ms
+check nan: cusp 487.0 mykernel 487.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pwtk.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pwtk.mtx
+N: 512
+FLOAT: Sparse A[217918,217918] x B[217918,512] = C[217918,512]
+1776970639
+total_BCRS_Block_num = 182364
+mykernel_time: 2.274854 ms
+check nan: cusp 487.0 mykernel 487.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pwtk.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/pwtk.mtx
+N: 512
+FLOAT: Sparse A[217918,217918] x B[217918,512] = C[217918,512]
+1776970649
+total_BCRS_Block_num = 182364
+mykernel_time: 1.323891 ms
+check nan: cusp 487.0 mykernel 487.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/reddit.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/reddit.mtx
+N: 512
+FLOAT: Sparse A[232965,232965] x B[232965,512] = C[232965,512]
+1776970682
+No checkpoint found, start preprocessing...
+mykernel_time: 62.858370 ms
+active block num: 16
+check nan: cusp 24.0 mykernel 24.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/redditM232965K232965Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/reddit.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/reddit.mtx
+N: 512
+FLOAT: Sparse A[232965,232965] x B[232965,512] = C[232965,512]
+1776970793
+mykernel_time: 213.824984 ms
+check nan: cusp 24.0 mykernel 24.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/reddit.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/reddit.mtx
+N: 512
+FLOAT: Sparse A[232965,232965] x B[232965,512] = C[232965,512]
+1776971070
+total_TCBlock_num = 6947860, nnz = 114848857, nnz_pad=137341672
+mykernel_time: 62.153252 ms
+check nan: cusp 24.0 mykernel 24.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/reddit.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/reddit.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[232965,232965] x B[232965,512] = C[232965,512]
+1776971173
+total_TCBlock_num = 6947860, nnz = 114848857, nnz_pad=137341672
+total_tcblock_num = 6947860
+slb_tb_offset(108562) push a new value 122887: current thread block from 122885 to 122887
+slb_tb_offset size = 108562
+slb_block_dim_size = 108561
+row_block_offset size = 122887
+row_block_to_row_window_id size = 122886
+mykernel_time: 135.955748 ms
+check nan: cusp 24.0 mykernel 24.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/reddit.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/reddit.mtx
+N: 512
+FLOAT: Sparse A[232965,232965] x B[232965,512] = C[232965,512]
+1776971359
+total_TCBlock_num = 6947860, nnz = 114848857, nnz_pad=137341672
+multi_binding sum = 6947860
+mykernel_time: 53.200789 ms
+check nan: cusp 24.0 mykernel 24.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/reddit.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/reddit.mtx
+N: 512
+HALF: Sparse A[232965,232965] x B[232965,512] = C[232965,512]
+1776971451
+total_BCRS_Block_num = 1434610
+mykernel_time: 59.800587 ms
+check nan: cusp 24.0 mykernel 24.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/reddit.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/reddit.mtx
+N: 512
+HALF: Sparse A[232965,232965] x B[232965,512] = C[232965,512]
+1776971550
+total_BCRS_Block_num = 6947860
+mykernel_time: 54.523460 ms
+check nan: cusp 24.0 mykernel 24.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/reddit.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/reddit.mtx
+N: 512
+FLOAT: Sparse A[232965,232965] x B[232965,512] = C[232965,512]
+1776971644
+total_BCRS_Block_num = 6947860
+mykernel_time: 45.528320 ms
+check nan: cusp 24.0 mykernel 24.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/reddit.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/reddit.mtx
+N: 512
+FLOAT: Sparse A[232965,232965] x B[232965,512] = C[232965,512]
+1776971728
+total_BCRS_Block_num = 6947860
+mykernel_time: 45.038296 ms
+check nan: cusp 24.0 mykernel 24.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/rma10.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/rma10.mtx
+N: 512
+FLOAT: Sparse A[46835,46835] x B[46835,512] = C[46835,512]
+1776971786
+No checkpoint found, start preprocessing...
+mykernel_time: 0.425901 ms
+active block num: 16
+check nan: cusp 127.0 mykernel 127.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/rma10M46835K46835Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/rma10.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/rma10.mtx
+N: 512
+FLOAT: Sparse A[46835,46835] x B[46835,512] = C[46835,512]
+1776971788
+mykernel_time: 0.562160 ms
+check nan: cusp 127.0 mykernel 127.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/rma10.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/rma10.mtx
+N: 512
+FLOAT: Sparse A[46835,46835] x B[46835,512] = C[46835,512]
+1776971791
+total_TCBlock_num = 45052, nnz = 2374001, nnz_pad=2505592
+mykernel_time: 0.449432 ms
+check nan: cusp 127.0 mykernel 127.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/rma10.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/rma10.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[46835,46835] x B[46835,512] = C[46835,512]
+1776971794
+total_TCBlock_num = 45052, nnz = 2374001, nnz_pad=2505592
+total_tcblock_num = 45052
+slb_tb_offset(705) push a new value 3588: current thread block from 3582 to 3588
+slb_tb_offset size = 705
+slb_block_dim_size = 704
+row_block_offset size = 3588
+row_block_to_row_window_id size = 3587
+mykernel_time: 1.066568 ms
+check nan: cusp 127.0 mykernel 127.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/rma10.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/rma10.mtx
+N: 512
+FLOAT: Sparse A[46835,46835] x B[46835,512] = C[46835,512]
+1776971797
+total_TCBlock_num = 45052, nnz = 2374001, nnz_pad=2505592
+multi_binding sum = 45052
+mykernel_time: 0.450501 ms
+check nan: cusp 127.0 mykernel 127.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/rma10.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/rma10.mtx
+N: 512
+HALF: Sparse A[46835,46835] x B[46835,512] = C[46835,512]
+1776971800
+total_BCRS_Block_num = 8891
+mykernel_time: 0.438236 ms
+check nan: cusp 127.0 mykernel 127.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/rma10.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/rma10.mtx
+N: 512
+HALF: Sparse A[46835,46835] x B[46835,512] = C[46835,512]
+1776971802
+total_BCRS_Block_num = 45052
+mykernel_time: 0.327273 ms
+check nan: cusp 127.0 mykernel 127.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/rma10.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/rma10.mtx
+N: 512
+FLOAT: Sparse A[46835,46835] x B[46835,512] = C[46835,512]
+1776971805
+total_BCRS_Block_num = 45052
+mykernel_time: 0.452951 ms
+check nan: cusp 127.0 mykernel 127.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/rma10.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/rma10.mtx
+N: 512
+FLOAT: Sparse A[46835,46835] x B[46835,512] = C[46835,512]
+1776971807
+total_BCRS_Block_num = 45052
+mykernel_time: 0.330912 ms
+check nan: cusp 127.0 mykernel 127.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/scircuit.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/scircuit.mtx
+N: 512
+FLOAT: Sparse A[170998,170998] x B[170998,512] = C[170998,512]
+1776971810
+No checkpoint found, start preprocessing...
+mykernel_time: 0.855825 ms
+active block num: 16
+check nan: cusp 206.0 mykernel 206.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/scircuitM170998K170998Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/scircuit.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/scircuit.mtx
+N: 512
+FLOAT: Sparse A[170998,170998] x B[170998,512] = C[170998,512]
+1776971815
+mykernel_time: 2.097355 ms
+check nan: cusp 206.0 mykernel 206.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/scircuit.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/scircuit.mtx
+N: 512
+FLOAT: Sparse A[170998,170998] x B[170998,512] = C[170998,512]
+1776971822
+total_TCBlock_num = 69385, nnz = 958936, nnz_pad=1185200
+mykernel_time: 0.964536 ms
+check nan: cusp 206.0 mykernel 206.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/scircuit.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/scircuit.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[170998,170998] x B[170998,512] = C[170998,512]
+1776971828
+total_TCBlock_num = 69385, nnz = 958936, nnz_pad=1185200
+total_tcblock_num = 69385
+slb_tb_offset(1086) push a new value 11604: current thread block from 11600 to 11604
+slb_tb_offset size = 1086
+slb_block_dim_size = 1085
+row_block_offset size = 11604
+row_block_to_row_window_id size = 11603
+mykernel_time: 1.850853 ms
+check nan: cusp 206.0 mykernel 206.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/scircuit.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/scircuit.mtx
+N: 512
+FLOAT: Sparse A[170998,170998] x B[170998,512] = C[170998,512]
+1776971834
+total_TCBlock_num = 69385, nnz = 958936, nnz_pad=1185200
+multi_binding sum = 69385
+mykernel_time: 0.958529 ms
+check nan: cusp 206.0 mykernel 206.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/scircuit.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/scircuit.mtx
+N: 512
+HALF: Sparse A[170998,170998] x B[170998,512] = C[170998,512]
+1776971840
+total_BCRS_Block_num = 17706
+mykernel_time: 1.098174 ms
+check nan: cusp 206.0 mykernel 206.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/scircuit.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/scircuit.mtx
+N: 512
+HALF: Sparse A[170998,170998] x B[170998,512] = C[170998,512]
+1776971846
+total_BCRS_Block_num = 69385
+mykernel_time: 0.799067 ms
+check nan: cusp 206.0 mykernel 206.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/scircuit.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/scircuit.mtx
+N: 512
+FLOAT: Sparse A[170998,170998] x B[170998,512] = C[170998,512]
+1776971851
+total_BCRS_Block_num = 69385
+mykernel_time: 1.006249 ms
+check nan: cusp 206.0 mykernel 206.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/scircuit.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/scircuit.mtx
+N: 512
+FLOAT: Sparse A[170998,170998] x B[170998,512] = C[170998,512]
+1776971857
+total_BCRS_Block_num = 69385
+mykernel_time: 0.789701 ms
+check nan: cusp 206.0 mykernel 206.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/shipsec1.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/shipsec1.mtx
+N: 512
+FLOAT: Sparse A[140874,140874] x B[140874,512] = C[140874,512]
+1776971863
+No checkpoint found, start preprocessing...
+mykernel_time: 1.510219 ms
+active block num: 16
+check nan: cusp 312.0 mykernel 312.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/shipsec1M140874K140874Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/shipsec1.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/shipsec1.mtx
+N: 512
+FLOAT: Sparse A[140874,140874] x B[140874,512] = C[140874,512]
+1776971869
+mykernel_time: 1.956020 ms
+check nan: cusp 312.0 mykernel 312.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/shipsec1.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/shipsec1.mtx
+N: 512
+FLOAT: Sparse A[140874,140874] x B[140874,512] = C[140874,512]
+1776971877
+total_TCBlock_num = 180135, nnz = 7813404, nnz_pad=7981960
+mykernel_time: 1.569207 ms
+check nan: cusp 312.0 mykernel 312.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/shipsec1.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/shipsec1.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[140874,140874] x B[140874,512] = C[140874,512]
+1776971883
+total_TCBlock_num = 180135, nnz = 7813404, nnz_pad=7981960
+total_tcblock_num = 180135
+slb_tb_offset(2816) push a new value 11472: current thread block from 11467 to 11472
+slb_tb_offset size = 2816
+slb_block_dim_size = 2815
+row_block_offset size = 11472
+row_block_to_row_window_id size = 11471
+mykernel_time: 4.069184 ms
+check nan: cusp 312.0 mykernel 312.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/shipsec1.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/shipsec1.mtx
+N: 512
+FLOAT: Sparse A[140874,140874] x B[140874,512] = C[140874,512]
+1776971892
+total_TCBlock_num = 180135, nnz = 7813404, nnz_pad=7981960
+multi_binding sum = 180135
+mykernel_time: 1.571794 ms
+check nan: cusp 312.0 mykernel 312.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/shipsec1.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/shipsec1.mtx
+N: 512
+HALF: Sparse A[140874,140874] x B[140874,512] = C[140874,512]
+1776971899
+total_BCRS_Block_num = 38067
+mykernel_time: 1.605612 ms
+check nan: cusp 312.0 mykernel 312.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/shipsec1.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/shipsec1.mtx
+N: 512
+HALF: Sparse A[140874,140874] x B[140874,512] = C[140874,512]
+1776971905
+total_BCRS_Block_num = 180135
+mykernel_time: 1.165046 ms
+check nan: cusp 312.0 mykernel 312.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/shipsec1.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/shipsec1.mtx
+N: 512
+FLOAT: Sparse A[140874,140874] x B[140874,512] = C[140874,512]
+1776971911
+total_BCRS_Block_num = 180135
+mykernel_time: 1.563884 ms
+check nan: cusp 312.0 mykernel 312.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/shipsec1.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/shipsec1.mtx
+N: 512
+FLOAT: Sparse A[140874,140874] x B[140874,512] = C[140874,512]
+1776971918
+total_BCRS_Block_num = 180135
+mykernel_time: 1.169895 ms
+check nan: cusp 312.0 mykernel 312.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Si41Ge41H72.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Si41Ge41H72.mtx
+N: 512
+FLOAT: Sparse A[185639,185639] x B[185639,512] = C[185639,512]
+1776971926
+No checkpoint found, start preprocessing...
+mykernel_time: 5.771014 ms
+active block num: 16
+check nan: cusp 131.0 mykernel 131.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/Si41Ge41H72M185639K185639Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Si41Ge41H72.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Si41Ge41H72.mtx
+N: 512
+FLOAT: Sparse A[185639,185639] x B[185639,512] = C[185639,512]
+1776971940
+mykernel_time: 8.798335 ms
+check nan: cusp 131.0 mykernel 131.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Si41Ge41H72.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Si41Ge41H72.mtx
+N: 512
+FLOAT: Sparse A[185639,185639] x B[185639,512] = C[185639,512]
+1776971958
+total_TCBlock_num = 746571, nnz = 15011265, nnz_pad=15887520
+mykernel_time: 5.717713 ms
+check nan: cusp 131.0 mykernel 131.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Si41Ge41H72.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Si41Ge41H72.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[185639,185639] x B[185639,512] = C[185639,512]
+1776971972
+total_TCBlock_num = 746571, nnz = 15011265, nnz_pad=15887520
+total_tcblock_num = 746571
+slb_tb_offset(11667) push a new value 23084: current thread block from 23082 to 23084
+slb_tb_offset size = 11667
+slb_block_dim_size = 11666
+row_block_offset size = 23084
+row_block_to_row_window_id size = 23083
+mykernel_time: 14.686664 ms
+check nan: cusp 131.0 mykernel 131.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Si41Ge41H72.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Si41Ge41H72.mtx
+N: 512
+FLOAT: Sparse A[185639,185639] x B[185639,512] = C[185639,512]
+1776971995
+total_TCBlock_num = 746571, nnz = 15011265, nnz_pad=15887520
+multi_binding sum = 746571
+mykernel_time: 5.689265 ms
+check nan: cusp 131.0 mykernel 131.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Si41Ge41H72.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Si41Ge41H72.mtx
+N: 512
+HALF: Sparse A[185639,185639] x B[185639,512] = C[185639,512]
+1776972009
+total_BCRS_Block_num = 173188
+mykernel_time: 5.725879 ms
+check nan: cusp 131.0 mykernel 131.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Si41Ge41H72.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Si41Ge41H72.mtx
+N: 512
+HALF: Sparse A[185639,185639] x B[185639,512] = C[185639,512]
+1776972023
+total_BCRS_Block_num = 746571
+mykernel_time: 4.250852 ms
+check nan: cusp 131.0 mykernel 131.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Si41Ge41H72.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Si41Ge41H72.mtx
+N: 512
+FLOAT: Sparse A[185639,185639] x B[185639,512] = C[185639,512]
+1776972036
+total_BCRS_Block_num = 746571
+mykernel_time: 4.769422 ms
+check nan: cusp 131.0 mykernel 131.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Si41Ge41H72.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Si41Ge41H72.mtx
+N: 512
+FLOAT: Sparse A[185639,185639] x B[185639,512] = C[185639,512]
+1776972049
+total_BCRS_Block_num = 746571
+mykernel_time: 4.259058 ms
+check nan: cusp 131.0 mykernel 131.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/web-BerkStan.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/web-BerkStan.mtx
+N: 512
+FLOAT: Sparse A[685230,685230] x B[685230,512] = C[685230,512]
+1776972060
+No checkpoint found, start preprocessing...
+mykernel_time: 3.490689 ms
+active block num: 16
+check nan: cusp 62.0 mykernel 62.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/web-BerkStanM685230K685230Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/web-BerkStan.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/web-BerkStan.mtx
+N: 512
+FLOAT: Sparse A[685230,685230] x B[685230,512] = C[685230,512]
+1776972081
+mykernel_time: 7.390156 ms
+check nan: cusp 62.0 mykernel 62.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/web-BerkStan.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/web-BerkStan.mtx
+N: 512
+FLOAT: Sparse A[685230,685230] x B[685230,512] = C[685230,512]
+1776972108
+total_TCBlock_num = 282491, nnz = 7600595, nnz_pad=8240416
+mykernel_time: 4.045633 ms
+check nan: cusp 62.0 mykernel 62.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/web-BerkStan.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/web-BerkStan.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[685230,685230] x B[685230,512] = C[685230,512]
+1776972130
+total_TCBlock_num = 282491, nnz = 7600595, nnz_pad=8240416
+total_tcblock_num = 282491
+slb_tb_offset(4415) push a new value 46535: current thread block from 46524 to 46535
+slb_tb_offset size = 4415
+slb_block_dim_size = 4414
+row_block_offset size = 46535
+row_block_to_row_window_id size = 46534
+mykernel_time: 7.695891 ms
+check nan: cusp 62.0 mykernel 62.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/web-BerkStan.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/web-BerkStan.mtx
+N: 512
+FLOAT: Sparse A[685230,685230] x B[685230,512] = C[685230,512]
+1776972156
+total_TCBlock_num = 282491, nnz = 7600595, nnz_pad=8240416
+multi_binding sum = 282491
+mykernel_time: 4.508427 ms
+check nan: cusp 62.0 mykernel 62.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/web-BerkStan.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/web-BerkStan.mtx
+N: 512
+HALF: Sparse A[685230,685230] x B[685230,512] = C[685230,512]
+1776972179
+total_BCRS_Block_num = 64561
+mykernel_time: 4.193286 ms
+check nan: cusp 62.0 mykernel 62.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/web-BerkStan.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/web-BerkStan.mtx
+N: 512
+HALF: Sparse A[685230,685230] x B[685230,512] = C[685230,512]
+1776972202
+total_BCRS_Block_num = 282491
+mykernel_time: 3.086048 ms
+check nan: cusp 62.0 mykernel 62.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/web-BerkStan.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/web-BerkStan.mtx
+N: 512
+FLOAT: Sparse A[685230,685230] x B[685230,512] = C[685230,512]
+1776972224
+total_BCRS_Block_num = 282491
+mykernel_time: 3.480392 ms
+check nan: cusp 62.0 mykernel 62.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/web-BerkStan.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/web-BerkStan.mtx
+N: 512
+FLOAT: Sparse A[685230,685230] x B[685230,512] = C[685230,512]
+1776972246
+total_BCRS_Block_num = 282491
+mykernel_time: 3.541859 ms
+check nan: cusp 62.0 mykernel 62.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/webbase-1M.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/webbase-1M.mtx
+N: 512
+FLOAT: Sparse A[1000005,1000005] x B[1000005,512] = C[1000005,512]
+1776972267
+No checkpoint found, start preprocessing...
+mykernel_time: 3.422850 ms
+active block num: 16
+check nan: cusp 20.0 mykernel 20.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/webbase-1MM1000005K1000005Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/webbase-1M.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/webbase-1M.mtx
+N: 512
+FLOAT: Sparse A[1000005,1000005] x B[1000005,512] = C[1000005,512]
+1776972295
+mykernel_time: 7.164831 ms
+check nan: cusp 20.0 mykernel 20.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/webbase-1M.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/webbase-1M.mtx
+N: 512
+FLOAT: Sparse A[1000005,1000005] x B[1000005,512] = C[1000005,512]
+1776972330
+total_TCBlock_num = 230471, nnz = 3105536, nnz_pad=3670072
+mykernel_time: 6.639809 ms
+check nan: cusp 20.0 mykernel 20.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/webbase-1M.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/webbase-1M.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[1000005,1000005] x B[1000005,512] = C[1000005,512]
+1776972362
+total_TCBlock_num = 230471, nnz = 3105536, nnz_pad=3670072
+total_tcblock_num = 230471
+slb_tb_offset(3603) push a new value 65099: current thread block from 65095 to 65099
+slb_tb_offset size = 3603
+slb_block_dim_size = 3602
+row_block_offset size = 65099
+row_block_to_row_window_id size = 65098
+mykernel_time: 7.860444 ms
+check nan: cusp 20.0 mykernel 20.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/webbase-1M.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/webbase-1M.mtx
+N: 512
+FLOAT: Sparse A[1000005,1000005] x B[1000005,512] = C[1000005,512]
+1776972395
+total_TCBlock_num = 230471, nnz = 3105536, nnz_pad=3670072
+multi_binding sum = 230471
+mykernel_time: 6.718200 ms
+check nan: cusp 20.0 mykernel 20.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/webbase-1M.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/webbase-1M.mtx
+N: 512
+HALF: Sparse A[1000005,1000005] x B[1000005,512] = C[1000005,512]
+1776972427
+total_BCRS_Block_num = 69545
+mykernel_time: 4.282948 ms
+check nan: cusp 20.0 mykernel 20.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/webbase-1M.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/webbase-1M.mtx
+N: 512
+HALF: Sparse A[1000005,1000005] x B[1000005,512] = C[1000005,512]
+1776972457
+total_BCRS_Block_num = 230471
+mykernel_time: 3.498420 ms
+check nan: cusp 20.0 mykernel 20.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/webbase-1M.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/webbase-1M.mtx
+N: 512
+FLOAT: Sparse A[1000005,1000005] x B[1000005,512] = C[1000005,512]
+1776972485
+total_BCRS_Block_num = 230471
+mykernel_time: 3.698113 ms
+check nan: cusp 20.0 mykernel 20.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/webbase-1M.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/webbase-1M.mtx
+N: 512
+FLOAT: Sparse A[1000005,1000005] x B[1000005,512] = C[1000005,512]
+1776972513
+total_BCRS_Block_num = 230471
+mykernel_time: 3.676254 ms
+check nan: cusp 20.0 mykernel 20.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Yeast.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Yeast.mtx
+N: 512
+FLOAT: Sparse A[1710902,1710902] x B[1710902,512] = C[1710902,512]
+1776972542
+No checkpoint found, start preprocessing...
+mykernel_time: 0.000087 ms
+active block num: 16
+CUDA API failed at line 234 with error: invalid configuration argument (9)
+Error(0, 0): cusp(20.0) mykernel(0.0)
+Error(0, 1): cusp(8.0) mykernel(0.0)
+Error(0, 2): cusp(4.0) mykernel(0.0)
+Error(0, 3): cusp(8.0) mykernel(0.0)
+Error(0, 4): cusp(20.0) mykernel(0.0)
+Error(0, 5): cusp(20.0) mykernel(0.0)
+Error(0, 6): cusp(16.0) mykernel(0.0)
+Error(0, 7): cusp(16.0) mykernel(0.0)
+Error(0, 8): cusp(4.0) mykernel(0.0)
+Error(0, 9): cusp(20.0) mykernel(0.0)
+Error(0, 10): cusp(4.0) mykernel(0.0)
+Error(0, 11): cusp(4.0) mykernel(0.0)
+Error(0, 12): cusp(16.0) mykernel(0.0)
+Error(0, 13): cusp(20.0) mykernel(0.0)
+Error(0, 14): cusp(8.0) mykernel(0.0)
+Error(0, 15): cusp(8.0) mykernel(0.0)
+Error(0, 16): cusp(20.0) mykernel(0.0)
+Error(0, 17): cusp(20.0) mykernel(0.0)
+Error(0, 18): cusp(16.0) mykernel(0.0)
+Error(0, 19): cusp(20.0) mykernel(0.0)
+Error(0, 20): cusp(20.0) mykernel(0.0)
+Error(0, 21): cusp(12.0) mykernel(0.0)
+Error(0, 22): cusp(4.0) mykernel(0.0)
+Error(0, 23): cusp(4.0) mykernel(0.0)
+Error(0, 24): cusp(20.0) mykernel(0.0)
+Error(0, 25): cusp(8.0) mykernel(0.0)
+Error(0, 26): cusp(16.0) mykernel(0.0)
+Error(0, 27): cusp(4.0) mykernel(0.0)
+Error(0, 28): cusp(16.0) mykernel(0.0)
+Error(0, 29): cusp(12.0) mykernel(0.0)
+Error(0, 30): cusp(16.0) mykernel(0.0)
+Error(0, 31): cusp(4.0) mykernel(0.0)
+Error(0, 32): cusp(16.0) mykernel(0.0)
+Error(0, 33): cusp(12.0) mykernel(0.0)
+Error(0, 34): cusp(12.0) mykernel(0.0)
+Error(0, 35): cusp(12.0) mykernel(0.0)
+Error(0, 36): cusp(20.0) mykernel(0.0)
+Error(0, 37): cusp(12.0) mykernel(0.0)
+Error(0, 38): cusp(16.0) mykernel(0.0)
+Error(0, 39): cusp(20.0) mykernel(0.0)
+Error(0, 40): cusp(16.0) mykernel(0.0)
+Error(0, 41): cusp(8.0) mykernel(0.0)
+Error(0, 42): cusp(20.0) mykernel(0.0)
+Error(0, 43): cusp(4.0) mykernel(0.0)
+Error(0, 44): cusp(16.0) mykernel(0.0)
+Error(0, 45): cusp(8.0) mykernel(0.0)
+Error(0, 46): cusp(8.0) mykernel(0.0)
+Error(0, 47): cusp(16.0) mykernel(0.0)
+Error(0, 48): cusp(4.0) mykernel(0.0)
+Error(0, 49): cusp(20.0) mykernel(0.0)
+Error(0, 50): cusp(20.0) mykernel(0.0)
+Error(0, 51): cusp(12.0) mykernel(0.0)
+Error(0, 52): cusp(20.0) mykernel(0.0)
+Error(0, 53): cusp(12.0) mykernel(0.0)
+Error(0, 54): cusp(8.0) mykernel(0.0)
+Error(0, 55): cusp(16.0) mykernel(0.0)
+Error(0, 56): cusp(12.0) mykernel(0.0)
+Error(0, 57): cusp(12.0) mykernel(0.0)
+Error(0, 58): cusp(4.0) mykernel(0.0)
+Error(0, 59): cusp(8.0) mykernel(0.0)
+Error(0, 60): cusp(12.0) mykernel(0.0)
+Error(0, 61): cusp(8.0) mykernel(0.0)
+Error(0, 62): cusp(4.0) mykernel(0.0)
+Error(0, 63): cusp(12.0) mykernel(0.0)
+Error(0, 64): cusp(20.0) mykernel(0.0)
+Error(0, 65): cusp(8.0) mykernel(0.0)
+Error(0, 66): cusp(20.0) mykernel(0.0)
+Error(0, 67): cusp(8.0) mykernel(0.0)
+Error(0, 68): cusp(20.0) mykernel(0.0)
+Error(0, 69): cusp(12.0) mykernel(0.0)
+Error(0, 70): cusp(4.0) mykernel(0.0)
+Error(0, 71): cusp(16.0) mykernel(0.0)
+Error(0, 72): cusp(20.0) mykernel(0.0)
+Error(0, 73): cusp(16.0) mykernel(0.0)
+Error(0, 74): cusp(12.0) mykernel(0.0)
+Error(0, 75): cusp(20.0) mykernel(0.0)
+Error(0, 76): cusp(8.0) mykernel(0.0)
+Error(0, 77): cusp(4.0) mykernel(0.0)
+Error(0, 78): cusp(4.0) mykernel(0.0)
+Error(0, 79): cusp(16.0) mykernel(0.0)
+Error(0, 80): cusp(8.0) mykernel(0.0)
+Error(0, 81): cusp(12.0) mykernel(0.0)
+Error(0, 82): cusp(20.0) mykernel(0.0)
+Error(0, 83): cusp(16.0) mykernel(0.0)
+Error(0, 84): cusp(8.0) mykernel(0.0)
+Error(0, 85): cusp(16.0) mykernel(0.0)
+Error(0, 86): cusp(4.0) mykernel(0.0)
+Error(0, 87): cusp(20.0) mykernel(0.0)
+Error(0, 88): cusp(8.0) mykernel(0.0)
+Error(0, 89): cusp(20.0) mykernel(0.0)
+Error(0, 90): cusp(20.0) mykernel(0.0)
+Error(0, 91): cusp(4.0) mykernel(0.0)
+Error(0, 92): cusp(12.0) mykernel(0.0)
+Error(0, 93): cusp(4.0) mykernel(0.0)
+Error(0, 94): cusp(4.0) mykernel(0.0)
+Error(0, 95): cusp(4.0) mykernel(0.0)
+Error(0, 96): cusp(20.0) mykernel(0.0)
+Error(0, 97): cusp(4.0) mykernel(0.0)
+Error(0, 98): cusp(4.0) mykernel(0.0)
+Error(0, 99): cusp(4.0) mykernel(0.0)
+Error(0, 100): cusp(8.0) mykernel(0.0)
+Error(0, 101): cusp(8.0) mykernel(0.0)
+Error(0, 102): cusp(20.0) mykernel(0.0)
+Error(0, 103): cusp(16.0) mykernel(0.0)
+Error(0, 104): cusp(20.0) mykernel(0.0)
+Error(0, 105): cusp(16.0) mykernel(0.0)
+Error(0, 106): cusp(20.0) mykernel(0.0)
+Error(0, 107): cusp(12.0) mykernel(0.0)
+Error(0, 108): cusp(16.0) mykernel(0.0)
+Error(0, 109): cusp(12.0) mykernel(0.0)
+Error(0, 110): cusp(12.0) mykernel(0.0)
+Error(0, 111): cusp(16.0) mykernel(0.0)
+Error(0, 112): cusp(12.0) mykernel(0.0)
+Error(0, 113): cusp(16.0) mykernel(0.0)
+Error(0, 114): cusp(20.0) mykernel(0.0)
+Error(0, 115): cusp(16.0) mykernel(0.0)
+Error(0, 116): cusp(8.0) mykernel(0.0)
+Error(0, 117): cusp(8.0) mykernel(0.0)
+Error(0, 118): cusp(8.0) mykernel(0.0)
+Error(0, 119): cusp(16.0) mykernel(0.0)
+Error(0, 120): cusp(20.0) mykernel(0.0)
+Error(0, 121): cusp(16.0) mykernel(0.0)
+Error(0, 122): cusp(20.0) mykernel(0.0)
+Error(0, 123): cusp(16.0) mykernel(0.0)
+Error(0, 124): cusp(4.0) mykernel(0.0)
+Error(0, 125): cusp(4.0) mykernel(0.0)
+Error(0, 126): cusp(12.0) mykernel(0.0)
+Error(0, 127): cusp(4.0) mykernel(0.0)
+Error(0, 128): cusp(12.0) mykernel(0.0)
+Error(0, 129): cusp(4.0) mykernel(0.0)
+Error(0, 130): cusp(12.0) mykernel(0.0)
+Error(0, 131): cusp(8.0) mykernel(0.0)
+Error(0, 132): cusp(4.0) mykernel(0.0)
+Error(0, 133): cusp(20.0) mykernel(0.0)
+Error(0, 134): cusp(16.0) mykernel(0.0)
+Error(0, 135): cusp(12.0) mykernel(0.0)
+Error(0, 136): cusp(20.0) mykernel(0.0)
+Error(0, 137): cusp(16.0) mykernel(0.0)
+Error(0, 138): cusp(16.0) mykernel(0.0)
+Error(0, 139): cusp(8.0) mykernel(0.0)
+Error(0, 140): cusp(20.0) mykernel(0.0)
+Error(0, 141): cusp(16.0) mykernel(0.0)
+Error(0, 142): cusp(20.0) mykernel(0.0)
+Error(0, 143): cusp(12.0) mykernel(0.0)
+Error(0, 144): cusp(20.0) mykernel(0.0)
+Error(0, 145): cusp(12.0) mykernel(0.0)
+Error(0, 146): cusp(20.0) mykernel(0.0)
+Error(0, 147): cusp(12.0) mykernel(0.0)
+Error(0, 148): cusp(12.0) mykernel(0.0)
+Error(0, 149): cusp(16.0) mykernel(0.0)
+Error(0, 150): cusp(12.0) mykernel(0.0)
+Error(0, 151): cusp(4.0) mykernel(0.0)
+Error(0, 152): cusp(8.0) mykernel(0.0)
+Error(0, 153): cusp(20.0) mykernel(0.0)
+Error(0, 154): cusp(8.0) mykernel(0.0)
+Error(0, 155): cusp(12.0) mykernel(0.0)
+Error(0, 156): cusp(8.0) mykernel(0.0)
+Error(0, 157): cusp(8.0) mykernel(0.0)
+Error(0, 158): cusp(8.0) mykernel(0.0)
+Error(0, 159): cusp(8.0) mykernel(0.0)
+Error(0, 160): cusp(16.0) mykernel(0.0)
+Error(0, 161): cusp(8.0) mykernel(0.0)
+Error(0, 162): cusp(4.0) mykernel(0.0)
+Error(0, 163): cusp(20.0) mykernel(0.0)
+Error(0, 164): cusp(8.0) mykernel(0.0)
+Error(0, 165): cusp(8.0) mykernel(0.0)
+Error(0, 166): cusp(4.0) mykernel(0.0)
+Error(0, 167): cusp(16.0) mykernel(0.0)
+Error(0, 168): cusp(16.0) mykernel(0.0)
+Error(0, 169): cusp(20.0) mykernel(0.0)
+Error(0, 170): cusp(4.0) mykernel(0.0)
+Error(0, 171): cusp(16.0) mykernel(0.0)
+Error(0, 172): cusp(20.0) mykernel(0.0)
+Error(0, 173): cusp(20.0) mykernel(0.0)
+Error(0, 174): cusp(4.0) mykernel(0.0)
+Error(0, 175): cusp(4.0) mykernel(0.0)
+Error(0, 176): cusp(12.0) mykernel(0.0)
+Error(0, 177): cusp(4.0) mykernel(0.0)
+Error(0, 178): cusp(8.0) mykernel(0.0)
+Error(0, 179): cusp(8.0) mykernel(0.0)
+Error(0, 180): cusp(16.0) mykernel(0.0)
+Error(0, 181): cusp(12.0) mykernel(0.0)
+Error(0, 182): cusp(8.0) mykernel(0.0)
+Error(0, 183): cusp(8.0) mykernel(0.0)
+Error(0, 184): cusp(4.0) mykernel(0.0)
+Error(0, 185): cusp(4.0) mykernel(0.0)
+Error(0, 186): cusp(4.0) mykernel(0.0)
+Error(0, 187): cusp(12.0) mykernel(0.0)
+Error(0, 188): cusp(4.0) mykernel(0.0)
+Error(0, 189): cusp(20.0) mykernel(0.0)
+Error(0, 190): cusp(4.0) mykernel(0.0)
+Error(0, 191): cusp(8.0) mykernel(0.0)
+Error(0, 192): cusp(12.0) mykernel(0.0)
+Error(0, 193): cusp(20.0) mykernel(0.0)
+Error(0, 194): cusp(12.0) mykernel(0.0)
+Error(0, 195): cusp(12.0) mykernel(0.0)
+Error(0, 196): cusp(12.0) mykernel(0.0)
+Error(0, 197): cusp(16.0) mykernel(0.0)
+Error(0, 198): cusp(16.0) mykernel(0.0)
+check nan: cusp 20.0 mykernel 0.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/YeastM1710902K1710902Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Yeast.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Yeast.mtx
+N: 512
+FLOAT: Sparse A[1710902,1710902] x B[1710902,512] = C[1710902,512]
+1776972583
+mykernel_time: 7.270166 ms
+check nan: cusp 20.0 mykernel 20.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Yeast.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Yeast.mtx
+N: 512
+FLOAT: Sparse A[1710902,1710902] x B[1710902,512] = C[1710902,512]
+1776972632
+total_TCBlock_num = 340051, nnz = 3636546, nnz_pad=4871480
+mykernel_time: 7.907878 ms
+check nan: cusp 20.0 mykernel 20.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Yeast.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Yeast.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[1710902,1710902] x B[1710902,512] = C[1710902,512]
+1776972683
+total_TCBlock_num = 340051, nnz = 3636546, nnz_pad=4871480
+total_tcblock_num = 340051
+slb_tb_offset(5315) push a new value 110599: current thread block from 110591 to 110599
+slb_tb_offset size = 5315
+slb_block_dim_size = 5314
+row_block_offset size = 110599
+row_block_to_row_window_id size = 110598
+mykernel_time: 11.218932 ms
+check nan: cusp 20.0 mykernel 20.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Yeast.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Yeast.mtx
+N: 512
+FLOAT: Sparse A[1710902,1710902] x B[1710902,512] = C[1710902,512]
+1776972736
+total_TCBlock_num = 340051, nnz = 3636546, nnz_pad=4871480
+multi_binding sum = 340051
+mykernel_time: 8.011908 ms
+check nan: cusp 20.0 mykernel 20.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Yeast.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Yeast.mtx
+N: 512
+HALF: Sparse A[1710902,1710902] x B[1710902,512] = C[1710902,512]
+1776972786
+total_BCRS_Block_num = 105192
+mykernel_time: 6.497737 ms
+check nan: cusp 20.0 mykernel 20.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Yeast.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Yeast.mtx
+N: 512
+HALF: Sparse A[1710902,1710902] x B[1710902,512] = C[1710902,512]
+1776972834
+total_BCRS_Block_num = 340051
+mykernel_time: 5.158450 ms
+check nan: cusp 20.0 mykernel 20.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Yeast.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Yeast.mtx
+N: 512
+FLOAT: Sparse A[1710902,1710902] x B[1710902,512] = C[1710902,512]
+1776972881
+total_BCRS_Block_num = 340051
+mykernel_time: 5.694547 ms
+check nan: cusp 20.0 mykernel 20.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Yeast.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/Yeast.mtx
+N: 512
+FLOAT: Sparse A[1710902,1710902] x B[1710902,512] = C[1710902,512]
+1776972928
+total_BCRS_Block_num = 340051
+mykernel_time: 5.235205 ms
+check nan: cusp 20.0 mykernel 20.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/YeastH.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/build/demo-acc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/YeastH.mtx
+N: 512
+FLOAT: Sparse A[3138114,3138114] x B[3138114,512] = C[3138114,512]
+1776972976
+No checkpoint found, start preprocessing...
+mykernel_time: 0.000093 ms
+active block num: 16
+CUDA API failed at line 234 with error: invalid configuration argument (9)
+Error(0, 0): cusp(26.0) mykernel(0.0)
+Error(0, 1): cusp(16.0) mykernel(0.0)
+Error(0, 2): cusp(8.0) mykernel(0.0)
+Error(0, 3): cusp(16.0) mykernel(0.0)
+Error(0, 4): cusp(26.0) mykernel(0.0)
+Error(0, 5): cusp(30.0) mykernel(0.0)
+Error(0, 6): cusp(22.0) mykernel(0.0)
+Error(0, 7): cusp(18.0) mykernel(0.0)
+Error(0, 8): cusp(8.0) mykernel(0.0)
+Error(0, 9): cusp(28.0) mykernel(0.0)
+Error(0, 10): cusp(6.0) mykernel(0.0)
+Error(0, 11): cusp(6.0) mykernel(0.0)
+Error(0, 12): cusp(26.0) mykernel(0.0)
+Error(0, 13): cusp(22.0) mykernel(0.0)
+Error(0, 14): cusp(14.0) mykernel(0.0)
+Error(0, 15): cusp(14.0) mykernel(0.0)
+Error(0, 16): cusp(30.0) mykernel(0.0)
+Error(0, 17): cusp(26.0) mykernel(0.0)
+Error(0, 18): cusp(20.0) mykernel(0.0)
+Error(0, 19): cusp(30.0) mykernel(0.0)
+Error(0, 20): cusp(22.0) mykernel(0.0)
+Error(0, 21): cusp(18.0) mykernel(0.0)
+Error(0, 22): cusp(6.0) mykernel(0.0)
+Error(0, 23): cusp(6.0) mykernel(0.0)
+Error(0, 24): cusp(22.0) mykernel(0.0)
+Error(0, 25): cusp(14.0) mykernel(0.0)
+Error(0, 26): cusp(26.0) mykernel(0.0)
+Error(0, 27): cusp(14.0) mykernel(0.0)
+Error(0, 28): cusp(22.0) mykernel(0.0)
+Error(0, 29): cusp(18.0) mykernel(0.0)
+Error(0, 30): cusp(24.0) mykernel(0.0)
+Error(0, 31): cusp(6.0) mykernel(0.0)
+Error(0, 32): cusp(22.0) mykernel(0.0)
+Error(0, 33): cusp(20.0) mykernel(0.0)
+Error(0, 34): cusp(16.0) mykernel(0.0)
+Error(0, 35): cusp(22.0) mykernel(0.0)
+Error(0, 36): cusp(24.0) mykernel(0.0)
+Error(0, 37): cusp(16.0) mykernel(0.0)
+Error(0, 38): cusp(22.0) mykernel(0.0)
+Error(0, 39): cusp(22.0) mykernel(0.0)
+Error(0, 40): cusp(22.0) mykernel(0.0)
+Error(0, 41): cusp(12.0) mykernel(0.0)
+Error(0, 42): cusp(28.0) mykernel(0.0)
+Error(0, 43): cusp(12.0) mykernel(0.0)
+Error(0, 44): cusp(20.0) mykernel(0.0)
+Error(0, 45): cusp(18.0) mykernel(0.0)
+Error(0, 46): cusp(10.0) mykernel(0.0)
+Error(0, 47): cusp(22.0) mykernel(0.0)
+Error(0, 48): cusp(14.0) mykernel(0.0)
+Error(0, 49): cusp(28.0) mykernel(0.0)
+Error(0, 50): cusp(28.0) mykernel(0.0)
+Error(0, 51): cusp(18.0) mykernel(0.0)
+Error(0, 52): cusp(28.0) mykernel(0.0)
+Error(0, 53): cusp(16.0) mykernel(0.0)
+Error(0, 54): cusp(14.0) mykernel(0.0)
+Error(0, 55): cusp(18.0) mykernel(0.0)
+Error(0, 56): cusp(20.0) mykernel(0.0)
+Error(0, 57): cusp(18.0) mykernel(0.0)
+Error(0, 58): cusp(8.0) mykernel(0.0)
+Error(0, 59): cusp(12.0) mykernel(0.0)
+Error(0, 60): cusp(18.0) mykernel(0.0)
+Error(0, 61): cusp(14.0) mykernel(0.0)
+Error(0, 62): cusp(12.0) mykernel(0.0)
+Error(0, 63): cusp(22.0) mykernel(0.0)
+Error(0, 64): cusp(26.0) mykernel(0.0)
+Error(0, 65): cusp(18.0) mykernel(0.0)
+Error(0, 66): cusp(28.0) mykernel(0.0)
+Error(0, 67): cusp(18.0) mykernel(0.0)
+Error(0, 68): cusp(26.0) mykernel(0.0)
+Error(0, 69): cusp(18.0) mykernel(0.0)
+Error(0, 70): cusp(14.0) mykernel(0.0)
+Error(0, 71): cusp(18.0) mykernel(0.0)
+Error(0, 72): cusp(26.0) mykernel(0.0)
+Error(0, 73): cusp(18.0) mykernel(0.0)
+Error(0, 74): cusp(22.0) mykernel(0.0)
+Error(0, 75): cusp(24.0) mykernel(0.0)
+Error(0, 76): cusp(14.0) mykernel(0.0)
+Error(0, 77): cusp(6.0) mykernel(0.0)
+Error(0, 78): cusp(10.0) mykernel(0.0)
+Error(0, 79): cusp(24.0) mykernel(0.0)
+Error(0, 80): cusp(10.0) mykernel(0.0)
+Error(0, 81): cusp(16.0) mykernel(0.0)
+Error(0, 82): cusp(24.0) mykernel(0.0)
+Error(0, 83): cusp(18.0) mykernel(0.0)
+Error(0, 84): cusp(16.0) mykernel(0.0)
+Error(0, 85): cusp(22.0) mykernel(0.0)
+Error(0, 86): cusp(6.0) mykernel(0.0)
+Error(0, 87): cusp(24.0) mykernel(0.0)
+Error(0, 88): cusp(14.0) mykernel(0.0)
+Error(0, 89): cusp(28.0) mykernel(0.0)
+Error(0, 90): cusp(22.0) mykernel(0.0)
+Error(0, 91): cusp(10.0) mykernel(0.0)
+Error(0, 92): cusp(22.0) mykernel(0.0)
+Error(0, 93): cusp(8.0) mykernel(0.0)
+Error(0, 94): cusp(8.0) mykernel(0.0)
+Error(0, 95): cusp(10.0) mykernel(0.0)
+Error(0, 96): cusp(30.0) mykernel(0.0)
+Error(0, 97): cusp(12.0) mykernel(0.0)
+Error(0, 98): cusp(10.0) mykernel(0.0)
+Error(0, 99): cusp(12.0) mykernel(0.0)
+Error(0, 100): cusp(14.0) mykernel(0.0)
+Error(0, 101): cusp(14.0) mykernel(0.0)
+Error(0, 102): cusp(26.0) mykernel(0.0)
+Error(0, 103): cusp(26.0) mykernel(0.0)
+Error(0, 104): cusp(30.0) mykernel(0.0)
+Error(0, 105): cusp(20.0) mykernel(0.0)
+Error(0, 106): cusp(28.0) mykernel(0.0)
+Error(0, 107): cusp(16.0) mykernel(0.0)
+Error(0, 108): cusp(22.0) mykernel(0.0)
+Error(0, 109): cusp(16.0) mykernel(0.0)
+Error(0, 110): cusp(22.0) mykernel(0.0)
+Error(0, 111): cusp(18.0) mykernel(0.0)
+Error(0, 112): cusp(14.0) mykernel(0.0)
+Error(0, 113): cusp(24.0) mykernel(0.0)
+Error(0, 114): cusp(22.0) mykernel(0.0)
+Error(0, 115): cusp(24.0) mykernel(0.0)
+Error(0, 116): cusp(16.0) mykernel(0.0)
+Error(0, 117): cusp(18.0) mykernel(0.0)
+Error(0, 118): cusp(12.0) mykernel(0.0)
+Error(0, 119): cusp(22.0) mykernel(0.0)
+Error(0, 120): cusp(28.0) mykernel(0.0)
+Error(0, 121): cusp(18.0) mykernel(0.0)
+Error(0, 122): cusp(26.0) mykernel(0.0)
+Error(0, 123): cusp(24.0) mykernel(0.0)
+Error(0, 124): cusp(12.0) mykernel(0.0)
+Error(0, 125): cusp(12.0) mykernel(0.0)
+Error(0, 126): cusp(20.0) mykernel(0.0)
+Error(0, 127): cusp(14.0) mykernel(0.0)
+Error(0, 128): cusp(20.0) mykernel(0.0)
+Error(0, 129): cusp(14.0) mykernel(0.0)
+Error(0, 130): cusp(16.0) mykernel(0.0)
+Error(0, 131): cusp(10.0) mykernel(0.0)
+Error(0, 132): cusp(6.0) mykernel(0.0)
+Error(0, 133): cusp(30.0) mykernel(0.0)
+Error(0, 134): cusp(26.0) mykernel(0.0)
+Error(0, 135): cusp(20.0) mykernel(0.0)
+Error(0, 136): cusp(28.0) mykernel(0.0)
+Error(0, 137): cusp(24.0) mykernel(0.0)
+Error(0, 138): cusp(26.0) mykernel(0.0)
+Error(0, 139): cusp(14.0) mykernel(0.0)
+Error(0, 140): cusp(28.0) mykernel(0.0)
+Error(0, 141): cusp(18.0) mykernel(0.0)
+Error(0, 142): cusp(22.0) mykernel(0.0)
+Error(0, 143): cusp(20.0) mykernel(0.0)
+Error(0, 144): cusp(24.0) mykernel(0.0)
+Error(0, 145): cusp(16.0) mykernel(0.0)
+Error(0, 146): cusp(30.0) mykernel(0.0)
+Error(0, 147): cusp(16.0) mykernel(0.0)
+Error(0, 148): cusp(18.0) mykernel(0.0)
+Error(0, 149): cusp(26.0) mykernel(0.0)
+Error(0, 150): cusp(20.0) mykernel(0.0)
+Error(0, 151): cusp(8.0) mykernel(0.0)
+Error(0, 152): cusp(10.0) mykernel(0.0)
+Error(0, 153): cusp(28.0) mykernel(0.0)
+Error(0, 154): cusp(14.0) mykernel(0.0)
+Error(0, 155): cusp(14.0) mykernel(0.0)
+Error(0, 156): cusp(16.0) mykernel(0.0)
+Error(0, 157): cusp(16.0) mykernel(0.0)
+Error(0, 158): cusp(12.0) mykernel(0.0)
+Error(0, 159): cusp(16.0) mykernel(0.0)
+Error(0, 160): cusp(20.0) mykernel(0.0)
+Error(0, 161): cusp(18.0) mykernel(0.0)
+Error(0, 162): cusp(10.0) mykernel(0.0)
+Error(0, 163): cusp(28.0) mykernel(0.0)
+Error(0, 164): cusp(14.0) mykernel(0.0)
+Error(0, 165): cusp(16.0) mykernel(0.0)
+Error(0, 166): cusp(14.0) mykernel(0.0)
+Error(0, 167): cusp(24.0) mykernel(0.0)
+Error(0, 168): cusp(22.0) mykernel(0.0)
+Error(0, 169): cusp(22.0) mykernel(0.0)
+Error(0, 170): cusp(6.0) mykernel(0.0)
+Error(0, 171): cusp(20.0) mykernel(0.0)
+Error(0, 172): cusp(22.0) mykernel(0.0)
+Error(0, 173): cusp(28.0) mykernel(0.0)
+Error(0, 174): cusp(10.0) mykernel(0.0)
+Error(0, 175): cusp(12.0) mykernel(0.0)
+Error(0, 176): cusp(20.0) mykernel(0.0)
+Error(0, 177): cusp(6.0) mykernel(0.0)
+Error(0, 178): cusp(14.0) mykernel(0.0)
+Error(0, 179): cusp(18.0) mykernel(0.0)
+Error(0, 180): cusp(18.0) mykernel(0.0)
+Error(0, 181): cusp(18.0) mykernel(0.0)
+Error(0, 182): cusp(10.0) mykernel(0.0)
+Error(0, 183): cusp(16.0) mykernel(0.0)
+Error(0, 184): cusp(10.0) mykernel(0.0)
+Error(0, 185): cusp(12.0) mykernel(0.0)
+Error(0, 186): cusp(6.0) mykernel(0.0)
+Error(0, 187): cusp(22.0) mykernel(0.0)
+Error(0, 188): cusp(14.0) mykernel(0.0)
+Error(0, 189): cusp(28.0) mykernel(0.0)
+Error(0, 190): cusp(10.0) mykernel(0.0)
+Error(0, 191): cusp(18.0) mykernel(0.0)
+Error(0, 192): cusp(22.0) mykernel(0.0)
+Error(0, 193): cusp(28.0) mykernel(0.0)
+Error(0, 194): cusp(22.0) mykernel(0.0)
+Error(0, 195): cusp(20.0) mykernel(0.0)
+Error(0, 196): cusp(22.0) mykernel(0.0)
+Error(0, 197): cusp(18.0) mykernel(0.0)
+Error(0, 198): cusp(20.0) mykernel(0.0)
+check nan: cusp 26.0 mykernel 0.0
+Fail to open file: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/acc/testbed/mtx_cache/YeastHM3138114K3138114Blk_M16Blk_K8
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/YeastH.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/bitbsr/testbed/build/demo-bitbsr-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/YeastH.mtx
+N: 512
+FLOAT: Sparse A[3138114,3138114] x B[3138114,512] = C[3138114,512]
+1776973050
+mykernel_time: 15.025765 ms
+check nan: cusp 26.0 mykernel 26.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/YeastH.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/YeastH.mtx
+N: 512
+FLOAT: Sparse A[3138114,3138114] x B[3138114,512] = C[3138114,512]
+1776973143
+total_TCBlock_num = 662469, nnz = 6487230, nnz_pad=8623008
+mykernel_time: 14.837931 ms
+check nan: cusp 26.0 mykernel 26.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/YeastH.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/YeastH.mtx
+N: 512
+tile_n: 16
+FLOAT: Sparse A[3138114,3138114] x B[3138114,512] = C[3138114,512]
+1776973234
+total_TCBlock_num = 662469, nnz = 6487230, nnz_pad=8623008
+total_tcblock_num = 662469
+slb_tb_offset(10353) push a new value 203360: current thread block from 203356 to 203360
+slb_tb_offset size = 10353
+slb_block_dim_size = 10352
+row_block_offset size = 203360
+row_block_to_row_window_id size = 203359
+mykernel_time: 22.819255 ms
+check nan: cusp 26.0 mykernel 26.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/YeastH.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/dtc/testbed/build/demo-dtc-multi-binding-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/YeastH.mtx
+N: 512
+FLOAT: Sparse A[3138114,3138114] x B[3138114,512] = C[3138114,512]
+1776973335
+total_TCBlock_num = 662469, nnz = 6487230, nnz_pad=8623008
+multi_binding sum = 662469
+mykernel_time: 15.103468 ms
+check nan: cusp 26.0 mykernel 26.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/YeastH.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/YeastH.mtx
+N: 512
+HALF: Sparse A[3138114,3138114] x B[3138114,512] = C[3138114,512]
+1776973431
+total_BCRS_Block_num = 183456
+mykernel_time: 11.816634 ms
+check nan: cusp 26.0 mykernel 26.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/YeastH.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/YeastH.mtx
+N: 512
+HALF: Sparse A[3138114,3138114] x B[3138114,512] = C[3138114,512]
+1776973519
+total_BCRS_Block_num = 662469
+mykernel_time: 9.978033 ms
+check nan: cusp 26.0 mykernel 26.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/YeastH.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-strict-lb-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/YeastH.mtx
+N: 512
+FLOAT: Sparse A[3138114,3138114] x B[3138114,512] = C[3138114,512]
+1776973604
+total_BCRS_Block_num = 662469
+mykernel_time: 11.426978 ms
+check nan: cusp 26.0 mykernel 26.0
+
+===== Matrix: /workspace/Sparsene-AD-repo/dataset/selected_mtx/YeastH.mtx, Executable: /workspace/Sparsene-AD-repo/sparsene/examples/src_fp32/sr_bcrs/testbed/build/demo-srbcrs-16x8-multi-bind-tf32 =====
+Filename: /workspace/Sparsene-AD-repo/dataset/selected_mtx/YeastH.mtx
+N: 512
+FLOAT: Sparse A[3138114,3138114] x B[3138114,512] = C[3138114,512]
+1776973692
+total_BCRS_Block_num = 662469
+mykernel_time: 10.265495 ms
+check nan: cusp 26.0 mykernel 26.0
+

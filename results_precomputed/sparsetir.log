@@ -1,0 +1,1029 @@
+2025-08-30 17:54:52
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/DD.mtx
+Setting the default backend to "pytorch". You can change it in the ~/.dgl/config.json file or export the DGLBACKEND environment variable.  Valid options are: pytorch, mxnet, tensorflow (all lowercase)
+DGL backend not selected or invalid.  Assuming PyTorch for now.
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 0.17253 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 0.20796 ms
+feat_size = 128
+tir naive time: 0.41522 ms
+feat_size = 256
+tir naive time: 0.83372 ms
+feat_size = 512
+tir naive time: 1.67956 ms
+====================================================================================================
+2025-08-30 17:56:03
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/DD.mtx
+Graph loaded: 334925 nodes, 1686092 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 9.39%
+tc-spmm time: 0.05480ms
+feat_size = 32
+Condense density: 9.39%
+tc-spmm time: 0.07461ms
+feat_size = 64
+Condense density: 9.39%
+tc-spmm time: 0.11807ms
+feat_size = 128
+Condense density: 9.39%
+tc-spmm time: 0.22780ms
+feat_size = 256
+Condense density: 9.39%
+tc-spmm time: 0.45002ms
+feat_size = 512
+Condense density: 9.39%
+tc-spmm time: 0.90938ms
+====================================================================================================
+2025-08-30 17:57:14
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/ddi.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 0.15865 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 0.24763 ms
+feat_size = 128
+tir naive time: 0.32317 ms
+feat_size = 256
+tir naive time: 0.52821 ms
+feat_size = 512
+tir naive time: 0.90892 ms
+====================================================================================================
+2025-08-30 17:57:22
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/ddi.mtx
+Graph loaded: 4267 nodes, 2140089 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 20.19%
+tc-spmm time: 0.12442ms
+feat_size = 32
+Condense density: 20.19%
+tc-spmm time: 0.13057ms
+feat_size = 64
+Condense density: 20.19%
+tc-spmm time: 0.15276ms
+feat_size = 128
+Condense density: 20.19%
+tc-spmm time: 0.21394ms
+feat_size = 256
+Condense density: 20.19%
+tc-spmm time: 0.24226ms
+feat_size = 512
+Condense density: 20.19%
+tc-spmm time: 0.38196ms
+====================================================================================================
+2025-08-30 17:57:35
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/OVCAR-8H.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 0.77074 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 0.89498 ms
+feat_size = 128
+tir naive time: 1.82924 ms
+feat_size = 256
+tir naive time: 3.64986 ms
+feat_size = 512
+tir naive time: 7.37901 ms
+====================================================================================================
+2025-08-30 18:01:28
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/OVCAR-8H.mtx
+Graph loaded: 1889542 nodes, 3946402 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 6.64%
+tc-spmm time: 0.20984ms
+feat_size = 32
+Condense density: 6.64%
+tc-spmm time: 0.31318ms
+feat_size = 64
+Condense density: 6.64%
+tc-spmm time: 0.52830ms
+feat_size = 128
+Condense density: 6.64%
+tc-spmm time: 1.05157ms
+feat_size = 256
+Condense density: 6.64%
+tc-spmm time: 2.23771ms
+feat_size = 512
+Condense density: 6.64%
+tc-spmm time: 4.62482ms
+====================================================================================================
+2025-08-30 18:04:47
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/protein.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 3.87984 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 5.12557 ms
+feat_size = 128
+tir naive time: 9.65082 ms
+feat_size = 256
+tir naive time: 18.68003 ms
+feat_size = 512
+tir naive time: 36.77825 ms
+====================================================================================================
+2025-08-30 18:05:12
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/protein.mtx
+Graph loaded: 132534 nodes, 79255038 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 11.56%
+tc-spmm time: 1.67502ms
+feat_size = 32
+Condense density: 11.56%
+tc-spmm time: 1.86104ms
+feat_size = 64
+Condense density: 11.56%
+tc-spmm time: 3.45876ms
+feat_size = 128
+Condense density: 11.56%
+tc-spmm time: 6.46564ms
+feat_size = 256
+Condense density: 11.56%
+tc-spmm time: 12.38221ms
+feat_size = 512
+Condense density: 11.56%
+tc-spmm time: 24.19913ms
+====================================================================================================
+2025-08-30 18:09:23
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/reddit.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 7.45700 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 10.80535 ms
+feat_size = 128
+tir naive time: 18.00992 ms
+feat_size = 256
+tir naive time: 32.79142 ms
+feat_size = 512
+tir naive time: 61.76580 ms
+====================================================================================================
+2025-08-30 18:10:12
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/reddit.mtx
+Graph loaded: 232965 nodes, 114848857 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 12.90%
+tc-spmm time: 5.56852ms
+feat_size = 32
+Condense density: 12.90%
+tc-spmm time: 6.10338ms
+feat_size = 64
+Condense density: 12.90%
+tc-spmm time: 8.49455ms
+feat_size = 128
+Condense density: 12.90%
+tc-spmm time: 12.43934ms
+feat_size = 256
+Condense density: 12.90%
+tc-spmm time: 20.59359ms
+feat_size = 512
+Condense density: 12.90%
+tc-spmm time: 37.53118ms
+====================================================================================================
+2025-08-30 18:15:43
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/web-BerkStan.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 13.38767 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 17.24473 ms
+feat_size = 128
+tir naive time: 18.03429 ms
+feat_size = 256
+tir naive time: 19.87482 ms
+feat_size = 512
+tir naive time: 23.59993 ms
+====================================================================================================
+2025-08-30 18:16:21
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/web-BerkStan.mtx
+Graph loaded: 685230 nodes, 7600595 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 10.16%
+tc-spmm time: 4.84922ms
+feat_size = 32
+Condense density: 10.16%
+tc-spmm time: 5.06771ms
+feat_size = 64
+Condense density: 10.16%
+tc-spmm time: 5.71602ms
+feat_size = 128
+Condense density: 10.16%
+tc-spmm time: 5.98975ms
+feat_size = 256
+Condense density: 10.16%
+tc-spmm time: 6.46197ms
+feat_size = 512
+Condense density: 10.16%
+tc-spmm time: 8.07213ms
+====================================================================================================
+2025-08-30 18:17:30
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/Yeast.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 0.75388 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 0.84047 ms
+feat_size = 128
+tir naive time: 1.71564 ms
+feat_size = 256
+tir naive time: 3.42151 ms
+feat_size = 512
+tir naive time: 6.89055 ms
+====================================================================================================
+2025-08-30 18:18:51
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/Yeast.mtx
+Graph loaded: 1710902 nodes, 3636546 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 6.72%
+tc-spmm time: 0.18798ms
+feat_size = 32
+Condense density: 6.72%
+tc-spmm time: 0.28101ms
+feat_size = 64
+Condense density: 6.72%
+tc-spmm time: 0.47131ms
+feat_size = 128
+Condense density: 6.72%
+tc-spmm time: 0.93748ms
+feat_size = 256
+Condense density: 6.72%
+tc-spmm time: 2.01944ms
+feat_size = 512
+Condense density: 6.72%
+tc-spmm time: 4.17354ms
+====================================================================================================
+2025-08-30 18:21:05
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/YeastH.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 1.27176 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 1.48827 ms
+feat_size = 128
+tir naive time: 3.02577 ms
+feat_size = 256
+tir naive time: 6.05442 ms
+feat_size = 512
+tir naive time: 12.34285 ms
+====================================================================================================
+2025-08-30 18:25:02
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/YeastH.mtx
+Graph loaded: 3138114 nodes, 6487230 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 6.68%
+tc-spmm time: 0.34083ms
+feat_size = 32
+Condense density: 6.68%
+tc-spmm time: 0.51171ms
+feat_size = 64
+Condense density: 6.68%
+tc-spmm time: 0.86749ms
+feat_size = 128
+Condense density: 6.68%
+tc-spmm time: 1.73094ms
+feat_size = 256
+Condense density: 6.68%
+tc-spmm time: 3.70400ms
+feat_size = 512
+Condense density: 6.68%
+tc-spmm time: 7.67465ms
+====================================================================================================
+2025-08-30 18:28:29
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/mip1.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 9.21630 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 11.80767 ms
+feat_size = 128
+tir naive time: 15.02448 ms
+feat_size = 256
+tir naive time: 17.01742 ms
+feat_size = 512
+tir naive time: 19.27951 ms
+====================================================================================================
+2025-08-30 18:28:47
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/mip1.mtx
+Graph loaded: 66463 nodes, 10352819 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 63.91%
+tc-spmm time: 3.61854ms
+feat_size = 32
+Condense density: 63.91%
+tc-spmm time: 3.70027ms
+feat_size = 64
+Condense density: 63.91%
+tc-spmm time: 4.19480ms
+feat_size = 128
+Condense density: 63.91%
+tc-spmm time: 4.27941ms
+feat_size = 256
+Condense density: 63.91%
+tc-spmm time: 4.43559ms
+feat_size = 512
+Condense density: 63.91%
+tc-spmm time: 4.92618ms
+====================================================================================================
+2025-08-30 18:29:11
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/dc2.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 16.67301 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 21.47470 ms
+feat_size = 128
+tir naive time: 23.17639 ms
+feat_size = 256
+tir naive time: 25.34096 ms
+feat_size = 512
+tir naive time: 26.87261 ms
+====================================================================================================
+2025-08-30 18:29:32
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/dc2.mtx
+Graph loaded: 116835 nodes, 766396 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 9.85%
+tc-spmm time: 4.24697ms
+feat_size = 32
+Condense density: 9.85%
+tc-spmm time: 6.47208ms
+feat_size = 64
+Condense density: 9.85%
+tc-spmm time: 7.60116ms
+feat_size = 128
+Condense density: 9.85%
+tc-spmm time: 7.63204ms
+feat_size = 256
+Condense density: 9.85%
+tc-spmm time: 7.70499ms
+feat_size = 512
+Condense density: 9.85%
+tc-spmm time: 7.99532ms
+====================================================================================================
+2025-08-30 18:29:53
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/ASIC_680k.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 78.06334 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 95.97596 ms
+feat_size = 128
+tir naive time: 97.76594 ms
+feat_size = 256
+tir naive time: 99.11205 ms
+feat_size = 512
+tir naive time: 105.01132 ms
+====================================================================================================
+2025-08-30 18:32:16
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/ASIC_680k.mtx
+Graph loaded: 682862 nodes, 3871773 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 8.43%
+Traceback (most recent call last):
+  File "/workspace/SparseTIR/examples/spmm/bench_tc_spmm.py", line 710, in <module>
+    bench_tc_spmm(g, x.half(), y_golden.half(), args.mma_shape)
+  File "/workspace/SparseTIR/examples/spmm/bench_tc_spmm.py", line 661, in bench_tc_spmm
+    tvm.testing.assert_allclose(
+  File "/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/tvm/testing/utils.py", line 105, in assert_allclose
+    np.testing.assert_allclose(actual, desired, rtol=rtol, atol=atol, verbose=True)
+  File "/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/numpy/testing/_private/utils.py", line 1504, in assert_allclose
+    assert_array_compare(compare, actual, desired, err_msg=str(err_msg),
+  File "/workspace/miniconda3/envs/sptir/lib/python3.9/contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/numpy/testing/_private/utils.py", line 721, in assert_array_compare
+    flagged |= func_assert_same_pos(x, y,
+  File "/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/numpy/testing/_private/utils.py", line 688, in func_assert_same_pos
+    raise AssertionError(msg)
+AssertionError: 
+Not equal to tolerance rtol=0.1, atol=1e-07
+
+x and y +inf location mismatch:
+ x: array([[1.233521, 1.179321, 1.844421, ..., 1.984619, 1.965576, 1.031067],
+       [0.08252 , 0.914062, 0.668945, ..., 0.75    , 0.584961, 0.275146],
+       [0.924805, 0.605469, 0.460205, ..., 0.015175, 0.269287, 0.968262],...
+ y: array([[1.233   , 1.179   , 1.845   , ..., 1.984   , 1.966   , 1.031   ],
+       [0.0825  , 0.914   , 0.669   , ..., 0.75    , 0.585   , 0.2751  ],
+       [0.925   , 0.6055  , 0.4602  , ..., 0.015175, 0.2693  , 0.9683  ],...
+====================================================================================================
+2025-08-30 18:32:24
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/pwtk.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 0.42906 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 0.55117 ms
+feat_size = 128
+tir naive time: 1.08994 ms
+feat_size = 256
+tir naive time: 2.17750 ms
+feat_size = 512
+tir naive time: 4.34418 ms
+====================================================================================================
+2025-08-30 18:32:37
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/pwtk.mtx
+Graph loaded: 217918 nodes, 11634424 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 49.45%
+tc-spmm time: 0.06613ms
+feat_size = 32
+Condense density: 49.45%
+tc-spmm time: 0.07937ms
+feat_size = 64
+Condense density: 49.45%
+tc-spmm time: 0.12873ms
+feat_size = 128
+Condense density: 49.45%
+tc-spmm time: 0.23603ms
+feat_size = 256
+Condense density: 49.45%
+tc-spmm time: 0.45605ms
+feat_size = 512
+Condense density: 49.45%
+tc-spmm time: 0.91518ms
+====================================================================================================
+2025-08-30 18:33:06
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/rma10.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 0.09608 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 0.12475 ms
+feat_size = 128
+tir naive time: 0.23488 ms
+feat_size = 256
+tir naive time: 0.45369 ms
+feat_size = 512
+tir naive time: 0.90014 ms
+====================================================================================================
+2025-08-30 18:33:14
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/rma10.mtx
+Graph loaded: 46835 nodes, 2374001 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 39.76%
+tc-spmm time: 0.01440ms
+feat_size = 32
+Condense density: 39.76%
+tc-spmm time: 0.01943ms
+feat_size = 64
+Condense density: 39.76%
+tc-spmm time: 0.04091ms
+feat_size = 128
+Condense density: 39.76%
+tc-spmm time: 0.07264ms
+feat_size = 256
+Condense density: 39.76%
+tc-spmm time: 0.12538ms
+feat_size = 512
+Condense density: 39.76%
+tc-spmm time: 0.23237ms
+====================================================================================================
+2025-08-30 18:33:27
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/shipsec1.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 0.29850 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 0.38149 ms
+feat_size = 128
+tir naive time: 0.75950 ms
+feat_size = 256
+tir naive time: 1.52747 ms
+feat_size = 512
+tir naive time: 3.06056 ms
+====================================================================================================
+2025-08-30 18:33:37
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/shipsec1.mtx
+Graph loaded: 140874 nodes, 7813404 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 33.07%
+tc-spmm time: 0.06480ms
+feat_size = 32
+Condense density: 33.07%
+tc-spmm time: 0.07357ms
+feat_size = 64
+Condense density: 33.07%
+tc-spmm time: 0.12326ms
+feat_size = 128
+Condense density: 33.07%
+tc-spmm time: 0.22676ms
+feat_size = 256
+Condense density: 33.07%
+tc-spmm time: 0.43256ms
+feat_size = 512
+Condense density: 33.07%
+tc-spmm time: 0.85518ms
+====================================================================================================
+2025-08-30 18:34:01
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/scircuit.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 0.12794 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 0.15853 ms
+feat_size = 128
+tir naive time: 0.27603 ms
+feat_size = 256
+tir naive time: 0.50780 ms
+feat_size = 512
+tir naive time: 0.98258 ms
+====================================================================================================
+2025-08-30 18:34:11
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/scircuit.mtx
+Graph loaded: 170998 nodes, 958936 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 10.01%
+tc-spmm time: 0.06323ms
+feat_size = 32
+Condense density: 10.01%
+tc-spmm time: 0.07628ms
+feat_size = 64
+Condense density: 10.01%
+tc-spmm time: 0.10567ms
+feat_size = 128
+Condense density: 10.01%
+tc-spmm time: 0.16434ms
+feat_size = 256
+Condense density: 10.01%
+tc-spmm time: 0.29384ms
+feat_size = 512
+Condense density: 10.01%
+tc-spmm time: 0.55809ms
+====================================================================================================
+2025-08-30 18:34:30
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/conf5_4-8x8-10.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:125: UserWarning: Casting complex values to real discards the imaginary part (Triggered internally at ../aten/src/ATen/native/Copy.cpp:299.)
+tir naive time: 0.07633 ms
+  return input.type(ty)
+feat_size = 64
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 0.10472 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 128
+tir naive time: 0.20442 ms
+feat_size = 256
+tir naive time: 0.40280 ms
+feat_size = 512
+tir naive time: 0.80836 ms
+====================================================================================================
+2025-08-30 18:34:38
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/conf5_4-8x8-10.mtx
+Graph loaded: 49152 nodes, 1916928 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:125: UserWarning: Casting complex values to real discards the imaginary part (Triggered internally at ../aten/src/ATen/native/Copy.cpp:299.)
+feat_size = 16
+  return input.type(ty)
+Condense density: 22.16%
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tc-spmm time: 0.01571ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 32
+Condense density: 22.16%
+tc-spmm time: 0.02381ms
+feat_size = 64
+Condense density: 22.16%
+tc-spmm time: 0.05385ms
+feat_size = 128
+Condense density: 22.16%
+tc-spmm time: 0.09219ms
+feat_size = 256
+Condense density: 22.16%
+tc-spmm time: 0.16488ms
+feat_size = 512
+Condense density: 22.16%
+tc-spmm time: 0.31127ms
+====================================================================================================
+2025-08-30 18:34:51
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/mc2depi.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 0.20566 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 0.25429 ms
+feat_size = 128
+tir naive time: 0.51562 ms
+feat_size = 256
+tir naive time: 1.04708 ms
+feat_size = 512
+tir naive time: 2.13125 ms
+====================================================================================================
+2025-08-30 18:35:18
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/mc2depi.mtx
+Graph loaded: 525825 nodes, 2100225 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 6.28%
+tc-spmm time: 0.08986ms
+feat_size = 32
+Condense density: 6.28%
+tc-spmm time: 0.12257ms
+feat_size = 64
+Condense density: 6.28%
+tc-spmm time: 0.19921ms
+feat_size = 128
+Condense density: 6.28%
+tc-spmm time: 0.37952ms
+feat_size = 256
+Condense density: 6.28%
+tc-spmm time: 0.75010ms
+feat_size = 512
+Condense density: 6.28%
+tc-spmm time: 1.52049ms
+====================================================================================================
+2025-08-30 18:36:08
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/cop20k_A.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 0.12949 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 0.17344 ms
+feat_size = 128
+tir naive time: 0.34652 ms
+feat_size = 256
+tir naive time: 0.69627 ms
+feat_size = 512
+tir naive time: 1.40687 ms
+====================================================================================================
+2025-08-30 18:36:18
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/cop20k_A.mtx
+Graph loaded: 121192 nodes, 2624331 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 14.09%
+tc-spmm time: 0.06256ms
+feat_size = 32
+Condense density: 14.09%
+tc-spmm time: 0.07062ms
+feat_size = 64
+Condense density: 14.09%
+tc-spmm time: 0.10712ms
+feat_size = 128
+Condense density: 14.09%
+tc-spmm time: 0.19445ms
+feat_size = 256
+Condense density: 14.09%
+tc-spmm time: 0.36431ms
+feat_size = 512
+Condense density: 14.09%
+tc-spmm time: 0.71104ms
+====================================================================================================
+2025-08-30 18:36:36
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/webbase-1M.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 5.78621 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 7.04198 ms
+feat_size = 128
+tir naive time: 7.61243 ms
+feat_size = 256
+tir naive time: 8.74930 ms
+feat_size = 512
+tir naive time: 11.17119 ms
+====================================================================================================
+2025-08-30 18:37:23
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/webbase-1M.mtx
+Graph loaded: 1000005 nodes, 3105536 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 7.54%
+tc-spmm time: 1.80303ms
+feat_size = 32
+Condense density: 7.54%
+tc-spmm time: 1.96442ms
+feat_size = 64
+Condense density: 7.54%
+tc-spmm time: 2.27959ms
+feat_size = 128
+Condense density: 7.54%
+tc-spmm time: 2.55997ms
+feat_size = 256
+Condense density: 7.54%
+tc-spmm time: 3.19102ms
+feat_size = 512
+Condense density: 7.54%
+tc-spmm time: 4.80279ms
+====================================================================================================
+2025-08-30 18:38:59
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/mac_econ_fwd500.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 0.12912 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 0.15787 ms
+feat_size = 128
+tir naive time: 0.30935 ms
+feat_size = 256
+tir naive time: 0.60897 ms
+feat_size = 512
+tir naive time: 1.22054 ms
+====================================================================================================
+2025-08-30 18:39:10
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/mac_econ_fwd500.mtx
+Graph loaded: 206500 nodes, 1273389 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 8.20%
+tc-spmm time: 0.04683ms
+feat_size = 32
+Condense density: 8.20%
+tc-spmm time: 0.05920ms
+feat_size = 64
+Condense density: 8.20%
+tc-spmm time: 0.09188ms
+feat_size = 128
+Condense density: 8.20%
+tc-spmm time: 0.17176ms
+feat_size = 256
+Condense density: 8.20%
+tc-spmm time: 0.33484ms
+feat_size = 512
+Condense density: 8.20%
+tc-spmm time: 0.66946ms
+====================================================================================================
+2025-08-30 18:39:31
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/pdb1HYS.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 0.15324 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 0.19607 ms
+feat_size = 128
+tir naive time: 0.37189 ms
+feat_size = 256
+tir naive time: 0.73123 ms
+feat_size = 512
+tir naive time: 1.45837 ms
+====================================================================================================
+2025-08-30 18:39:39
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/pdb1HYS.mtx
+Graph loaded: 36417 nodes, 4344765 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 52.57%
+tc-spmm time: 0.01805ms
+feat_size = 32
+Condense density: 52.57%
+tc-spmm time: 0.02588ms
+feat_size = 64
+Condense density: 52.57%
+tc-spmm time: 0.05175ms
+feat_size = 128
+Condense density: 52.57%
+tc-spmm time: 0.09407ms
+feat_size = 256
+Condense density: 52.57%
+tc-spmm time: 0.16144ms
+feat_size = 512
+Condense density: 52.57%
+tc-spmm time: 0.30169ms
+====================================================================================================
+2025-08-30 18:39:53
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/consph.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 0.21164 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 0.26953 ms
+feat_size = 128
+tir naive time: 0.53467 ms
+feat_size = 256
+tir naive time: 1.07958 ms
+feat_size = 512
+tir naive time: 2.17156 ms
+====================================================================================================
+2025-08-30 18:40:03
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/consph.mtx
+Graph loaded: 83334 nodes, 6010480 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 33.87%
+tc-spmm time: 0.04829ms
+feat_size = 32
+Condense density: 33.87%
+tc-spmm time: 0.05573ms
+feat_size = 64
+Condense density: 33.87%
+tc-spmm time: 0.09508ms
+feat_size = 128
+Condense density: 33.87%
+tc-spmm time: 0.17184ms
+feat_size = 256
+Condense density: 33.87%
+tc-spmm time: 0.32018ms
+feat_size = 512
+Condense density: 33.87%
+tc-spmm time: 0.62348ms
+====================================================================================================
+2025-08-30 18:40:21
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/cant.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 0.14576 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 0.18478 ms
+feat_size = 128
+tir naive time: 0.36044 ms
+feat_size = 256
+tir naive time: 0.71773 ms
+feat_size = 512
+tir naive time: 1.44556 ms
+====================================================================================================
+2025-08-30 18:40:30
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/cant.mtx
+Graph loaded: 62451 nodes, 4007383 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 32.22%
+tc-spmm time: 0.03619ms
+feat_size = 32
+Condense density: 32.22%
+tc-spmm time: 0.04228ms
+feat_size = 64
+Condense density: 32.22%
+tc-spmm time: 0.07550ms
+feat_size = 128
+Condense density: 32.22%
+tc-spmm time: 0.12639ms
+feat_size = 256
+Condense density: 32.22%
+tc-spmm time: 0.23176ms
+feat_size = 512
+Condense density: 32.22%
+tc-spmm time: 0.44385ms
+====================================================================================================
+2025-08-30 18:40:46
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/eu-2005.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 11.15369 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 14.70227 ms
+feat_size = 128
+tir naive time: 16.35468 ms
+feat_size = 256
+tir naive time: 20.16396 ms
+feat_size = 512
+tir naive time: 26.41129 ms
+====================================================================================================
+2025-08-30 18:41:31
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/eu-2005.mtx
+Graph loaded: 862664 nodes, 19235140 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 18.47%
+tc-spmm time: 4.71622ms
+feat_size = 32
+Condense density: 18.47%
+tc-spmm time: 4.99126ms
+feat_size = 64
+Condense density: 18.47%
+tc-spmm time: 5.81036ms
+feat_size = 128
+Condense density: 18.47%
+tc-spmm time: 6.29779ms
+feat_size = 256
+Condense density: 18.47%
+tc-spmm time: 7.29787ms
+feat_size = 512
+Condense density: 18.47%
+tc-spmm time: 9.90659ms
+====================================================================================================
+2025-08-30 18:43:38
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/Si41Ge41H72.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 0.61308 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 0.79814 ms
+feat_size = 128
+tir naive time: 1.56821 ms
+feat_size = 256
+tir naive time: 3.09166 ms
+feat_size = 512
+tir naive time: 6.14227 ms
+====================================================================================================
+2025-08-30 18:43:51
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/Si41Ge41H72.mtx
+Graph loaded: 185639 nodes, 15011265 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 15.61%
+tc-spmm time: 0.23894ms
+feat_size = 32
+Condense density: 15.61%
+tc-spmm time: 0.26526ms
+feat_size = 64
+Condense density: 15.61%
+tc-spmm time: 0.47280ms
+feat_size = 128
+Condense density: 15.61%
+tc-spmm time: 0.89245ms
+feat_size = 256
+Condense density: 15.61%
+tc-spmm time: 1.72258ms
+feat_size = 512
+Condense density: 15.61%
+tc-spmm time: 3.38346ms
+====================================================================================================
+2025-08-30 18:44:30
+python bench_spmm_naive.py --mtx-file /workspace/scripts/selected_mtx/Ga41As41H72.mtx
+feat_size = 32
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+tir naive time: 0.75721 ms
+  assert input.numel() == input.storage().size(), (
+feat_size = 64
+tir naive time: 0.99313 ms
+feat_size = 128
+tir naive time: 1.98232 ms
+feat_size = 256
+tir naive time: 3.95188 ms
+feat_size = 512
+tir naive time: 7.86305 ms
+====================================================================================================
+2025-08-30 18:44:47
+python bench_tc_spmm.py --mtx-file /workspace/scripts/selected_mtx/Ga41As41H72.mtx
+Graph loaded: 268096 nodes, 18488476 edges
+/workspace/miniconda3/envs/sptir/lib/python3.9/site-packages/dgl/backend/pytorch/tensor.py:445: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+feat_size = 16
+  assert input.numel() == input.storage().size(), (
+Condense density: 14.17%
+tc-spmm time: 0.28940ms
+feat_size = 32
+Condense density: 14.17%
+tc-spmm time: 0.32351ms
+feat_size = 64
+Condense density: 14.17%
+tc-spmm time: 0.59975ms
+feat_size = 128
+Condense density: 14.17%
+tc-spmm time: 1.17002ms
+feat_size = 256
+Condense density: 14.17%
+tc-spmm time: 2.29545ms
+feat_size = 512
+Condense density: 14.17%
+tc-spmm time: 4.55223ms
+====================================================================================================
