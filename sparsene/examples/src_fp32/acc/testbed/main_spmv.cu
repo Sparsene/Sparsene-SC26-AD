@@ -9,6 +9,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <time.h>
+#include <omp.h>
 
 #include "common.h"
 #include "utils.h"
@@ -159,9 +160,10 @@ void convertToAcc(int M,
     int num_row_windows = DIVUP(M, Blk_M);
 
     vector<vector<int>> nz_blk_nz_cols(num_row_windows);
-    vector<vector<uint64_t>> nz_blk_mask;
-    vector<vector<dtypeA>> nz_blk_val;
+    vector<vector<vector<uint64_t>>> nz_blk_mask_by_window(num_row_windows);
+    vector<vector<vector<dtypeA>>> nz_blk_val_by_window(num_row_windows);
 
+#pragma omp parallel for schedule(static)
     for (int rw_idx = 0; rw_idx < num_row_windows; rw_idx++) {
         int row_start = rw_idx * Blk_M;
         int row_end = min(row_start + Blk_M, M);
@@ -208,12 +210,12 @@ void convertToAcc(int M,
                 bitmask[idx] = true;
                 vals.push_back(val);
             }
-            nz_blk_mask.push_back(convertToUInt64Vector(bitmask));
+            nz_blk_mask_by_window[rw_idx].push_back(convertToUInt64Vector(bitmask));
             while (vals.size() % 4 != 0) {
                 // padding with 0 to align with 4*fp32 (16 bytes)
                 vals.push_back(float(0.0f));
             }
-            nz_blk_val.push_back(vals);
+            nz_blk_val_by_window[rw_idx].push_back(vals);
         }
     }
 
@@ -226,21 +228,19 @@ void convertToAcc(int M,
 
     int soff_acc = 0;
     int mco_off_acc = 0;
-    int blk_ptr = 0;
     for (int rw_idx = 0; rw_idx < num_row_windows; rw_idx++) {
         vval_soff.push_back(soff_acc);
         vval_sidx.insert(vval_sidx.end(), nz_blk_nz_cols[rw_idx].begin(),
                          nz_blk_nz_cols[rw_idx].end());
-        int n_blks = DIVUP(nz_blk_nz_cols[rw_idx].size(), Blk_K);
+        int n_blks = static_cast<int>(nz_blk_val_by_window[rw_idx].size());
         soff_acc += n_blks;
         for (int i = 0; i < n_blks; i++) {
             vval_mco_off.push_back(mco_off_acc);
-            vval_mco_val.insert(vval_mco_val.end(), nz_blk_val[blk_ptr].begin(),
-                                nz_blk_val[blk_ptr].end());
-            mco_off_acc += nz_blk_val[blk_ptr].size();
-            vval_mco_mask.insert(vval_mco_mask.end(), nz_blk_mask[blk_ptr].begin(),
-                                 nz_blk_mask[blk_ptr].end());
-            blk_ptr++;
+            vval_mco_val.insert(vval_mco_val.end(), nz_blk_val_by_window[rw_idx][i].begin(),
+                                nz_blk_val_by_window[rw_idx][i].end());
+            mco_off_acc += nz_blk_val_by_window[rw_idx][i].size();
+            vval_mco_mask.insert(vval_mco_mask.end(), nz_blk_mask_by_window[rw_idx][i].begin(),
+                                 nz_blk_mask_by_window[rw_idx][i].end());
         }
     }
     vval_soff.push_back(soff_acc);
