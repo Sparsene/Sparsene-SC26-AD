@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Dict, Any, Optional, Union, List, cast
+import keyword
 import re
 
 import sparsene.op_gen.opir.op_ir as op_ir
@@ -10,6 +11,7 @@ from sparsene.op_gen.nvir.nvop import (
     NvOpInput,
     NvOpOutput,
     NvOpTensor,
+    SwizzleLayout,
     IoMemType,
     OpMemType,
     NvOpType,
@@ -26,6 +28,7 @@ from sparsene.op_gen.nvir.nvop import (
     ParamShape,
 )
 from sparsene.logging import get_logger
+from sparsene.op_gen.strategy_agent import StrategyConfig, StrategyDecision, run_strategy_agent
 
 
 logger = get_logger(__name__)
@@ -37,10 +40,14 @@ SourceBindingMap = Dict[op_ir.Value, SourceType]
 SPARSE_FORMAT_REGISTRY = {
     "ME_TCF": {
         "shape_overrides": {
-            "val_len": ["Mo"],               #    val_len_offset  
-            "val_coo_len": ["nnz_dim_K_o"]   #    val_coo_len_offset  
+            "val_len": ["Mo"],               # 拦截 val_len_offset 等
+            "val_coo_off": ["2", "nnz_dim_K"],
+            "val_coo_idx": ["nnz"],
+            "val_coo_val": ["nnz"],
+            "val_sidx": ["BLK_K", "nnz_dim_K"],
+            "C_val": ["N", "M"],
         },
-        # 2.              
+        # 2. 强制指定特殊变量的数据类型
         "dtypes": {
             "mco_mask": "int64_t",
             "idx": "int", 
@@ -48,45 +55,331 @@ SPARSE_FORMAT_REGISTRY = {
             "off": "int", 
             "sidx": "int"
         },
-        # 3.    B_val   C_val   Grid     
+        # 3. 核心 B_val 和 C_val 的 Grid 切分映射
         "custom_layouts": {
             "B_val": {
                 "dtype": "float",
-                "tensor_str": "logical_divide(make_tensor(make_gmem_ptr(d{name}), make_layout(make_shape(K, N), make_stride(N, _1{}))), make_shape(_1{}, get<1>(BLK_MNK{})))(_, make_coord(_, blockIdx.y))",
+                "tensor_str": "logical_divide(make_tensor(make_gmem_ptr(d{name}), make_layout(make_shape(K, N), make_stride(N, _1{}))), make_shape(_1{}, get<1>(BLK_MNK{})))(_, make_coord(_, {n_block}))",
                 "tensor_type_str": "decltype(logical_divide(make_tensor(make_gmem_ptr((TO0*)nullptr), make_layout(make_shape(VARLEN, VARLEN), make_stride(VARLEN, _1{}))), make_shape(_1{}, get<1>(BLK_MNK{})))(_, make_coord(_, VARLEN)))"
             },
             "C_val": {
                 "dtype": "float",
-                "tensor_str": "logical_divide(make_tensor(make_gmem_ptr(d{name}), make_shape(N, M)), select<1, 0>(BLK_MNK{}))(make_coord(_, blockIdx.y), make_coord(_, blockIdx.x))",
+                "tensor_str": "logical_divide(make_tensor(make_gmem_ptr(d{name}), make_shape(N, M)), select<1, 0>(BLK_MNK{}))(make_coord(_, {n_block}), make_coord(_, {m_block}))",
                 "tensor_type_str": "decltype(logical_divide(make_tensor(make_gmem_ptr((TO0*)nullptr), make_shape(VARLEN, VARLEN)), select<1, 0>(BLK_MNK{}))(make_coord(_, VARLEN), make_coord(_, VARLEN)))"
+            },
+            "val_coo_off": {
+                "dtype": "int",
+                "tensor_str": "make_tensor(make_gmem_ptr(d{name}), make_shape(Int<2>{}, nnz_dim_K))",
+                "tensor_type_str": "decltype(make_tensor(make_gmem_ptr((TO0*)nullptr), make_shape(Int<2>{}, VARLEN)))"
             }
         }
-    }
+    },
+    "BIT_TCF": {
+        # BIT_TCF uses MCO atomic format; gmem interfaces similar to ME_TCF
+        "grid_mapping": "XNYM",
+        "shape_overrides": {
+            "val_len": ["Mo"],
+            "val_coo_len": ["nnz_dim_K_o"],
+            "val_sidx": ["BLK_K", "nnz_dim_K"],
+            "C_val": ["M", "N"],
+        },
+        "dtypes": {
+            "mco_mask": "int64_t",
+            "idx": "int",
+            "len": "int",
+            "off": "int",
+            "sidx": "int",
+        },
+        "custom_layouts": {
+            "B_val": {
+                "dtype": "float",
+                "tensor_str": "logical_divide(make_tensor(make_gmem_ptr(d{name}), make_layout(make_shape(K, N), make_stride(N, _1{}))), make_shape(_1{}, get<1>(BLK_MNK{})))(_, make_coord(_, {n_block}))",
+                "tensor_type_str": "decltype(logical_divide(make_tensor(make_gmem_ptr((TO0*)nullptr), make_layout(make_shape(VARLEN, VARLEN), make_stride(VARLEN, _1{}))), make_shape(_1{}, get<1>(BLK_MNK{})))(_, make_coord(_, VARLEN)))",
+            },
+            "C_val": {
+                "dtype": "float",
+                "tensor_str": "logical_divide(make_tensor(make_gmem_ptr(d{name}), make_layout(make_shape(M, N), make_stride(N, _1{}))), select<0, 1>(BLK_MNK{}))(make_coord(_, {m_block}), make_coord(_, {n_block}))",
+                "tensor_type_str": "decltype(logical_divide(make_tensor(make_gmem_ptr((TO0*)nullptr), make_layout(make_shape(VARLEN, VARLEN), make_stride(VARLEN, _1{}))), select<0, 1>(BLK_MNK{}))(make_coord(_, VARLEN), make_coord(_, VARLEN)))",
+            }
+        },
+        "tensor_swizzles": {
+            "b_smem_swizzle": "swizzle_323",
+            "mco_restore_swizzle": "swizzle_123",
+        },
+    },
+    "BIT_BSR": {
+        # BIT_BSR also uses MCO payloads, but val_sidx is block-granular rather
+        # than lane-granular, so we keep its default inferred shape.
+        "shape_overrides": {
+            "val_len": ["Mo"],
+            "C_val": ["N", "M"],
+        },
+        "dtypes": {
+            "mco_mask": "int64_t",
+            "idx": "int",
+            "len": "int",
+            "off": "int",
+            "sidx": "int",
+        },
+        "custom_layouts": {
+            "B_val": {
+                "dtype": "float",
+                "tensor_str": "logical_divide(make_tensor(make_gmem_ptr(d{name}), make_layout(make_shape(K, N), make_stride(N, _1{}))), make_shape(_1{}, get<1>(BLK_MNK{})))(_, make_coord(_, {n_block}))",
+                "tensor_type_str": "decltype(logical_divide(make_tensor(make_gmem_ptr((TO0*)nullptr), make_layout(make_shape(VARLEN, VARLEN), make_stride(VARLEN, _1{}))), make_shape(_1{}, get<1>(BLK_MNK{})))(_, make_coord(_, VARLEN)))",
+            },
+            "C_val": {
+                "dtype": "float",
+                "tensor_str": "logical_divide(make_tensor(make_gmem_ptr(d{name}), make_shape(N, M)), select<1, 0>(BLK_MNK{}))(make_coord(_, {n_block}), make_coord(_, {m_block}))",
+                "tensor_type_str": "decltype(logical_divide(make_tensor(make_gmem_ptr((TO0*)nullptr), make_shape(VARLEN, VARLEN)), select<1, 0>(BLK_MNK{}))(make_coord(_, VARLEN), make_coord(_, VARLEN)))",
+            }
+        },
+        "tensor_swizzles": {
+            "b_smem_swizzle": "swizzle_333",
+            "mco_restore_swizzle": "swizzle_133",
+        },
+    },
+    "CSR_TCF": {
+        # CSR_TCF uses CSR atomic format; same structure as ME_TCF
+        "shape_overrides": {
+            "val_len": ["Mo"],
+            "val_csr_len": ["nnz_dim_K_o"],
+            "val_sidx": ["BLK_K", "nnz_dim_K"],
+            "C_val": ["N", "M"],
+            "val_csr_row_ptr": ["BLK_M + 1", "nnz_dim_K_o"],
+        },
+        "dtypes": {
+            "idx": "int",
+            "len": "int",
+            "off": "int",
+            "sidx": "int",
+            "ptr": "int",
+        },
+        "custom_layouts": {
+            "val_csr_row_ptr": {
+                "dtype": "int",
+                "tensor_str": "make_tensor(make_gmem_ptr(d{name}), make_shape(get<0>(BLK_MNK{}) + Int<1>{}, nnz_dim_K_o))",
+                "tensor_type_str": "decltype(make_tensor(make_gmem_ptr((TO0*)nullptr), make_shape(get<0>(BLK_MNK{}) + Int<1>{}, VARLEN)))",
+            },
+            "B_val": {
+                "dtype": "float",
+                "tensor_str": "logical_divide(make_tensor(make_gmem_ptr(d{name}), make_layout(make_shape(K, N), make_stride(N, _1{}))), make_shape(_1{}, get<1>(BLK_MNK{})))(_, make_coord(_, {n_block}))",
+                "tensor_type_str": "decltype(logical_divide(make_tensor(make_gmem_ptr((TO0*)nullptr), make_layout(make_shape(VARLEN, VARLEN), make_stride(VARLEN, _1{}))), make_shape(_1{}, get<1>(BLK_MNK{})))(_, make_coord(_, VARLEN)))",
+            },
+            "C_val": {
+                "dtype": "float",
+                "tensor_str": "logical_divide(make_tensor(make_gmem_ptr(d{name}), make_shape(N, M)), select<1, 0>(BLK_MNK{}))(make_coord(_, {n_block}), make_coord(_, {m_block}))",
+                "tensor_type_str": "decltype(logical_divide(make_tensor(make_gmem_ptr((TO0*)nullptr), make_shape(VARLEN, VARLEN)), select<1, 0>(BLK_MNK{}))(make_coord(_, VARLEN), make_coord(_, VARLEN)))",
+            }
+        }
+    },
+    "SR_BCRS": {
+        # SR_BCRS uses dense atomic format; gmem interfaces similar to ME_TCF
+        "shape_overrides": {
+            "val_len": ["Mo"],
+            "val_sidx": ["BLK_K", "nnz_dim_K"],
+            "C_val": ["N", "M"],
+        },
+        "dtypes": {
+            "idx": "int",
+            "len": "int",
+            "off": "int",
+            "sidx": "int",
+            "ptr": "int",
+        },
+        "custom_layouts": {
+            "val": {
+                "dtype": "float",
+                "tensor_str": "make_tensor(make_gmem_ptr(d{name}), make_layout(make_shape(get<0>(BLK_MNK{}), get<2>(BLK_MNK{}), nnz_dim_K), make_stride(get<2>(BLK_MNK{}), _1{}, get<0>(BLK_MNK{}) * get<2>(BLK_MNK{}))))",
+                "tensor_type_str": "decltype(make_tensor(make_gmem_ptr((TO0*)nullptr), make_layout(make_shape(get<0>(BLK_MNK{}), get<2>(BLK_MNK{}), VARLEN), make_stride(get<2>(BLK_MNK{}), _1{}, get<0>(BLK_MNK{}) * get<2>(BLK_MNK{})))))",
+            },
+            "B_val": {
+                "dtype": "float",
+                "tensor_str": "logical_divide(make_tensor(make_gmem_ptr(d{name}), make_layout(make_shape(K, N), make_stride(N, _1{}))), make_shape(_1{}, get<1>(BLK_MNK{})))(_, make_coord(_, {n_block}))",
+                "tensor_type_str": "decltype(logical_divide(make_tensor(make_gmem_ptr((TO0*)nullptr), make_layout(make_shape(VARLEN, VARLEN), make_stride(VARLEN, _1{}))), make_shape(_1{}, get<1>(BLK_MNK{})))(_, make_coord(_, VARLEN)))",
+            },
+            "C_val": {
+                "dtype": "float",
+                "tensor_str": "logical_divide(make_tensor(make_gmem_ptr(d{name}), make_shape(N, M)), select<1, 0>(BLK_MNK{}))(make_coord(_, {n_block}), make_coord(_, {m_block}))",
+                "tensor_type_str": "decltype(logical_divide(make_tensor(make_gmem_ptr((TO0*)nullptr), make_shape(VARLEN, VARLEN)), select<1, 0>(BLK_MNK{}))(make_coord(_, VARLEN), make_coord(_, VARLEN)))",
+            }
+        }
+    },
+    "ELL_TCF": {
+        # ELL_TCF uses ELL atomic format; same structure as ME_TCF / COO
+        "shape_overrides": {
+            "val_len": ["Mo"],
+            "val_ell_len": ["nnz_dim_K_o"],
+            "val_sidx": ["BLK_K", "nnz_dim_K"],
+            "C_val": ["N", "M"],
+        },
+        "dtypes": {
+            "idx": "int",
+            "len": "int",
+            "off": "int",
+            "sidx": "int",
+        },
+        "custom_layouts": {
+            "B_val": {
+                "dtype": "float",
+                "tensor_str": "logical_divide(make_tensor(make_gmem_ptr(d{name}), make_layout(make_shape(K, N), make_stride(N, _1{}))), make_shape(_1{}, get<1>(BLK_MNK{})))(_, make_coord(_, {n_block}))",
+                "tensor_type_str": "decltype(logical_divide(make_tensor(make_gmem_ptr((TO0*)nullptr), make_layout(make_shape(VARLEN, VARLEN), make_stride(VARLEN, _1{}))), make_shape(_1{}, get<1>(BLK_MNK{})))(_, make_coord(_, VARLEN)))",
+            },
+            "C_val": {
+                "dtype": "float",
+                "tensor_str": "logical_divide(make_tensor(make_gmem_ptr(d{name}), make_shape(N, M)), select<1, 0>(BLK_MNK{}))(make_coord(_, {n_block}), make_coord(_, {m_block}))",
+                "tensor_type_str": "decltype(logical_divide(make_tensor(make_gmem_ptr((TO0*)nullptr), make_shape(VARLEN, VARLEN)), select<1, 0>(BLK_MNK{}))(make_coord(_, VARLEN), make_coord(_, VARLEN)))",
+            }
+        }
+    },
+    "DIA_TCF": {
+        "shape_overrides": {
+            "val_len": ["Mo"],
+            "val_dia_len": ["nnz_dim_K_o"],
+            "val_dia_idx": ["nnz_dim_nnz"],
+            "val_dia_val": ["nnz_dim_nnz"],
+            "val_sidx": ["BLK_K", "nnz_dim_K"],
+            "C_val": ["N", "M"],
+        },
+        "dtypes": {
+            "idx": "int",
+            "len": "int",
+            "off": "int",
+            "sidx": "int",
+        },
+        "custom_layouts": {
+            "B_val": {
+                "dtype": "float",
+                "tensor_str": "logical_divide(make_tensor(make_gmem_ptr(d{name}), make_layout(make_shape(K, N), make_stride(N, _1{}))), make_shape(_1{}, get<1>(BLK_MNK{})))(_, make_coord(_, {n_block}))",
+                "tensor_type_str": "decltype(logical_divide(make_tensor(make_gmem_ptr((TO0*)nullptr), make_layout(make_shape(VARLEN, VARLEN), make_stride(VARLEN, _1{}))), make_shape(_1{}, get<1>(BLK_MNK{})))(_, make_coord(_, VARLEN)))",
+            },
+            "C_val": {
+                "dtype": "float",
+                "tensor_str": "logical_divide(make_tensor(make_gmem_ptr(d{name}), make_shape(N, M)), select<1, 0>(BLK_MNK{}))(make_coord(_, {n_block}), make_coord(_, {m_block}))",
+                "tensor_type_str": "decltype(logical_divide(make_tensor(make_gmem_ptr((TO0*)nullptr), make_shape(VARLEN, VARLEN)), select<1, 0>(BLK_MNK{}))(make_coord(_, VARLEN), make_coord(_, VARLEN)))",
+            }
+        }
+    },
 }
 
 class HardwareMapper:
-    def __init__(self):
-        self.loop_depth = 0  #         
+    def __init__(self, grid_mapping: str = "XMYN"):
+        self.loop_depth = 0  # 追踪循环嵌套深度
+        self.grid_mapping = grid_mapping
 
     def map_loop(self) -> str:
-        """        blockIdx.x，     sequential"""
+        """Map the outer spatial loop according to the grid mapping policy."""
         if self.loop_depth == 0:
-            return "blockIdx.x"
+            return _grid_blocks(self.grid_mapping)["m_block"]
         return "sequential"
+
+
+def _grid_mapping(format_hints: Dict[str, Any]) -> str:
+    mapping = format_hints.get("grid_mapping", "XMYN")
+    if mapping not in {"XMYN", "XNYM"}:
+        raise ValueError(f"Unsupported grid_mapping: {mapping}")
+    return mapping
+
+
+def _grid_blocks(grid_mapping: str) -> Dict[str, str]:
+    if grid_mapping == "XMYN":
+        return {"m_block": "blockIdx.x", "n_block": "blockIdx.y"}
+    if grid_mapping == "XNYM":
+        return {"m_block": "blockIdx.y", "n_block": "blockIdx.x"}
+    raise ValueError(f"Unsupported grid_mapping: {grid_mapping}")
+
+
+def _render_grid_template(template: str, *, symbol: str, grid_mapping: str) -> str:
+    blocks = _grid_blocks(grid_mapping)
+    return (
+        template.replace("{name}", symbol)
+        .replace("{m_block}", blocks["m_block"])
+        .replace("{n_block}", blocks["n_block"])
+    )
+
 
 @dataclass
 class LoweringState:
     program: NvOpProgram
-    hardware_mapper: HardwareMapper = field(default_factory=HardwareMapper) #    Mapper
+    hardware_mapper: HardwareMapper = field(default_factory=HardwareMapper) # 新增 Mapper
     value_sources: Dict[op_ir.Value, SourceType] = field(default_factory=dict)
     name_counter: Dict[str, int] = field(default_factory=dict)
     use_fixed_c_tile_shape: bool = False
+    strategy_decision: Optional[StrategyDecision] = None
+    grid_mapping: str = "XMYN"
 
     def unique_name(self, raw_name: str) -> str:
         base = _sanitize_identifier(raw_name or "op")
         idx = self.name_counter.get(base, 0)
         self.name_counter[base] = idx + 1
         return base if idx == 0 else f"{base}_{idx}"
+
+
+def _strategy_tensor_setting(
+    state: Optional[LoweringState],
+    name: str,
+    default: Any,
+) -> Any:
+    if state is None or state.strategy_decision is None:
+        return default
+    tensor_placement = state.strategy_decision.tensor_placement
+    return getattr(tensor_placement, name, default)
+
+
+def _strategy_pipeline_setting(program: NvOpProgram, name: str, default: Any) -> Any:
+    strategy = program.attrs.get("strategy_decision")
+    if strategy is None:
+        return default
+    pipeline = getattr(strategy, "pipeline", None)
+    if pipeline is None:
+        return default
+    return getattr(pipeline, name, default)
+
+
+def _strategy_swizzle(
+    state: Optional[LoweringState],
+    name: str,
+    default: Optional[SwizzleLayout],
+) -> Optional[SwizzleLayout]:
+    value = _strategy_tensor_setting(state, name, None)
+    if value in [None, "none"]:
+        return None
+    if value == "swizzle_323":
+        return SwizzleLayout(3, 2, 3)
+    if value == "swizzle_123":
+        return SwizzleLayout(1, 2, 3)
+    if value == "swizzle_333":
+        return SwizzleLayout(3, 3, 3)
+    if value == "swizzle_133":
+        return SwizzleLayout(1, 3, 3)
+    if value == "swizzle_124":
+        return SwizzleLayout(1, 2, 4)
+    return default
+
+
+def _format_swizzle(
+    state: Optional[LoweringState],
+    name: str,
+    default: Optional[SwizzleLayout],
+) -> Optional[SwizzleLayout]:
+    if state is None:
+        return default
+    tensor_swizzles = state.program.attrs.get("format_tensor_swizzles", {})
+    value = tensor_swizzles.get(name)
+    if value in [None, "none"]:
+        return default
+    if isinstance(value, SwizzleLayout):
+        return value
+    if value == "swizzle_323":
+        return SwizzleLayout(3, 2, 3)
+    if value == "swizzle_123":
+        return SwizzleLayout(1, 2, 3)
+    if value == "swizzle_333":
+        return SwizzleLayout(3, 3, 3)
+    if value == "swizzle_133":
+        return SwizzleLayout(1, 3, 3)
+    if value == "swizzle_124":
+        return SwizzleLayout(1, 2, 4)
+    return default
 
 
 def _sanitize_identifier(name: str) -> str:
@@ -96,6 +389,8 @@ def _sanitize_identifier(name: str) -> str:
         sanitized = "v"
     if sanitized[0].isdigit():
         sanitized = f"v_{sanitized}"
+    if keyword.iskeyword(sanitized) or sanitized in {"add", "sub", "mul", "div", "pow", "const"}:
+        sanitized = f"gen_{sanitized}"
     return sanitized
 
 
@@ -117,15 +412,13 @@ def _try_parse_static_int(value: Any) -> Optional[int]:
 
 
 def _io_mem_to_tag(mem: IoMemType) -> str:
-    match mem:
-        case "gmem":
-            return "g"
-        case "smem":
-            return "s"
-        case "rmem":
-            return "r"
-        case _:
-            return "x"
+    if mem == "gmem":
+        return "g"
+    if mem == "smem":
+        return "s"
+    if mem == "rmem":
+        return "r"
+    return "x"
 
 
 def _blk_mnk_expr(dim_name: str) -> Optional[str]:
@@ -139,11 +432,50 @@ def _blk_mnk_expr(dim_name: str) -> Optional[str]:
     return None
 
 
+def _try_blk_param_expr(dim_raw: str) -> Optional[str]:
+    expr = dim_raw.strip()
+    if not expr:
+        return None
+
+    tokens = re.findall(r"BLK_[MNK]|\d+|[()+\-*/]", expr)
+    if "".join(tokens) != re.sub(r"\s+", "", expr):
+        return None
+
+    converted: List[str] = []
+    for token in tokens:
+        blk_expr = _blk_mnk_expr(token)
+        if blk_expr is not None:
+            converted.append(blk_expr)
+        elif token.isdigit():
+            converted.append(f"Int<{token}>{{}}")
+        else:
+            converted.append(token)
+    return " ".join(converted)
+
+
 def _default_dim_entries(dims: List[Any]) -> List[Dict[str, Any]]:
     entries: List[Dict[str, Any]] = []
     for dim in dims:
-        dim_str = _sanitize_identifier(str(dim))
+        dim_raw = str(dim).strip()
+        dim_str = _sanitize_identifier(dim_raw)
         blk_expr = _blk_mnk_expr(dim_str)
+        blk_param_expr = _try_blk_param_expr(dim_raw)
+        blk_plus_one_match = re.match(r"^(BLK_[MNK])\s*\+\s*1$", dim_raw)
+
+        if blk_plus_one_match is not None:
+            base_blk = blk_plus_one_match.group(1)
+            base_blk_expr = _blk_mnk_expr(base_blk)
+            assert base_blk_expr is not None
+            blk_plus_one_expr = f"{base_blk_expr} + Int<1>{{}}"
+            entries.append(
+                {
+                    "raw": dim_raw,
+                    "shape": ParamShape(blk_plus_one_expr),
+                    "shape_arg": blk_plus_one_expr,
+                    "type_arg": blk_plus_one_expr,
+                }
+            )
+            continue
 
         if blk_expr is not None:
             entries.append(
@@ -152,6 +484,15 @@ def _default_dim_entries(dims: List[Any]) -> List[Dict[str, Any]]:
                     "shape": ParamShape(dim_str),
                     "shape_arg": blk_expr,
                     "type_arg": blk_expr,
+                }
+            )
+        elif blk_param_expr is not None:
+            entries.append(
+                {
+                    "raw": dim_raw,
+                    "shape": ParamShape(blk_param_expr),
+                    "shape_arg": blk_param_expr,
+                    "type_arg": blk_param_expr,
                 }
             )
         elif dim_str.startswith("BLK_") or dim_str.startswith("TILE_"):
@@ -198,9 +539,10 @@ def build_gmem_interfaces(opir_root, format_hints: Dict[str, Any]) -> Dict[str, 
     custom_layouts = format_hints.get("custom_layouts", {})
     shape_overrides = format_hints.get("shape_overrides", {})
     dtypes_hints = format_hints.get("dtypes", {})
+    grid_mapping = _grid_mapping(format_hints)
 
     def _clean_symbol(name: str) -> str:
-        #       Pass      ，      
+        # 去除编译器 Pass 生成的后缀，以便精准查表
         return re.sub(r'(_new|_offset|_1)+$', '', name)
 
     for op in opir_root.block.ops:
@@ -210,8 +552,8 @@ def build_gmem_interfaces(opir_root, format_hints: Dict[str, Any]) -> Dict[str, 
         symbol = str(op.attributes.get("symbol", op.result.name_hint))
         base_symbol = _clean_symbol(symbol)
         
-        # --- A.    Dtype ---
-        dtype = "float" #    fallback
+        # --- A. 决定 Dtype ---
+        dtype = "float" # 默认 fallback
         if base_symbol in custom_layouts:
             dtype = custom_layouts[base_symbol].get("dtype", dtype)
         else:
@@ -220,7 +562,7 @@ def build_gmem_interfaces(opir_root, format_hints: Dict[str, Any]) -> Dict[str, 
                     dtype = configured_dtype
                     break
                     
-        # --- B.    Shape ---
+        # --- B. 决定 Shape ---
         nvir_shapes = []
         cute_shape_args, cute_type_args = [], []
         
@@ -236,9 +578,13 @@ def build_gmem_interfaces(opir_root, format_hints: Dict[str, Any]) -> Dict[str, 
         cute_shape_args = [entry["shape_arg"] for entry in dim_entries]
         cute_type_args = [entry["type_arg"] for entry in dim_entries]
 
-        # --- C.    CuTe Layout ---
+        # --- C. 决定 CuTe Layout ---
         if base_symbol in custom_layouts:
-            tensor_str = custom_layouts[base_symbol]["tensor_str"].replace("{name}", symbol)
+            tensor_str = _render_grid_template(
+                custom_layouts[base_symbol]["tensor_str"],
+                symbol=symbol,
+                grid_mapping=grid_mapping,
+            )
             tensor_type_str = custom_layouts[base_symbol]["tensor_type_str"]
         else:
             shape_str = ", ".join(cute_shape_args)
@@ -323,14 +669,32 @@ def _fixed_c_tile_shape() -> Shape:
 def _fixed_reg_a_shape() -> Shape:
     return Shape(
         IntShape(4),
-        MnkShape("BLK_MMA_MNK", "m"),
+        Shape(
+            MnkShape("BLK_MMA_MNK", "m"),
+            MnkShape("BLK_MMA_MNK", "k"),
+        ),
     )
 
 
 def _fixed_reg_b_shape() -> Shape:
     return Shape(
         IntShape(2),
-        MnkShape("BLK_MMA_MNK", "n"),
+        Shape(
+            MnkShape("BLK_MMA_MNK", "k"),
+            MnkShape("BLK_MMA_MNK", "n"),
+        ),
+    )
+
+
+def _fixed_coo_tile_shape() -> Shape:
+    return Shape(ParamShape("get<0>(BLK_MNK{}) * get<2>(BLK_MNK{})"))
+
+
+def _fixed_dia_tile_shape() -> Shape:
+    return Shape(
+        ParamShape(
+            "get<2>(BLK_MNK{}) * (get<0>(BLK_MNK{}) + get<2>(BLK_MNK{}) - Int<1>{})"
+        )
     )
 
 
@@ -391,10 +755,11 @@ def _lower_first_for_loop_to_blk_x(
     for_op: op_ir.ForLoopOp,
     blk_x_loop_op: ForLoopNvOp,
     state: LoweringState,
+    block_idx_source: str,
 ) -> None:
     block_arg_sources: SourceBindingMap = {}
 
-    block_arg_sources[for_op.get_induction_var()] = "blockIdx.x"
+    block_arg_sources[for_op.get_induction_var()] = block_idx_source
     for i in range(for_op.num_iter_args):
         block_arg_sources[for_op.get_iter_arg(i)] = _resolve_source(
             for_op.operands[i + 2].source,
@@ -482,13 +847,20 @@ def _lower_first_for_loop_to_blk_x(
         if i < len(loop_result_sources):
             state.value_sources[result] = loop_result_sources[i]
 
-def generate_nvir(opir: op_ir.MetaOp, format_name: str = "ME_TCF") -> NvOpProgram:
+def generate_nvir(
+    opir: op_ir.MetaOp,
+    format_name: str = "ME_TCF",
+    strategy_config: Optional[StrategyConfig] = None,
+    strategy_decision_override: Optional[StrategyDecision] = None,
+    strategy_log_dir_override: Optional[str] = None,
+) -> NvOpProgram:
     if format_name not in SPARSE_FORMAT_REGISTRY:
         raise ValueError(f"Unsupported format: {format_name}")
         
     format_hints = SPARSE_FORMAT_REGISTRY[format_name]
+    grid_mapping = _grid_mapping(format_hints)
     
-    # 1.      GmemInouts
+    # 1. 查表生成 GmemInouts
     gmem_inouts = build_gmem_interfaces(opir, format_hints)
 
     
@@ -497,15 +869,37 @@ def generate_nvir(opir: op_ir.MetaOp, format_name: str = "ME_TCF") -> NvOpProgra
     if program_name in ["", "meta"]: program_name = "generated_kernel"
 
     program = NvOpProgram(name=program_name, gmem_inouts=gmem_inouts)
-    state = LoweringState(program=program) #      HardwareMapper
+    if strategy_decision_override is not None:
+        strategy_decision = strategy_decision_override
+        strategy_log_dir = strategy_log_dir_override or ""
+    else:
+        strategy_decision, strategy_log_dir = run_strategy_agent(
+            format_name=format_name,
+            gmem_inouts=gmem_inouts,
+            config=strategy_config,
+        )
+    program.attrs["strategy_decision"] = strategy_decision
+    program.attrs["strategy_log_dir"] = str(strategy_log_dir)
+    program.attrs["format_name"] = format_name
+    program.attrs["grid_mapping"] = grid_mapping
+    program.attrs["format_tensor_swizzles"] = format_hints.get("tensor_swizzles", {})
+    program.attrs["generated_tile_b"] = int(
+        getattr(strategy_decision.tensor_placement, "tile_b", 64)
+    )
+    state = LoweringState(
+        program=program,
+        hardware_mapper=HardwareMapper(grid_mapping),
+        strategy_decision=strategy_decision,
+        grid_mapping=grid_mapping,
+    ) # 自动带上 HardwareMapper
 
-    #    nvir  ，           for op   y   
+    # 在解析nvir之前，这里首先帮我插入一层 for op 给 y 维度
     blk_y_loop_op = _insert_outer_blk_y_loop(program=program, state=state)
 
-    #           ForLoopOp     x   ：
-    # 1)     for          
-    # 2)      [0, blockDim.x)       
-    # 3)    for   body     blk_x_loop_op     lowering
+    # 固定将遇到的第一个 ForLoopOp 映射给 x 维度：
+    # 1) 忽略该 for 的原始左右边界计算
+    # 2) 直接使用 [0, blockDim.x) 作为循环范围
+    # 3) 将该 for 的 body 下放到 blk_x_loop_op 中继续 lowering
     first_for_op: Optional[op_ir.ForLoopOp] = None
     for top_op in opir.block.ops:
         if isinstance(top_op, op_ir.ForLoopOp):
@@ -521,11 +915,12 @@ def generate_nvir(opir: op_ir.MetaOp, format_name: str = "ME_TCF") -> NvOpProgra
             for_op=first_for_op,
             blk_x_loop_op=blk_x_loop_op,
             state=state,
+            block_idx_source=_grid_blocks(grid_mapping)["m_block"],
         )
         return program
 
 
-    # 2.    Lowering
+    # 2. 启动 Lowering
     _lower_block(
         block=opir.block,
         target_append=blk_y_loop_op.append,
@@ -558,6 +953,8 @@ def _classify_logical_kind(op: op_ir.Op) -> str:
         return "pow"
     if isinstance(op, op_ir.DeviceOp):
         return op.name
+    if isinstance(op, op_ir.EllAtomicValRestoreOp):
+        return "ell_atomic_val_restore"
     return op.name
 
 
@@ -571,7 +968,9 @@ def _resolve_source(
         return block_arg_sources[value]
 
     if isinstance(value, op_ir.BlockArgument):
-        return value.name_hint or "_idx"
+        name_hint = value.name_hint or "_idx"
+        blk_expr = _blk_mnk_expr(name_hint)
+        return blk_expr if blk_expr is not None else name_hint
 
     if getattr(value, "name_hint", None) == "_":
         return "_"
@@ -583,9 +982,14 @@ def _resolve_source(
         symbol = str(value.defining_op.attributes["symbol"])
         if isinstance(value.type, op_ir.ArrayType):
             return state.program.gmem_tensor_ops[symbol].outputs[0]
+        blk_expr = _blk_mnk_expr(symbol)
+        if blk_expr is not None:
+            return blk_expr
         return symbol
 
-    return getattr(value, "name_hint", None) or "0"
+    fallback_name = getattr(value, "name_hint", None) or "0"
+    blk_expr = _blk_mnk_expr(fallback_name)
+    return blk_expr if blk_expr is not None else fallback_name
 
 
 def _infer_input_mem(value: op_ir.Value, source: SourceType) -> IoMemType:
@@ -621,18 +1025,28 @@ def _choose_output_mem(
     logical_kind: str,
     result_type: op_ir.Type,
     mem_hint: Optional[IoMemType],
+    *,
+    state: Optional[LoweringState] = None,
 ) -> IoMemType:
     if not isinstance(result_type, op_ir.ArrayType):
         return "rmem"
 
     if logical_kind == "mma":
         return "rmem"
-    if logical_kind in ["coo_atomic_val_restore", "mco_atomic_val_restore"]:
+    if logical_kind in ["coo_atomic_val_restore", "csr_atomic_val_restore", "ell_atomic_val_restore", "dia_atomic_val_restore", "mco_atomic_val_restore"]:
         return "smem"
     if logical_kind in ["coo_atomic_format_load_val", "mco_atomic_format_load_val"]:
-        return "smem"
-    if logical_kind in ["coo_atomic_format_load_idx", "mco_atomic_format_load_mask", "load_offset"]:
+        return cast(
+            IoMemType,
+            _strategy_tensor_setting(state, "coo_val_output_mem", "smem"),
+        )
+    if logical_kind in ["mco_atomic_format_load_mask", "load_offset", "coo_atomic_format_load_off"]:
         return "rmem"
+    if logical_kind in ["coo_atomic_format_load_idx"] and isinstance(result_type, op_ir.ArrayType):
+        return cast(
+            IoMemType,
+            _strategy_tensor_setting(state, "coo_idx_output_mem", "smem"),
+        )
     if logical_kind in ["c_val_load"]:
         return "rmem"
     if logical_kind in ["ldmatrix"]:
@@ -644,7 +1058,7 @@ def _choose_output_mem(
 
 
 def _choose_op_type(logical_kind: str, outputs: List[NvOpOutput]) -> NvOpType:
-    if logical_kind == "load_offset":
+    if logical_kind in {"load_offset", "coo_atomic_format_load_off"}:
         return NvOpType.LOAD_LR_OFF
 
     if logical_kind in [
@@ -652,17 +1066,19 @@ def _choose_op_type(logical_kind: str, outputs: List[NvOpOutput]) -> NvOpType:
         "c_val_store",
         "coo_atomic_format_load_idx",
         "coo_atomic_format_load_val",
+        "dia_atomic_format_load_idx",
+        "dia_atomic_format_load_val",
         "mco_atomic_format_load_mask",
         "mco_atomic_format_load_val",
         "load",
     ]:
         if outputs and len(outputs[0].tensor.shape) <= 1:
             return NvOpType.COPY_1D
-        if "coo" in logical_kind or "mco" in logical_kind:
+        if "coo" in logical_kind or "mco" in logical_kind or "dia" in logical_kind:
             return NvOpType.COPY_2D_SP
         return NvOpType.COPY_2D
 
-    if logical_kind in ["mma", "coo_atomic_val_restore", "mco_atomic_val_restore", "ldmatrix"]:
+    if logical_kind in ["mma", "coo_atomic_val_restore", "csr_atomic_val_restore", "ell_atomic_val_restore", "dia_atomic_val_restore", "mco_atomic_val_restore", "ldmatrix"]:
         return NvOpType.OTHERS
 
     return NvOpType.UNKNOWN
@@ -685,13 +1101,26 @@ def _make_input(
     source: SourceType,
 ) -> NvOpInput:
     value_type = value.type if value.type is not None else op_ir.IntType()
+    inferred_shape = opir_type_to_nvir_shape(value_type)
+    inferred_dtype = opir_type_to_nvir_dtype(value_type)
+    inferred_mem = _infer_input_mem(value, source)
+
+    # Prefer the already-lowered producer tensor metadata when available.
+    # This preserves shape/layout normalizations such as `val_sidx_new`
+    # being materialized as `[BLK_K, nnz_dim_K]` instead of the original
+    # OPIR-facing `[nnz_dim_K, BLK_K]`.
+    if isinstance(source, NvOpOutput):
+        inferred_shape = source.tensor.shape
+        inferred_dtype = source.tensor.dtype
+        inferred_mem = source.tensor.mem
+
     return NvOpInput(
         idx=idx,
         name=name,
         tensor=NvOpTensor(
-            shape=opir_type_to_nvir_shape(value_type),
-            mem=_infer_input_mem(value, source),
-            dtype=opir_type_to_nvir_dtype(value_type),
+            shape=inferred_shape,
+            mem=inferred_mem,
+            dtype=inferred_dtype,
             source=source,
         ),
     )
@@ -711,35 +1140,46 @@ def _insert_ldmatrix_if_needed(
         return source
 
     if operand_index == 0:
+        # The address mapping below assumes the canonical A-tile SMEM layout used
+        # by the working ME_TCF kernel. If the upstream SMEM layout changes, this
+        # ldmatrix path must be updated together with the layout transform.
         op_name = state.unique_name("S2rAValLoadOp")
         output_shape = _fixed_reg_a_shape()
         output_name = "REGA"
         input_name = "tileA"
         impl = NvOpImpl(
             f"""__syncthreads();
-int row = lid % 16;
-int col = lid / 16;
-ldmatrix_m8n8k8_x4(
-    (uint32_t*)({output_name}(_, _0{{}}, buf_idx).data()),
-    (void*)(&{input_name}(row, col * 4))
-);"""
+for (int m_iter = 0; m_iter < get<0>(BLK_MMA_MNK{{}}); m_iter++) {{
+    for (int k_iter = 0; k_iter < get<2>(BLK_MMA_MNK{{}}); k_iter++) {{
+        int row = lid % 16;
+        int col = lid / 16;
+        ldmatrix_m8n8k8_x4(
+            (uint32_t*)({output_name}(_, make_coord(m_iter, k_iter), buf_idx).data()),
+            (void*)(&{input_name}(row + m_iter * 16, col * 4 + k_iter * 8))
+        );
+    }}
+}}"""
         )
     elif operand_index == 1:
+        # Same caveat as the A-side path above: the lane mapping and shuffles are
+        # coupled to the canonical B-side SMEM layout.
         op_name = state.unique_name("S2rBValLoadOp")
         output_shape = _fixed_reg_b_shape()
         output_name = "REGB"
         input_name = "tileB"
         impl = NvOpImpl(
             f"""__syncthreads();
-for (int n_iter = 0; n_iter < get<1>(BLK_MMA_MNK{{}}); n_iter++) {{
-    int row_b = lid / 2;
-    int col_b = lid % 2;
-    ldmatrix_m8n8k8_x2(
-        (uint32_t*)({output_name}(_, n_iter, buf_idx).data()),
-        (void*)(&{input_name}(row_b, col_b * 4 + n_iter * 8))
-    );
-    {output_name}(_0{{}}, n_iter, buf_idx) = __shfl_sync(0xffffffff, {output_name}(_0{{}}, n_iter, buf_idx), lid / 4 + lid % 4 * 8);
-    {output_name}(_1{{}}, n_iter, buf_idx) = __shfl_sync(0xffffffff, {output_name}(_1{{}}, n_iter, buf_idx), lid / 4 + lid % 4 * 8);
+for (int k_iter = 0; k_iter < get<2>(BLK_MMA_MNK{{}}); k_iter++) {{
+    for (int n_iter = 0; n_iter < get<1>(BLK_MMA_MNK{{}}); n_iter++) {{
+        int row_b = lid / 2;
+        int col_b = lid % 2;
+        ldmatrix_m8n8k8_x2(
+            (uint32_t*)({output_name}(_, make_coord(k_iter, n_iter), buf_idx).data()),
+            (void*)(&{input_name}(row_b + k_iter * 8, col_b * 4 + n_iter * 8))
+        );
+        {output_name}(_0{{}}, make_coord(k_iter, n_iter), buf_idx) = __shfl_sync(0xffffffff, {output_name}(_0{{}}, make_coord(k_iter, n_iter), buf_idx), lid / 4 + lid % 4 * 8);
+        {output_name}(_1{{}}, make_coord(k_iter, n_iter), buf_idx) = __shfl_sync(0xffffffff, {output_name}(_1{{}}, make_coord(k_iter, n_iter), buf_idx), lid / 4 + lid % 4 * 8);
+    }}
 }}"""
         )
     else:
@@ -772,12 +1212,19 @@ for (int n_iter = 0; n_iter < get<1>(BLK_MMA_MNK{{}}); n_iter++) {{
         mem_type=("s", "r"),
         op_type=NvOpType.OTHERS,
         logical_kind="ldmatrix",
+        matrix_operand="A" if operand_index == 0 else "B",
     )
     target_append(ldmatrix_op)
     return ldmatrix_op.outputs[0]
 
 
-def _make_impl(logical_kind: str, inputs: List[NvOpInput], outputs: List[NvOpOutput]) -> NvOpImpl:
+def _make_impl(
+    logical_kind: str,
+    inputs: List[NvOpInput],
+    outputs: List[NvOpOutput],
+    *,
+    state: Optional[LoweringState] = None,
+) -> NvOpImpl:
     if logical_kind == "add" and len(inputs) == 2 and len(outputs) == 1:
         return NvOpImpl(f"{outputs[0].name}(0) = {inputs[0].name} + {inputs[1].name};")
     if logical_kind == "sub" and len(inputs) == 2 and len(outputs) == 1:
@@ -789,10 +1236,24 @@ def _make_impl(logical_kind: str, inputs: List[NvOpInput], outputs: List[NvOpOut
     if logical_kind == "pow" and len(inputs) == 2 and len(outputs) == 1:
         return NvOpImpl(f"{outputs[0].name}(0) = pow({inputs[0].name}, {inputs[1].name});")
 
+    if logical_kind == "load_offset" and len(inputs) >= 3 and len(outputs) >= 2:
+        offset_expr = f"{inputs[1].name} + {inputs[2].name}"
+        return NvOpImpl(
+            f"{outputs[0].name}(0) = {inputs[0].name}({offset_expr});\n"
+            f"{outputs[1].name}(0) = {inputs[0].name}({offset_expr} + 1);"
+        )
+
     if logical_kind == "load_offset" and len(inputs) >= 2 and len(outputs) >= 2:
         return NvOpImpl(
             f"{outputs[0].name}(0) = {inputs[0].name}({inputs[1].name});\n"
             f"{outputs[1].name}(0) = {inputs[0].name}({inputs[1].name} + 1);"
+        )
+
+    if logical_kind == "coo_atomic_format_load_off" and len(inputs) >= 2 and len(outputs) >= 2:
+        block_idx = inputs[-1].name
+        return NvOpImpl(
+            f"{outputs[0].name}(0) = {inputs[0].name}(0, {block_idx});\n"
+            f"{outputs[1].name}(0) = {inputs[0].name}(1, {block_idx});"
         )
 
     if logical_kind == "load" and len(inputs) >= 1 and len(outputs) == 1:
@@ -801,26 +1262,152 @@ def _make_impl(logical_kind: str, inputs: List[NvOpInput], outputs: List[NvOpOut
             if not indices:
                 indices = "0"
             return NvOpImpl(f"{outputs[0].name}(0) = {inputs[0].name}({indices});")
+        if (
+            state is not None
+            and state.program.attrs.get("format_name") == "SR_BCRS"
+            and outputs[0].tensor.mem == "smem"
+            and len(inputs) >= 2
+            and len(inputs[0].tensor.shape) == 3
+            and len(outputs[0].tensor.shape) == 2
+        ):
+            return NvOpImpl(
+                f"""auto load_tile_n = _4{{}};
+for (int iter_i = lid; iter_i < get<0>(BLK_MNK{{}}) * get<2>(BLK_MNK{{}}) / load_tile_n; iter_i += 32) {{
+    int row = iter_i / (get<2>(BLK_MNK{{}}) / load_tile_n);
+    int col = iter_i % (get<2>(BLK_MNK{{}}) / load_tile_n);
+    auto thr_tiler_gmem = make_shape(_1{{}}, _4{{}});
+    auto thr_coord_gmem = make_coord(row, col);
+    auto src = local_tile({inputs[0].name}(_, _, {inputs[1].name}), thr_tiler_gmem, thr_coord_gmem);
+    float* dst = {outputs[0].name}(_, _, buf_idx).data().get() + iter_i * 4;
+    __pipeline_memcpy_async((float4*)dst, (float4*)(src(0, _).data().get()), sizeof(float4));
+}}"""
+            )
+        if (
+            outputs[0].tensor.mem == "smem"
+            and len(inputs) >= 2
+            and len(inputs[0].tensor.shape) == 3
+            and len(outputs[0].tensor.shape) == 2
+        ):
+            return NvOpImpl(
+                f"""for (int iter_i = lid; iter_i < get<0>(shape({outputs[0].name})) * get<1>(shape({outputs[0].name})); iter_i += 32) {{
+    int row = iter_i / get<1>(shape({outputs[0].name}));
+    int col = iter_i % get<1>(shape({outputs[0].name}));
+    {outputs[0].name}(row, col, buf_idx) = {inputs[0].name}({inputs[1].name}, col, row);
+}}"""
+            )
         return NvOpImpl("//! TODO: tensor load lowering")
 
+    if logical_kind == "coo_atomic_format_load_idx" and len(inputs) >= 3 and len(outputs) == 2:
+        coo_load_mode = _strategy_tensor_setting(
+            state,
+            "coo_load_mode",
+            "cp_async_x4_aligned_fallback",
+        )
+        if coo_load_mode != "cp_async_x4_aligned_fallback":
+            return NvOpImpl(
+                f"""{outputs[1].name}(0) = {inputs[2].name} - {inputs[1].name};
+int nnz_tile = get<0>(BLK_MNK{{}}) * get<2>(BLK_MNK{{}});
+for (int i_load = lid; i_load < nnz_tile; i_load += 32) {{
+    int src_idx = {inputs[1].name} + i_load;
+    {outputs[0].name}(i_load, buf_idx) = src_idx < {inputs[2].name} ? {inputs[0].name}(src_idx) : 0;
+}}"""
+            )
+        return NvOpImpl(
+            f"""{outputs[1].name}(0) = {inputs[2].name} - {inputs[1].name};
+if (({inputs[1].name} & 3) == 0) {{
+    auto thr_tiler = make_shape(_4{{}});
+    auto input = make_tensor({inputs[0].name}.data() + {inputs[1].name}, size<0>(shape({outputs[0].name})));
+    for (int i_load = lid; i_load * 4 + {inputs[1].name} < {inputs[2].name}; i_load += 32) {{
+        auto thr_coord = make_coord(i_load);
+        auto src = local_tile(input, thr_tiler, thr_coord);
+        auto dst = local_tile({outputs[0].name}(_, buf_idx), thr_tiler, thr_coord);
+        copy(Copy_Atom<SM80_CP_ASYNC_CACHEGLOBAL<cute::uint128_t>, int>{{}}, src, dst);
+    }}
+}} else {{
+    int nnz_tile = get<0>(BLK_MNK{{}}) * get<2>(BLK_MNK{{}});
+    for (int i_load = lid; i_load < nnz_tile; i_load += 32) {{
+        int src_idx = {inputs[1].name} + i_load;
+        {outputs[0].name}(i_load, buf_idx) = src_idx < {inputs[2].name} ? {inputs[0].name}(src_idx) : 0;
+    }}
+}}"""
+        )
     if logical_kind == "coo_atomic_format_load_idx" and len(inputs) >= 2 and len(outputs) == 1:
         return NvOpImpl(
-            f"""int nnz_tile = size<0>(shape({outputs[0].name}));
+            f"""int nnz_tile = get<0>(BLK_MNK{{}}) * get<2>(BLK_MNK{{}});
 for (int i_load = lid; i_load < nnz_tile; i_load += 32) {{
-    {outputs[0].name}(i_load, buf_idx) = {inputs[0].name}({inputs[1].name} + i_load);
+    int src_idx = {inputs[1].name} + i_load;
+    {outputs[0].name}(i_load, buf_idx) = src_idx < get<0>(shape_i0) ? {inputs[0].name}(src_idx) : 0;
 }}"""
         )
 
+    if logical_kind == "coo_atomic_format_load_val" and len(inputs) >= 3 and len(outputs) == 1:
+        coo_load_mode = _strategy_tensor_setting(
+            state,
+            "coo_load_mode",
+            "cp_async_x4_aligned_fallback",
+        )
+        if coo_load_mode != "cp_async_x4_aligned_fallback":
+            return NvOpImpl(
+                f"""int nnz_tile = get<0>(BLK_MNK{{}}) * get<2>(BLK_MNK{{}});
+for (int i_load = lid; i_load < nnz_tile; i_load += 32) {{
+    int src_idx = {inputs[1].name} + i_load;
+    {outputs[0].name}(i_load, buf_idx) = src_idx < {inputs[2].name} ? {inputs[0].name}(src_idx) : float(0);
+}}"""
+            )
+        return NvOpImpl(
+            f"""if (({inputs[1].name} & 3) == 0) {{
+    auto thr_tiler = make_shape(_4{{}});
+    auto input = make_tensor({inputs[0].name}.data() + {inputs[1].name}, size<0>(shape({outputs[0].name})));
+    for (int i_load = lid; i_load * 4 + {inputs[1].name} < {inputs[2].name}; i_load += 32) {{
+        auto thr_coord = make_coord(i_load);
+        auto src = local_tile(input, thr_tiler, thr_coord);
+        auto dst = local_tile({outputs[0].name}(_, buf_idx), thr_tiler, thr_coord);
+        copy(Copy_Atom<SM80_CP_ASYNC_CACHEGLOBAL<cute::uint128_t>, float>{{}}, src, dst);
+    }}
+}} else {{
+    int nnz_tile = get<0>(BLK_MNK{{}}) * get<2>(BLK_MNK{{}});
+    for (int i_load = lid; i_load < nnz_tile; i_load += 32) {{
+        int src_idx = {inputs[1].name} + i_load;
+        {outputs[0].name}(i_load, buf_idx) = src_idx < {inputs[2].name} ? {inputs[0].name}(src_idx) : float(0);
+    }}
+}}"""
+        )
     if logical_kind == "coo_atomic_format_load_val" and len(inputs) >= 2 and len(outputs) == 1:
         return NvOpImpl(
-            f"""int nnz_tile = size<0>(shape({outputs[0].name}));
+            f"""int nnz_tile = get<0>(BLK_MNK{{}}) * get<2>(BLK_MNK{{}});
 for (int i_load = lid; i_load < nnz_tile; i_load += 32) {{
-    {outputs[0].name}(i_load, buf_idx) = {inputs[0].name}({inputs[1].name} + i_load);
+    int src_idx = {inputs[1].name} + i_load;
+    {outputs[0].name}(i_load, buf_idx) = src_idx < get<0>(shape_i0) ? {inputs[0].name}(src_idx) : float(0);
+}}"""
+        )
+
+    if logical_kind == "dia_atomic_format_load_idx" and len(inputs) >= 3 and len(outputs) == 2:
+        return NvOpImpl(
+            f"""{outputs[1].name}(0) = {inputs[2].name} - {inputs[1].name};
+int diag_cap = size<0>(shape({outputs[0].name}));
+for (int i_load = lid; i_load < diag_cap; i_load += 32) {{
+    int src_idx = {inputs[1].name} + i_load;
+    {outputs[0].name}(i_load, buf_idx) = src_idx < {inputs[2].name} ? {inputs[0].name}(src_idx) : 0;
+}}"""
+        )
+
+    if logical_kind == "dia_atomic_format_load_val" and len(inputs) >= 3 and len(outputs) == 1:
+        return NvOpImpl(
+            f"""int val_cap = size<0>(shape({outputs[0].name}));
+for (int i_load = lid; i_load < val_cap; i_load += 32) {{
+    int src_idx = {inputs[1].name} + i_load;
+    {outputs[0].name}(i_load, buf_idx) = src_idx < {inputs[2].name} ? {inputs[0].name}(src_idx) : float(0);
 }}"""
         )
 
     if logical_kind == "mco_atomic_format_load_mask" and len(inputs) >= 2 and len(outputs) == 1:
-        return NvOpImpl(f"{outputs[0].name}(0) = {inputs[0].name}({inputs[1].name});")
+        src_indices = ", ".join(inp.name for inp in inputs[1:])
+        return NvOpImpl(
+            f"""int num_masks = size<0>(shape({outputs[0].name}));
+for (int i_mask = 0; i_mask < num_masks; ++i_mask) {{
+    {outputs[0].name}(i_mask, buf_idx) = {inputs[0].name}(i_mask, {src_indices});
+}}"""
+        )
 
     if logical_kind == "mco_atomic_format_load_val" and len(inputs) >= 2 and len(outputs) == 1:
         return NvOpImpl(
@@ -848,22 +1435,101 @@ for (int i_restore = lid; i_restore < {inputs[2].name}; i_restore += 32) {{
 }}"""
         )
 
-    if logical_kind == "mco_atomic_val_restore" and len(inputs) >= 3 and len(outputs) == 1:
+    if logical_kind == "csr_atomic_val_restore" and len(inputs) >= 4 and len(outputs) == 1:
         out_name = outputs[0].name
         out_dtype = outputs[0].tensor.dtype
+        # CSR flat scatter: row_ptr is present for format semantics but the
+        # host already lays out the payload in row-major order, so iterating
+        # [0, csr_nnz) in one flat loop is equivalent to iterating each row
+        # segment separately — and it keeps the full warp busy for every
+        # iteration instead of splitting the work into BLK_M serial chunks.
         return NvOpImpl(
             f"""int tile_elems = get<0>(shape({out_name})) * get<1>(shape({out_name}));
 for (int i_clear = lid; i_clear < tile_elems; i_clear += 32) {{
     *(({out_dtype}*)({out_name}(_, _, buf_idx).data().get() + i_clear)) = {out_dtype}(0);
 }}
 __syncthreads();
+for (int i_restore = lid; i_restore < {inputs[3].name}; i_restore += 32) {{
+    auto value = {inputs[0].name}(i_restore);
+    int idx = {inputs[1].name}(i_restore);
+    if (idx < tile_elems) {{
+        *(({out_dtype}*)({out_name}(_, _, buf_idx).data().get() + idx)) = value;
+    }}
+}}"""
+        )
+
+    if logical_kind == "ell_atomic_val_restore" and len(inputs) >= 3 and len(outputs) == 1:
+        out_name = outputs[0].name
+        out_dtype = outputs[0].tensor.dtype
+        # ELL restore: since the host guarantees
+        #   ell_range == BLK_M * max_nnz_per_row,
+        # iterating the flat range is algebraically identical to the
+        # 2D row-major traversal and saves two integer ops per warp.
+        return NvOpImpl(
+            f"""int tile_elems = get<0>(shape({out_name})) * get<1>(shape({out_name}));
+for (int i_clear = lid; i_clear < tile_elems; i_clear += 32) {{
+    *(({out_dtype}*)({out_name}(_, _, buf_idx).data().get() + i_clear)) = {out_dtype}(0);
+}}
+__syncthreads();
+for (int i_restore = lid; i_restore < {inputs[2].name}; i_restore += 32) {{
+    auto value = {inputs[0].name}(i_restore);
+    int idx = {inputs[1].name}(i_restore);
+    if (idx < tile_elems) {{
+        *(({out_dtype}*)({out_name}(_, _, buf_idx).data().get() + idx)) = value;
+    }}
+}}"""
+        )
+
+    if logical_kind == "dia_atomic_val_restore" and len(inputs) >= 3 and len(outputs) == 1:
+        out_name = outputs[0].name
+        out_dtype = outputs[0].tensor.dtype
+        return NvOpImpl(
+            f"""int tile_rows = get<0>(shape({out_name}));
+int tile_cols = get<1>(shape({out_name}));
+int tile_elems = tile_rows * tile_cols;
+int swizzle_S = (tile_cols == 8) ? 3 : ((tile_cols == 16) ? 4 : 5);
+for (int i_clear = lid; i_clear < tile_elems; i_clear += 32) {{
+    *(({out_dtype}*)({out_name}(_, _, buf_idx).data().get() + i_clear)) = {out_dtype}(0);
+}}
+__syncthreads();
+for (int linear = lid; linear < {inputs[2].name}; linear += 32) {{
+    int col = linear % tile_cols;
+    int diag = {inputs[1].name}(linear);
+    int row = col - diag;
+    if (row >= 0 && row < tile_rows) {{
+        int logical = row * tile_cols + col;
+        int b1 = ((logical >> 1) & 1) ^ ((logical >> (1 + swizzle_S)) & 1);
+        int b2 = ((logical >> 2) & 1) ^ ((logical >> (2 + swizzle_S)) & 1);
+        int bits = (b1 << 1) | (b2 << 2);
+        int swizzled = (logical & ~6) | bits;
+        *(({out_dtype}*)({out_name}(_, _, buf_idx).data().get() + swizzled)) = {inputs[0].name}(linear);
+    }}
+}}"""
+        )
+
+    if logical_kind == "mco_atomic_val_restore" and len(inputs) >= 3 and len(outputs) == 1:
+        out_name = outputs[0].name
+        out_dtype = outputs[0].tensor.dtype
+        return NvOpImpl(
+            f"""int tile_elems = get<0>(shape({out_name})) * get<1>(shape({out_name}));
+int num_masks = size<0>(shape({inputs[1].name}));
+for (int i_clear = lid; i_clear < tile_elems; i_clear += 32) {{
+    *(({out_dtype}*)({out_name}(_, _, buf_idx).data().get() + i_clear)) = {out_dtype}(0);
+}}
+__syncthreads();
 if (lid == 0) {{
     int value_ptr = 0;
-    unsigned long long mask = static_cast<unsigned long long>({inputs[1].name});
-    for (int idx = 0; idx < tile_elems && value_ptr < {inputs[2].name}; ++idx) {{
-        if ((mask >> idx) & 1ULL) {{
-            *(({out_dtype}*)({out_name}(_, _, buf_idx).data().get() + idx)) = {inputs[0].name}(value_ptr);
-            ++value_ptr;
+    for (int i_mask = 0; i_mask < num_masks && value_ptr < {inputs[2].name}; ++i_mask) {{
+        unsigned long long mask = static_cast<unsigned long long>({inputs[1].name}(i_mask));
+        for (int bit = 0; bit < 64 && value_ptr < {inputs[2].name}; ++bit) {{
+            int idx = i_mask * 64 + bit;
+            if (idx >= tile_elems) {{
+                break;
+            }}
+            if ((mask >> bit) & 1ULL) {{
+                *(({out_dtype}*)({out_name}(_, _, buf_idx).data().get() + idx)) = {inputs[0].name}(value_ptr);
+                ++value_ptr;
+            }}
         }}
     }}
 }}
@@ -883,16 +1549,19 @@ for (int linear = lid; linear < rows * cols; linear += 32) {{
 
     if logical_kind == "mma":
         return NvOpImpl(
-            f"""int tile_m = get<0>(shape({inputs[0].name}));
-int tile_k = get<1>(shape({inputs[0].name}));
-int tile_n = get<1>(shape({inputs[1].name}));
-for (int row = lid; row < tile_m; row += 32) {{
-    for (int col = 0; col < tile_n; ++col) {{
-        float acc = static_cast<float>({inputs[2].name}(row, col));
-        for (int kk = 0; kk < tile_k; ++kk) {{
-            acc += static_cast<float>({inputs[0].name}(row, kk)) * static_cast<float>({inputs[1].name}(kk, col));
+            f"""for (int k_iter = 0; k_iter < get<2>(BLK_MMA_MNK{{}}); k_iter++) {{
+    for (int m_iter = 0; m_iter < get<0>(BLK_MMA_MNK{{}}); m_iter++) {{
+        for (int n_iter = 0; n_iter < get<1>(BLK_MMA_MNK{{}}); n_iter++) {{
+            uint32_t frag_A[4];
+            uint32_t frag_B[2];
+            asm("cvt.rna.tf32.f32  %0, %1;\\n" : "=r"(frag_A[0]) : "f"({inputs[0].name}(0, make_coord(m_iter, k_iter))));
+            asm("cvt.rna.tf32.f32  %0, %1;\\n" : "=r"(frag_A[1]) : "f"({inputs[0].name}(1, make_coord(m_iter, k_iter))));
+            asm("cvt.rna.tf32.f32  %0, %1;\\n" : "=r"(frag_A[2]) : "f"({inputs[0].name}(2, make_coord(m_iter, k_iter))));
+            asm("cvt.rna.tf32.f32  %0, %1;\\n" : "=r"(frag_A[3]) : "f"({inputs[0].name}(3, make_coord(m_iter, k_iter))));
+            asm("cvt.rna.tf32.f32  %0, %1;\\n" : "=r"(frag_B[0]) : "f"({inputs[1].name}(0, make_coord(k_iter, n_iter))));
+            asm("cvt.rna.tf32.f32  %0, %1;\\n" : "=r"(frag_B[1]) : "f"({inputs[1].name}(1, make_coord(k_iter, n_iter))));
+            mma_m16n8k8_fp32_tf32_tf32_fp32({outputs[0].name}(_, make_coord(m_iter, n_iter)).data(), frag_A, frag_B);
         }}
-        {outputs[0].name}(row, col) = acc;
     }}
 }}"""
         )
@@ -900,19 +1569,26 @@ for (int row = lid; row < tile_m; row += 32) {{
     # if logical_kind in ["c_val_load", "c_val_store"]:
     #     return NvOpImpl("//! TODO: placement-aware c_val load/store lowering")
     if logical_kind == "c_val_load" and len(inputs) >= 1 and len(outputs) >= 1:
-        # inputs[0]         C_val，             outputs[0]
-        #   : CuTe      local_tile       ，  copy
-        # (     inputs[1]         ，       )
+        # inputs[0] 就是局部切好的 C_val，我们直接把它拷贝给寄存器 outputs[0]
+        # 注意: CuTe 推荐使用 local_tile 获取局部视图，再 copy
+        # (这里假设 inputs[1] 是原来的全局偏移，我们直接忽略它)
         return NvOpImpl(
-            f"auto local_C = local_tile({inputs[0].name}, make_shape(Int<BLK_M>{{}}, Int<BLK_N>{{}}), make_coord(_0{{}}, _0{{}}));\n"
+            f"auto local_C = local_tile({inputs[0].name}, make_shape(get<0>(BLK_MNK{{}}), get<1>(BLK_MNK{{}})), make_coord(_0{{}}, _0{{}}));\n"
             f"copy(local_C, {outputs[0].name}(0));"
         )
         
     if logical_kind == "c_val_store" and len(inputs) >= 2:
-        # inputs[0]          ，inputs[1]     C_val
         return NvOpImpl(
-            f"auto local_C = local_tile({inputs[1].name}, make_shape(Int<BLK_M>{{}}, Int<BLK_N>{{}}), make_coord(_0{{}}, _0{{}}));\n"
-            f"copy({inputs[0].name}(0), local_C);"
+            f"""for (int i_tileM = 0; i_tileM < get<0>(BLK_MMA_MNK{{}}); i_tileM++) {{
+    for (int i_tileN = 0; i_tileN < get<1>(BLK_MMA_MNK{{}}); i_tileN++) {{
+        int row = lid / 4 + i_tileM * get<0>(MMA_MNK{{}});
+        int col = i_tileN * 8 + lid % 4 * 2;
+        {inputs[1].name}(col, row) = {inputs[0].name}(0, make_coord(i_tileM, i_tileN));
+        {inputs[1].name}(col + 1, row) = {inputs[0].name}(1, make_coord(i_tileM, i_tileN));
+        {inputs[1].name}(col, row + 8) = {inputs[0].name}(2, make_coord(i_tileM, i_tileN));
+        {inputs[1].name}(col + 1, row + 8) = {inputs[0].name}(3, make_coord(i_tileM, i_tileN));
+    }}
+}}"""
         )
     if logical_kind == "array_ref":
         if len(outputs) == 1 and outputs[0].tensor.mem == "smem" and len(inputs) >= 2:
@@ -928,7 +1604,36 @@ for (int i_load = lid; i_load < tile_len; i_load += 32) {{
 }}"""
                 )
 
+
             if len(outputs[0].tensor.shape) >= 2:
+                if outputs[0].tensor.row_major and _strategy_tensor_setting(
+                    state,
+                    "enable_b_array_ref_cp_async",
+                    True,
+                ):
+                    return NvOpImpl(
+                        f"""auto load_tile_n = _4{{}};
+for (int iter_i = lid; iter_i < get<0>(shape({out_name})) * get<1>(shape({out_name})) / load_tile_n; iter_i += 32) {{
+    int row = iter_i / (get<1>(shape({out_name})) / load_tile_n);
+    int col = iter_i % (get<1>(shape({out_name})) / load_tile_n);
+    int src_row = {idx_name}(row);
+    auto thr_tiler_gmem = make_shape(_1{{}}, _4{{}});
+    auto thr_coord_gmem = make_coord(src_row, col);
+    auto src = local_tile({src_name}, thr_tiler_gmem, thr_coord_gmem);
+    auto thr_tiler_smem = make_shape(_1{{}}, _4{{}});
+    auto thr_coord_smem = make_coord(row, col);
+    auto dst = local_tile({out_name}(_, _, buf_idx), thr_tiler_smem, thr_coord_smem);
+    auto src_vec = src(0, _);
+    auto dst_vec = dst(0, _);
+    if ((((uintptr_t)src_vec.data().get()) & 0xF) == 0 && (((uintptr_t)dst_vec.data().get()) & 0xF) == 0) {{
+        copy(Copy_Atom<SM80_CP_ASYNC_CACHEGLOBAL<cute::uint128_t>, float>{{}}, src_vec, dst_vec);
+    }} else {{
+        for (int v = 0; v < 4; ++v) {{
+            dst_vec(v) = src_vec(v);
+        }}
+    }}
+}}"""
+                    )
                 return NvOpImpl(
                     f"""int rows = size<0>(shape({out_name}));
 int cols = size<1>(shape({out_name}));
@@ -941,6 +1646,13 @@ for (int linear = lid; linear < rows * cols; linear += 32) {{
                 )
 
         return NvOpImpl("//! array_ref lowered as logical view/alias")
+
+    if logical_kind == "arange" and len(inputs) >= 1 and len(outputs) == 1:
+        return NvOpImpl(
+            f"""for (int i = 0; i < size<0>(shape({outputs[0].name})); ++i) {{
+    {outputs[0].name}(i, buf_idx) = {inputs[0].name} + i;
+}}"""
+        )
 
     return NvOpImpl("//! TODO: generic lower")
 
@@ -959,12 +1671,23 @@ def _lower_constant(
     else:
         lowered_value = str(value)
 
+    # Attach sympy free symbols (K, M, N, nnz_dim_*) as external constructor
+    # params.  Convention: value==key → external symbol (ctor arg, not template).
+    # BLK_* symbols are handled by codegen via CUTLASS intrinsics, not here.
+    extra_params: Dict[str, Any] = {}
+    if hasattr(value, "free_symbols"):
+        for sym in value.free_symbols:
+            sym_str = str(sym)
+            if sym_str not in ("_", "") and not sym_str.startswith("BLK"):
+                extra_params[sym_str] = sym_str
+
     const_name = state.unique_name(op.result.name_hint or "const")
     nv_const = ConstantNvOp(
         name=const_name,
         shape=Shape(),
         dtype=opir_type_to_nvir_dtype(op.result.type),
         value=lowered_value,
+        parameters=extra_params,
     )
     target_append(nv_const)
     state.value_sources[op.result] = nv_const.outputs[0]
@@ -978,14 +1701,14 @@ def _lower_for_loop(
     state: LoweringState,
 ) -> None:
     mapping = state.hardware_mapper.map_loop()
-    if mapping == "blockIdx.x":
-        logger.info("Mapping outermost loop to blockIdx.x")
+    if mapping in {"blockIdx.x", "blockIdx.y"}:
+        logger.info("Mapping outermost loop to %s", mapping)
         
         inner_block_arg_sources = dict(block_arg_sources)
-        #     %i1     blockIdx.x
-        inner_block_arg_sources[op.get_induction_var()] = "blockIdx.x"
+        # Bind the outer sparse-M loop according to the grid mapping policy.
+        inner_block_arg_sources[op.get_induction_var()] = mapping
         
-        #    iter_args (  C_tile_io -> C_val)
+        # 透传 iter_args (如 C_tile_io -> C_val)
         for i in range(op.num_iter_args):
             inner_block_arg_sources[op.get_iter_arg(i)] = _resolve_source(
                 op.operands[i + 2].source, block_arg_sources=block_arg_sources, state=state
@@ -993,7 +1716,7 @@ def _lower_for_loop(
             
         state.hardware_mapper.loop_depth += 1
         
-        #      (   target_append，    ForLoopNvOp)
+        # 展平执行 (直接 target_append，不生成 ForLoopNvOp)
         loop_result_sources = _lower_block(
             block=op.body,
             target_append=target_append,
@@ -1003,7 +1726,7 @@ def _lower_for_loop(
         
         state.hardware_mapper.loop_depth -= 1
         
-        #          results
+        # 将展平结果映射回 results
         for i, result in enumerate(op.results):
             if i < len(loop_result_sources):
                 state.value_sources[result] = loop_result_sources[i]
@@ -1134,7 +1857,12 @@ def _lower_for_loop(
         target_append(loop_nvop)
 
         inner_block_arg_sources = dict(block_arg_sources)
-        inner_block_arg_sources[op.get_induction_var()] = "_idx"
+        # The loop induction variable is consumed inside the generated
+        # pipeline body through `shift_constant`. Binding it to `l + {c}`
+        # preserves the concrete step index for fill / loop_step /
+        # remainder / empty, instead of reading the uninitialized `_idx`
+        # member of `for_loop`.
+        inner_block_arg_sources[op.get_induction_var()] = "l + {c}"
         inner_block_arg_sources[op.range[0]] = "l"
         inner_block_arg_sources[op.range[1]] = "r"
         for i in range(op.num_iter_args):
@@ -1199,14 +1927,35 @@ def _lower_array_ref(
 
     is_val_sidx_ref = base_tensor_name.startswith("val_sidx")
     is_b_val_ref = base_tensor_name == "B_val"
+    is_csr_row_ptr_ref = base_tensor_name.startswith("val_csr_row_ptr")
+
+    materialize_b_to_smem = bool(
+        _strategy_tensor_setting(state, "materialize_b_array_ref_to_smem", True)
+    )
+    materialize_val_sidx_to_smem = bool(
+        _strategy_tensor_setting(state, "materialize_val_sidx_to_smem", True)
+    )
+    materialize_generic_slice_to_smem = bool(
+        output_origin is not None
+        and output_origin.tensor.mem == "gmem"
+        and not is_val_sidx_ref
+        and not is_b_val_ref
+        and not is_csr_row_ptr_ref
+        and isinstance(op.result.type, op_ir.ArrayType)
+        and len(op.result.type.dims) == 1
+        and len(inputs) >= 2
+        and len(output_origin.tensor.shape) >= 2
+        and all(len(inp.tensor.shape) == 0 for inp in inputs[1:])
+    )
 
     materialize_to_smem = (
         output_origin is not None
         and output_origin.tensor.mem == "gmem"
         and isinstance(op.result.type, op_ir.ArrayType)
         and (
-            is_val_sidx_ref
-            or is_b_val_ref
+            (is_val_sidx_ref and materialize_val_sidx_to_smem)
+            or (is_b_val_ref and materialize_b_to_smem)
+            or materialize_generic_slice_to_smem
             or (
                 any(len(inp.tensor.shape) > 0 for inp in inputs[1:])
                 and len(op.result.type.dims) >= 2
@@ -1238,20 +1987,62 @@ def _lower_array_ref(
                 shape=output_shape,
                 mem=output_mem,
                 dtype=opir_type_to_nvir_dtype(op.result.type),
+                row_major=is_b_val_ref,
+                    swizzle=(
+                        _format_swizzle(
+                            state,
+                            "b_smem_swizzle",
+                            _strategy_swizzle(
+                                state,
+                                "b_smem_swizzle",
+                                SwizzleLayout(3, 2, 3),
+                            ),
+                        )
+                        if is_b_val_ref
+                        else None
+                    ),
             ),
             origin=output_origin,
         )
     ]
 
+    cp_async_enabled = is_b_val_ref and bool(
+        _strategy_tensor_setting(state, "enable_b_array_ref_cp_async", True)
+    )
+
     nvop = NvOp(
         name=op_name,
         inputs=inputs,
         outputs=outputs,
-        impl=_make_impl("array_ref", inputs, outputs),
+        impl=_make_impl("array_ref", inputs, outputs, state=state),
         mem_type=_infer_mem_type(inputs, outputs),
-        op_type=(NvOpType.COPY_2D_SP if materialize_to_smem else NvOpType.OTHERS),
+        op_type=(
+            NvOpType.COPY_1D
+            if materialize_to_smem and len(output_shape) == 1
+            else NvOpType.COPY_2D_SP
+            if materialize_to_smem
+            else NvOpType.OTHERS
+        ),
         logical_kind="array_ref",
+        array_ref_role=(
+            "b_val"
+            if is_b_val_ref
+            else "val_sidx"
+            if is_val_sidx_ref
+            else "csr_row_ptr"
+            if is_csr_row_ptr_ref
+            else "generic"
+        ),
+        cp_async=cp_async_enabled,
     )
+    if outputs and outputs[0].tensor.mem == "smem":
+        outputs[0].attrs["cp_async"] = cp_async_enabled
+        outputs[0].attrs["align_16"] = (
+            cp_async_enabled
+            and bool(
+                _strategy_tensor_setting(state, "align_cp_async_smem_outputs", True)
+            )
+        )
     target_append(nvop)
     state.value_sources[op.result] = nvop.outputs[0]
 
@@ -1309,28 +2100,115 @@ def _lower_generic_op(
             if isinstance(inputs[2].tensor.source, NvOpOutput):
                 output_origin = inputs[2].tensor.source
 
+        output_shape = opir_type_to_nvir_shape(result.type)
+        if logical_kind == "mma" and idx == 0:
+            output_shape = _fixed_c_tile_shape()
+        elif logical_kind in {"coo_atomic_format_load_idx", "coo_atomic_format_load_val"} and idx == 0:
+            output_shape = _fixed_coo_tile_shape()
+        elif logical_kind in {"dia_atomic_format_load_idx", "dia_atomic_format_load_val"} and idx == 0:
+            output_shape = _fixed_dia_tile_shape()
+
         outputs.append(
             NvOpOutput(
                 idx=idx,
                 name=result.name_hint or op.result_name(idx),
                 tensor=NvOpTensor(
-                    shape=opir_type_to_nvir_shape(result.type),
-                    mem=_choose_output_mem(logical_kind, result.type, mem_hint),
-                    dtype=opir_type_to_nvir_dtype(result.type),
+                    shape=output_shape,
+                    mem=_choose_output_mem(
+                        logical_kind,
+                        result.type,
+                        mem_hint,
+                        state=state,
+                    ),
+                    dtype=(
+                        inputs[0].tensor.dtype
+                        if logical_kind == "mco_atomic_format_load_mask" and inputs
+                        else opir_type_to_nvir_dtype(result.type)
+                    ),
+                    row_major=(
+                        logical_kind
+                        in (
+                            "coo_atomic_val_restore",
+                            "csr_atomic_val_restore",
+                            "ell_atomic_val_restore",
+                            "dia_atomic_val_restore",
+                            "mco_atomic_val_restore",
+                        )
+                    ),
+                    swizzle=(
+                        SwizzleLayout(1, 2, 3, adaptive_blk_k=True)
+                        if logical_kind in ("coo_atomic_val_restore", "csr_atomic_val_restore", "ell_atomic_val_restore", "dia_atomic_val_restore")
+                        else _format_swizzle(
+                            state,
+                            "mco_restore_swizzle",
+                            SwizzleLayout(1, 2, 3),
+                        )
+                        if logical_kind == "mco_atomic_val_restore"
+                        else None
+                    ),
                 ),
                 origin=output_origin,
             )
         )
 
+    if (
+        logical_kind == "load"
+        and len(inputs) >= 2
+        and len(outputs) == 1
+        and inputs[0].tensor.mem == "gmem"
+        and len(inputs[0].tensor.shape) == 3
+        and len(outputs[0].tensor.shape) == 2
+    ):
+        outputs[0].tensor.mem = "smem"
+        outputs[0].tensor.row_major = True
+        outputs[0].tensor.swizzle = SwizzleLayout(2, 2, 3)
+        outputs[0].attrs["align_16"] = True
+
+    if logical_kind == "mco_atomic_val_restore":
+        for out in outputs:
+            if out.tensor.mem == "smem":
+                out.attrs["align_16"] = True
+
     nvop = NvOp(
         name=op_name,
         inputs=inputs,
         outputs=outputs,
-        impl=_make_impl(logical_kind, inputs, outputs),
+        impl=_make_impl(logical_kind, inputs, outputs, state=state),
         mem_type=_infer_mem_type(inputs, outputs),
         op_type=_choose_op_type(logical_kind, outputs),
         logical_kind=logical_kind,
     )
+    if logical_kind in {"coo_atomic_format_load_idx", "coo_atomic_format_load_val"}:
+        coo_cp_async_enabled = (
+            _strategy_tensor_setting(state, "coo_load_mode", "cp_async_x4_aligned_fallback")
+            == "cp_async_x4_aligned_fallback"
+        )
+        nvop.attrs["cp_async"] = coo_cp_async_enabled
+        for out in outputs:
+            if out.tensor.mem == "smem":
+                out.attrs["cp_async"] = coo_cp_async_enabled
+                out.attrs["align_16"] = (
+                    coo_cp_async_enabled
+                    and bool(
+                        _strategy_tensor_setting(state, "align_cp_async_smem_outputs", True)
+                    )
+                )
+    # Mark non-cp.async ops explicitly to avoid inserting useless pipeline primitives.
+    # This is particularly important for ME_TCF, where many helpers write to SMEM
+    # but are implemented via normal stores (not cp.async).
+    if logical_kind in {
+        "coo_atomic_val_restore",
+        "csr_atomic_val_restore",
+        "ell_atomic_val_restore",
+        "dia_atomic_val_restore",
+        "mco_atomic_format_load_mask",
+        "mco_atomic_format_load_val",
+        "mco_atomic_val_restore",
+    }:
+        nvop.attrs["cp_async"] = False
+        for out in outputs:
+            if out.tensor.mem == "smem":
+                out.attrs["cp_async"] = False
     target_append(nvop)
 
     for idx, result in enumerate(op.results):
@@ -1487,6 +2365,14 @@ def opir_type_to_nvir_shape(type: op_ir.Type) -> Shape:
             nvir_shape.append(MnkShape("BLK_MNK", "n"))
         elif dim_str == "BLK_K":
             nvir_shape.append(MnkShape("BLK_MNK", "k"))
+        elif (blk_param_expr := _try_blk_param_expr(dim_str)) is not None:
+            nvir_shape.append(ParamShape(blk_param_expr))
+        elif re.match(r"^BLK_M\s*\+\s*1$", dim_str):
+            nvir_shape.append(ParamShape("get<0>(BLK_MNK{}) + Int<1>{}"))
+        elif re.match(r"^BLK_N\s*\+\s*1$", dim_str):
+            nvir_shape.append(ParamShape("get<1>(BLK_MNK{}) + Int<1>{}"))
+        elif re.match(r"^BLK_K\s*\+\s*1$", dim_str):
+            nvir_shape.append(ParamShape("get<2>(BLK_MNK{}) + Int<1>{}"))
         elif re.match(r"^[a-zA-Z_][a-zA-Z0-9_]*$", dim_str) and dim_str.startswith("BLK_"):
             nvir_shape.append(ParamShape(dim_str))
         else:

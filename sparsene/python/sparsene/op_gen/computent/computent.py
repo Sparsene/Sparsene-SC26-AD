@@ -18,6 +18,9 @@ from sparsene.transform.transformation import (
     SpawnTransformation,
     CooizeTransformation,
     McoizeTransformation,
+    CsrizeTransformation,
+    EllizeTransformation,
+    DiaizeTransformation,
 )
 from sparsene.format.format import (
     Direction,
@@ -29,6 +32,9 @@ from sparsene.format.format import (
     sv_axis,
     coo_atomic_format,
     mco_atomic_format,
+    csr_atomic_format,
+    ell_atomic_format,
+    dia_atomic_format,
     Expr,
     Number,
     Symbol,
@@ -159,52 +165,52 @@ def update_st_axis(format: Format):
 
 def update_array_ref_recursive(arg: Variable, new_axis_ref, array_defs, axis_to_split_name, split_size):
     """
-         ArrayRef       indices
+    递归更新 ArrayRef 及其嵌套的 indices
     """
     if not isinstance(arg, ArrayRef):
         return
     
-    # 1.            
+    # 1. 获取当前数组对应的定义
     array_def = None
     try:
         array_def = array_defs[arg.array]
     except (KeyError, TypeError, AttributeError):
         pass
     if not array_def:
-        #        （          ），      
+        # 如果找不到定义（比如某些临时中间变量），则只递归子项
         for index in arg.indices:
             update_array_ref_recursive(index, new_axis_ref, array_defs, axis_to_split_name, split_size)
         return
 
-    # 2.      ArrayRef   ArrayDef        split   
+    # 2. 检查当前 ArrayRef 的 ArrayDef 中是否包含被 split 的轴
     target_idx_new = array_def.index_of(new_axis_ref.axis)
     target_idx_origin = array_def.index_of(axis_to_split_name)
     print("array_def", array_def, "target_idx_new", target_idx_new, "new_axis_ref.axis", new_axis_ref.axis)
     if target_idx_new is not None:
-        #       “       ”  
+        # 执行你原来的“位置对齐与插入”逻辑
         new_len = len(array_def.axes)
         old_len = len(arg.indices)
 
-        #          
+        # 长度校验与补全逻辑
         if old_len == 0:
             arg.indices = ["_"] * new_len
         elif old_len < new_len - 1:
-            #       ，          ，     new_len - 1
+            # 如果差距过大，说明之前的轴也没对齐，先补齐到 new_len - 1
             arg.indices.extend(["_"] * (new_len - 1 - old_len))
         
-        #         
+        # 再次确认当前状态
         current_len = len(arg.indices)
         if current_len == new_len - 1:
-            #     ：         (i2)
+            # 分裂情况：插入新的感应变量 (i2)
             arg.indices.insert(target_idx_new, new_axis_ref.induction_var)
         elif current_len == new_len:
-            #     ：     (            )
+            # 已经对齐：直接覆盖 (通常发生在多次变换重叠时)
             arg.indices[target_idx_new] = new_axis_ref.induction_var
         else:
-            #                           
+            # 这里的逻辑可以根据你的严谨程度决定抛异常还是强制处理
             pass
     elif target_idx_origin is not None:
-        #    indices   
+        # 保证 indices 长度
         while len(arg.indices) <= target_idx_origin:
             arg.indices.append("_")
         old_idx = arg.indices[target_idx_origin]
@@ -216,7 +222,7 @@ def update_array_ref_recursive(arg: Variable, new_axis_ref, array_defs, axis_to_
         if old_idx == "_":
             base = Symbol("_")
         elif isinstance(old_idx, str):
-            #         ，        Sympy    
+            # 如果原本是字符串，可以尝试解析成 Sympy 表达式
             from sympy import sympify
             base = sympify(old_idx)
         else:
@@ -225,7 +231,7 @@ def update_array_ref_recursive(arg: Variable, new_axis_ref, array_defs, axis_to_
         arg.indices[target_idx_origin] = iv * sz + base
         # print(type(arg.indices[target_idx_origin]), "updated index:", arg.indices[target_idx_origin])
 
-    # 3.      indices        (   B_val[val_sidx[...]]    )
+    # 3. 递归处理 indices 中的嵌套对象 (处理 B_val[val_sidx[...]] 的关键)
     for index in arg.indices:
         update_array_ref_recursive(index, new_axis_ref, array_defs, axis_to_split_name, split_size)
 
@@ -341,17 +347,17 @@ def apply_split_transformation(
         # (the first axis of the atomic format op is split across the boundary)
         # axis_ref.axes = new_axis_inner.name, axis_ref.axes[1]
         if axis_to_split.is_varlen:
-            # 1.         
+            # 1. 找到长度定义数组
             varlen_table = SymbolTable.global_table("varlen2LenArrayTable")
             sparse_len_def = varlen_table.get(str(axis_to_split.length))
             if sparse_len_def is None:
                 raise ValueError(f"Could not find length array for varlen axis: {axis_to_split.length}")
-            # 2.    val_len      
-            # sparse_len_def.axes     ['X_o']
-            #       parent             induction_var
+            # 2. 构造 val_len 的访问索引
+            # sparse_len_def.axes 可能是 ['X_o']
+            # 我们需要从 parent 链条中找到这些轴对应的 induction_var
             len_indices = []
             current_p = axis_ref.get_parent()
-            #         ->         
+            # 建立一个 轴名 -> 感应变量 的映射
             axis_to_var_map = {}
             while current_p is not None:
                 axis_to_var_map[current_p.axis] = current_p.induction_var
@@ -363,25 +369,25 @@ def apply_split_transformation(
                 sympy_indices.append(Symbol(var_name))
             
             val_len_indexed = None
-            # 3.    SymPy    splen    
+            # 3. 使用 SymPy 构造 splen 表达式
             if (len(sympy_indices) == 0):
                 val_len_indexed = Symbol(sparse_len_def.name)
             else:
-                #        
+                # 构造基础数组名
                 val_len_base = IndexedBase(sparse_len_def.name)
-                #      ：val_len[i1]
-                #        ，IndexedBase        val_len[i1, i2...]
+                # 构造访问项：val_len[i1]
+                # 如果有多个维度，IndexedBase 会自动处理为 val_len[i1, i2...]
                 val_len_indexed = val_len_base[tuple(sympy_indices)]
 
-            #        
-            #    new_length_inner    ，   Integer          SymPy   
+            # 构造除法表达式
+            # 如果 new_length_inner 是整数，使用 Integer 包装以获得更好的 SymPy 支持
             divisor = new_length_inner
             
-            #     SymPy Expr: val_len[i1] / BLK_K
+            # 最终的 SymPy Expr: val_len[i1] / BLK_K
             splen_sympy_expr = val_len_indexed / divisor
 
-            # 4.      SparseAxisIterator
-            #   ：    splen_array        sympy.Expr   
+            # 4. 创建新的 SparseAxisIterator
+            # 注意：这里的 splen_array 现在持有一个 sympy.Expr 对象
             new_axis_ref = SparseAxisIterator(
                 axis=new_axis_outer.name,
                 body=axis_ref,
@@ -409,7 +415,7 @@ def apply_split_transformation(
 
         # Insert a new dense dim index of x_o into array refs
         # Maybe always append to the tail of the refs?
-        #>   arg.indices   AtomicFormatOp  axis，      "_"，    new_axis_ref.axis，      new_axis_ref.induction_var
+        #> 如果arg.indices中含有AtomicFormatOp中的axis，则对应位置是"_"，如果包含new_axis_ref.axis，对应位置使用new_axis_ref.induction_var
         for arg in axis_ref.args:
             update_array_ref_recursive(arg, new_axis_ref, array_defs, axis_to_split.name, new_length_inner)
         
@@ -474,7 +480,7 @@ def apply_swap_transformation(
         # they are in the same atomic op, just swap the axes and axes_lens
         axis0_ref.axes = axis0_ref.axes[1], axis0_ref.axes[0]
         axis0_ref.axes_len = axis0_ref.axes_len[1], axis0_ref.axes_len[0]
-        #>      swap  AtomicFormatOp  args   ArrayRef indices。   val[x_idx, y_idx]  val[y_idx, x_idx]，            arrayref indices arraydef.axes       。    AtomicForamtOp axes   args  indices "_"，         indices     
+        #> 这里也需要swap一下AtomicFormatOp中的args内部的ArrayRef的indices。例如从val[x_idx, y_idx]变为val[y_idx, x_idx]，要实现这个功能需要建立起arrayref的indices和arraydef.axes之间的映射关系。但是由于AtomicForamtOp的axes对应在args中的indices是"_"，所以可以不考虑交换indices带来的问题
         for arg in axis0_ref.args:
             if isinstance(arg, ArrayRef):
                 array_def = array_defs[arg.array]
@@ -542,12 +548,12 @@ def apply_sparsify_transformation(
                 if node.func == varlen:
                     return True
             return False
-        #!   val   ，     idx ？       ，  direction   idx   
+        #! 如果val修改了，还需要修改idx吗？可能需要改一下，一个direction留一个idx就行了
         if array_def.type == ArrayType.IDX:
-            #         sidx        ，     sidx  
-            #   val_sidx [Xo, Yso, Ysi] Ysi    -> val_sidx[Xo, Yso, Ysis],      Ys,    Ysi  
-            #      sidx         ,     sidx  
-            #   val_sidx [Xo, Yso, Ysi] Xo    -> val_sidx[Xos, Yso, Ysi]
+            # 如果当前稀疏轴在sidx相同方向进行稀疏，则直接修改sidx矩阵
+            # 例如val_sidx [Xo, Yso, Ysi]对Ysi稀疏化 -> val_sidx[Xo, Yso, Ysis],原来稀疏的是Ys,后来再对Ysi稀疏
+            # 如果与当前sidx不同方向进行稀疏化,也直接修改sidx矩阵
+            # 例如val_sidx [Xo, Yso, Ysi]对Xo稀疏化 -> val_sidx[Xos, Yso, Ysi]
             sparse_idx_def = ArrayDef(
                 name=array_def.name,
                 axes=array_def.axes[: idx] + [axis.name] + array_def.axes[idx + 1 : ],
@@ -568,17 +574,17 @@ def apply_sparsify_transformation(
             #                 idx_array_direction = spformat.axes[j].direction
             # assert idx_array_direction is not None
             # if idx_array_direction == axis.direction:
-            #     #  sidx          ，    sidx  
-            #     # e.g. val_sidx [Xo, Yso, Ysi] Ysi    -> val_sidx[Xo, Yso, Ysis]
+            #     # 在sidx的相同方向进行稀疏化，直接修改sidx矩阵
+            #     # e.g. val_sidx [Xo, Yso, Ysi]对Ysi稀疏化 -> val_sidx[Xo, Yso, Ysis]
 
             # else:
-            #     #     sidx         ，     sidx  
-            #     # e.g. val_sidx [Xo, Yso, Ysi] Xo    -> val_sidx[Xos, Yso, Ysi]
+            #     # 在与当前sidx不同方向进行稀疏化，不修改当前sidx矩阵
+            #     # e.g. val_sidx [Xo, Yso, Ysi]对Xo稀疏化 -> val_sidx[Xos, Yso, Ysi]
         elif array_def.type == ArrayType.SPLEN:
-            #    IDX    ,     SPLEN         ,               
-            #      val[Xo,Yo,Yis,Xi] & len[Xo,Yo]
-            #       Yo   ,  len[Xo,Yos]
-            #       Xo   ,  len[Xos,Yo]
+            # 似乎和IDX矩阵相同,不管是否在SPLEN所负责的轴上稀疏化,结果仍然是只需要变化一个轴即可
+            # 例如如果是val[Xo,Yo,Yis,Xi] & len[Xo,Yo]
+            # 如果进一步在Yo稀疏化,得到len[Xo,Yos]
+            # 如果进一步在Xo稀疏化,得到len[Xos,Yo]
             sparse_len_def = ArrayDef(
                 name=array_def.name,
                 axes=array_def.axes[: idx] + [axis.name] + array_def.axes[idx + 1 : ],
@@ -628,7 +634,7 @@ def apply_sparsify_transformation(
                 datatype=DataType.INT,
             )
 
-            #!    varlen      arraydef    ,         array
+            #! 将每个varlen和一个固定的arraydef绑定起来,便于之后找到特定的array
             varlen2LenArrayTable = SymbolTable.global_table("varlen2LenArrayTable")
             varlen2LenArrayTable[str(axis.length)] = sparse_len_def
         
@@ -649,7 +655,7 @@ def apply_sparsify_transformation(
                 datatype=array_def.datatype
             )
             new_array_defs.add(sparse_c_def)
-            #       C   ，     schedule   
+            # 记录下新的 C 定义，方便后续 schedule 处理
             # target_c_val_name = sparse_c_def.name
 
     update_st_array_def(new_array_defs)
@@ -659,28 +665,28 @@ def apply_sparsify_transformation(
     assert axis_ref is not None
 
     if isinstance(axis_ref, DenseAxisIterator):
-        # 1.         (axis name -> induction variable)
+        # 1. 获取上下文映射 (axis name -> induction variable)
         loop_context = {}
         curr_parent = axis_ref.get_parent()
         while curr_parent is not None:
             loop_context[curr_parent.axis] = curr_parent.induction_var
             curr_parent = curr_parent.get_parent()
         
-        #      induction var
+        # 当前轴的 induction var
         curr_var = axis_ref.induction_var
 
         varlen_table = SymbolTable.global_table("varlen2LenArrayTable")
         sparse_len_def = varlen_table.get(str(axis.length))
         if sparse_len_def:
-            #    val_len   axes ['X_o']         i11
+            # 根据 val_len 的 axes ['X_o'] 找到对应的变量 i11
             len_indices = [Symbol(loop_context[ax]) for ax in sparse_len_def.axes if ax in loop_context]
             # splen = val_len[i11]
-            #   ：            ，   sparsify     Y_o，     val_len[i11]
+            # 注意：这里的长度是分块后的数量，如果 sparsify 作用于 Y_o，长度就是 val_len[i11]
             splen_expr = IndexedBase(sparse_len_def.name)[tuple(len_indices)]
         else:
             splen_expr = None
         
-        # 3.    SparseAxisIterator
+        # 3. 创建 SparseAxisIterator
         new_iterator = SparseAxisIterator(
             axis=axis.name,             # Y_o_s
             induction_var=curr_var,     # i12
@@ -690,30 +696,30 @@ def apply_sparsify_transformation(
             offset_array="None",
             splen_array="None",
         )
-        #      
+        # 更新树结构
         if axis_ref.get_parent():
             axis_ref.get_parent().body = new_iterator
         axis_ref.body.parent = new_iterator
         new_iterator.body = axis_ref.body
         new_iterator.parent = axis_ref.get_parent()
         axis_ref = new_iterator
-        # 4.          AtomicFormatOp   args
+        # 4. 深度递归更新内部 AtomicFormatOp 的 args
         atomic_format_op:AtomicFormatOp = axis_ref.get_atomicformatop()
         
-        # 4.1          (val_sidx[i11, i12])
+        # 4.1 构造稀疏索引引用 (val_sidx[i11, i12])
         sidx_indices = []
         for s_axis in sparse_idx_def.axes:
-            if s_axis == new_axis_name: #         , Y_o_s
+            if s_axis == new_axis_name: # 当前正在稀疏的轴, Y_o_s
                 sidx_indices.append(curr_var)
             elif s_axis in loop_context:
                 sidx_indices.append(loop_context[s_axis])
             else:
                 sidx_indices.append("_")
 
-        #       ArrayRef：val_sidx[i11, i12]
-        # TODO ArrayRef indices   str|ArrayRef，i12 * BLK_K + _      str   ，sidx[i11, i12] * BLK_K + _      str  ，     
+        # 创建嵌套的 ArrayRef：val_sidx[i11, i12]
+        # TODO ArrayRef的indices只能是str|ArrayRef，i12 * BLK_K + _ 只能使用 str 表达，sidx[i11, i12] * BLK_K + _ 也必须使用str保存，非常不方便
         sidx_ref = ArrayRef(array=sparse_idx_def.name, indices=sidx_indices)
-        # 4.2      args     
+        # 4.2 遍历并替换args内部的符号
         matrix_B_val_name = new_array_defs[ArrayType.B_VAL][0].name
         for arg in atomic_format_op.args:
             if not isinstance(arg, ArrayRef):
@@ -731,8 +737,8 @@ def apply_sparsify_transformation(
             elif arg.array == matrix_B_val_name:
                 from sympy import sympify
                 def to_sympy_expr(item):
-                    """    、ArrayRef     Expr       SymPy Expr"""
-                    # 1.       
+                    """将字符串、ArrayRef 或现有 Expr 统一转换为 SymPy Expr"""
+                    # 1. 处理基础类型
                     if isinstance(item, str):
                         return Symbol(item)
                     if isinstance(item, (int, float)):
@@ -740,41 +746,41 @@ def apply_sparsify_transformation(
                     if isinstance(item, Expr):
                         return item
 
-                    # 2.    ArrayRef   
+                    # 2. 处理 ArrayRef 对象
                     if hasattr(item, 'array') and hasattr(item, 'indices'):
                         base = IndexedBase(item.array)
                         
-                        #    for          ，        
+                        # 使用 for 循环逐个转换索引项，构建一个新的列表
                         sym_indices = []
                         for idx in item.indices:
-                            #     ，      ArrayRef      
+                            # 递归调用，确保嵌套的 ArrayRef 也能被转换
                             converted_idx = to_sympy_expr(idx)
                             sym_indices.append(converted_idx)
                         
-                        #      ：
-                        #   SymPy  ，base[tuple_obj]     base[i, j, k]
-                        #          *sym_indices       
+                        # 核心修改点：
+                        # 在 SymPy 中，base[tuple_obj] 等价于 base[i, j, k]
+                        # 这样就避免了使用 *sym_indices 这种解包语法
                         return base[tuple(sym_indices)]
 
                     return sympify(item)
                 def replace_symbol_in_arg(arg: ArrayRef, old_var: str, new_var_obj: any):
                     target_sym = Symbol(old_var)
                     
-                    #          （sidx_ref）    SymPy    Indexed    
+                    # 将要替换进去的对象（sidx_ref）转换为 SymPy 原生 Indexed 表达式
                     replacement_expr = to_sympy_expr(new_var_obj)
 
                     for i in range(len(arg.indices)):
                         idx_item = arg.indices[i]
                         
-                        if hasattr(idx_item, 'array'): #        ArrayRef
+                        if hasattr(idx_item, 'array'): # 如果是嵌套的 ArrayRef
                             replace_symbol_in_arg(idx_item, old_var, new_var_obj)
                         else:
-                            # 1.      （  "BLK_K*i12 + _"）   SymPy    
+                            # 1. 将当前索引（如 "BLK_K*i12 + _"）转为 SymPy 表达式
                             expr = sympify(idx_item) if isinstance(idx_item, str) else idx_item
                             
-                            # 2.           
+                            # 2. 检查是否包含目标变量
                             if target_sym in expr.free_symbols:
-                                # 3.    replacement_expr   Indexed   ，subs     
+                                # 3. 此时 replacement_expr 是 Indexed 类型，subs 不会报错
                                 new_expr = expr.subs(target_sym, replacement_expr)
                                 arg.indices[i] = new_expr
                 print("before replacement, B_val arg indices:", arg.indices, "looking for var:", curr_var, type(curr_var), type(sidx_ref))
@@ -822,7 +828,7 @@ def apply_sparsify_transformation(
         #     Here only B_val requires modification, since other arrays (like val) 
         #     are already transformed to sparse form.
         #     """
-        #     #TODO:          ,                   ,  induction_var    
+        #     #TODO:现在这里还是不太智能,对于多维数组的引用应该可以自动检测长度,需要induction_var的个数等
         #     print("asfadfadfadfadfadfadfa test point")
         #     matrix_B_val_name = array_defs[ArrayType.B_VAL][0].name
         #     idx = sparse_val_def.index_of(axis.name)
@@ -855,8 +861,8 @@ def apply_sparsify_transformation(
         )
     elif isinstance(axis_ref, AtomicFormatOp):
         parent_axis_ref = axis_ref.get_parent()
-        # 1.              (Axis Name -> Induction Var)
-        #          ，    {"X_o": "i5", "Y_s_o": "i6"}
+        # 1. 建立完整的循环上下文映射 (Axis Name -> Induction Var)
+        # 向上回溯所有父节点，捕获如 {"X_o": "i5", "Y_s_o": "i6"}
         loop_context = {}
         curr_p = axis_ref.get_parent()
         while curr_p is not None:
@@ -864,25 +870,25 @@ def apply_sparsify_transformation(
                 loop_context[curr_p.axis] = curr_p.induction_var
             curr_p = curr_p.get_parent()
 
-        # 2.    SymPy   
-        #    sparse_len_def.axes (  ['X_o', 'Y_s_o'])          
+        # 2. 准备 SymPy 索引
+        # 根据 sparse_len_def.axes (如 ['X_o', 'Y_s_o']) 从上下文中提取变量
         len_indices = []
         for adef_axis in sparse_len_def.axes:
             if adef_axis in loop_context:
                 len_indices.append(Symbol(loop_context[adef_axis]))
             else:
-                #     ：     ，              
+                # 容错处理：如果没找到，通常是由于该维度是全局或常量
                 len_indices.append(Symbol("_"))
 
-        # 3.    Indexed    
-        #    indices   （  ），    Symbol；    IndexedBase
+        # 3. 构造 Indexed 表达式
+        # 如果 indices 为空（标量），直接用 Symbol；否则用 IndexedBase
         if not len_indices:
             new_len_expr = Symbol(sparse_len_def.name)
         else:
             new_len_expr = IndexedBase(sparse_len_def.name)[tuple(len_indices)]
 
-        # 4.    AtomicFormatOp      
-        #                  prev_axis_name
+        # 4. 更新 AtomicFormatOp 的轴和长度
+        # 判定哪一个轴是当前正在被稀疏化的 prev_axis_name
         if axis_ref.axes[0] == prev_axis_name:
             axis_ref.axes = axis.name, axis_ref.axes[1]
             axis_ref.axes_len = (new_len_expr, axis_ref.axes_len[1])
@@ -893,13 +899,13 @@ def apply_sparsify_transformation(
             raise ValueError(
                 f"Sparsify Transform: axis_ref {axis_ref.axes} don't match with {prev_axis_name}"
             )
-        #! ===================================     len    
+        #! ===================================这里之前的len处理逻辑
         # parent_axis_ref = axis_ref.get_parent()
         # # print(parent_axis_ref)
         # if parent_axis_ref is not None:
         #     if axis_ref.axes[0] == prev_axis_name:
         #         axis_ref.axes = axis.name, axis_ref.axes[1]
-        #         #!       lens ,    AtomicFormatOp     axis   axis          ,        varlen,  SymbolTable.global_table("varlen2LenArrayTable")     array_def,  induction_var     len
+        #         #! 这里不再使用lens了,首先通过AtomicFormatOp中的参与的axis可以从axis定义中找到他们的长度,如果长度中包含了varlen,使用SymbolTable.global_table("varlen2LenArrayTable")找到对应的array_def,根据induction_var获得最终的len
         #         axis_ref.axes_len = (
         #             IndexedBase(sparse_len_def.name)[Symbol(parent_axis_ref.induction_var)],
         #             axis_ref.axes_len[1]
@@ -926,7 +932,7 @@ def apply_sparsify_transformation(
         #             f"Saprsify Transform: axis_ref don't match with prev_axis_name (point 2)"
         #         )
         #! ===================================
-        # TODO:      ArrayRef   Expr,Expr         ,      
+        # TODO:我打算把所有ArrayRef替换为Expr,Expr的表达语义完全够用,而且特别灵活
         target_array = sparse_val_def.name
         sidx_array_name = sparse_idx_def.name
         print("target_array", target_array)
@@ -934,16 +940,16 @@ def apply_sparsify_transformation(
         print("prev_axis_name", prev_axis_name)
         outer_var = parent_axis_ref.induction_var if parent_axis_ref is not None else None
         
-        # 1.                  (Axis -> Inductor Map)
+        # 1. 建立完整的轴名到感应变量的映射表 (Axis -> Inductor Map)
         axis_to_var_map = {}
         curr_parent = axis_ref.get_parent()
         while curr_parent is not None:
-            #                    
-            #   : {"X_o": "i5", "Y_s_o": "i6"}
+            # 记录每一层循环的轴名及其对应的感应变量
+            # 例如: {"X_o": "i5", "Y_s_o": "i6"}
             axis_to_var_map[curr_parent.axis] = curr_parent.induction_var
             curr_parent = curr_parent.get_parent()
 
-        # 2.      Op          (      indices       "_")
+        # 2. 获取当前 Op 内部正在处理的轴 (这几个轴在 indices 中应保持为 "_")
         current_op_axes = set(axis_ref.axes)
 
         for arg in axis_ref.args:
@@ -952,10 +958,10 @@ def apply_sparsify_transformation(
 
             arg_adef = new_array_defs[arg.array]
             
-            # ---    A:    B_val             ---
+            # --- 情况 A: 处理 B_val 等引用了被稀疏轴的数组 ---
             old_axis_pos = arg_adef.index_of(prev_axis_name)
             if old_axis_pos is not None and arg.array != target_array:
-                #    sidx array_ref
+                # 构造 sidx array_ref
                 sidx_adef = new_array_defs[sidx_array_name]
                 sidx_indices = []
                 for s_axis in sidx_adef.axes:
@@ -964,31 +970,31 @@ def apply_sparsify_transformation(
                     else:
                         sidx_indices.append("_")
                 sidx_proxy = ArrayRef(array=sidx_array_name, indices=sidx_indices)
-                #    B_val        
+                # 确保 B_val 长度对齐并填充
                 while len(arg.indices) < len(arg_adef.axes):
                     arg.indices.append("_")
                 arg.indices[old_axis_pos] = sidx_proxy
                 pass 
 
-            # ---    B:        val (      ) ---
+            # --- 情况 B: 处理目标数组 val (重点修改这里) ---
             elif arg.array == target_array:
                 new_len = len(arg_adef.axes)
                 new_indices = ["_"] * new_len
                 
                 for i, axis_name in enumerate(arg_adef.axes):
-                    #                    
+                    # 优先从映射表中寻找该轴是否是外层循环轴
                     if axis_name in axis_to_var_map:
                         new_indices[i] = axis_to_var_map[axis_name]
-                    #          AtomicFormatOp       ，          
-                    #      "_"
+                    # 如果该轴属于当前 AtomicFormatOp 正在处理的轴，或者是还没被绑定的轴
+                    # 则保持为 "_"
                     elif axis_name in current_op_axes:
                         new_indices[i] = "_"
                     else:
-                        #     ，                 "_"
-                        #    arg.indices     ，      
+                        # 其他情况，可以根据需要保留原有的索引或设为 "_"
+                        # 如果 arg.indices 已经有值，可以尝试保留
                         if i < len(arg.indices):
-                             #         "_"              
-                             #           
+                             # 只有当原先不是 "_" 且我们没找到新映射时才保留
+                             # 但通常重新构建更安全
                              pass
                 
                 arg.indices = new_indices
@@ -997,41 +1003,41 @@ def apply_sparsify_transformation(
         #     if not isinstance(arg, ArrayRef):
         #         continue
 
-        #     #!         ，     Y    ，prev_axis_name Y，      Y_o    ，prev_axis_name Y_o，    old_axis_pos，    B_val   schedule   ？    Y_o     ， B_val        Expr？
+        #     #! 这里存在一些问题，在当前对于Y的稀疏中，prev_axis_name是Y，但是例如对于Y_o的稀疏中，prev_axis_name是Y_o，无法找到old_axis_pos，如何修改B_val参与在schedule的索引？还是说在Y_o这种情况中，对B_val的索引一定要考虑Expr？
         #     arg_adef = array_defs[arg.array]
-        #     #    A：        (prev_axis_name，  "Y")    （   B_val）
-        #     #   ：B_val   ArrayDef    ，        
+        #     # 情况 A：处理引用了旧轴 (prev_axis_name，如 "Y") 的数组（例如 B_val）
+        #     # 注意：B_val 的 ArrayDef 不会变，它依然包含旧轴名
         #     old_axis_pos = arg_adef.index_of(prev_axis_name)
 
         #     if old_axis_pos is not None:
         #         if arg.array != target_array:
-        #             #    B_val，           ：val_sidx[i1, _]
-        #             #     "_"     AtomicFormatOp           
+        #             # 对于 B_val，构造嵌套的间接寻址对象：val_sidx[i1, _]
+        #             # 这里的 "_" 代表在 AtomicFormatOp 内部由当前稀疏轴填充
         #             sidx_indices = [outer_var, "_"] if outer_var else ["_"]
         #             sidx_proxy = ArrayRef(
         #                 array=sidx_array_name, 
         #                 indices=sidx_indices
         #             )
                     
-        #             #    indices       ArrayDef   
+        #             # 确保 indices 列表长度与 ArrayDef 对齐
         #             while len(arg.indices) < len(arg_adef.axes):
         #                 arg.indices.append("_")
                     
-        #             #             
+        #             # 在对应位置替换为代理对象
         #             arg.indices[old_axis_pos] = sidx_proxy
         #         else:
-        #             #    B：         (  val)
-        #             #    val   ArrayDef       ['X_o', 'Y_s', 'X_i']
-        #             #            indices
+        #             # 情况 B：处理目标数组本身 (如 val)
+        #             # 此时 val 的 ArrayDef 已经变为了 ['X_o', 'Y_s', 'X_i']
+        #             # 我们需要重新对齐它的 indices
         #             new_len = len(arg_adef.axes)
                     
-        #             #      ：       "_"     ，            
+        #             # 简单的策略：创建一个全是 "_" 的新列表，然后把外层感应变量填回去
         #             new_indices = ["_"] * new_len
         #             for i, axis_name in enumerate(arg_adef.axes):
-        #                 #           (  X_o)，         (i1)
+        #                 # 如果这个轴是外层轴 (如 X_o)，填入外层感应变量 (i1)
         #                 if parent_axis_ref and axis_name == parent_axis_ref.axis:
         #                     new_indices[i] = outer_var
-        #                 #       Op        (Y_s   X_i)，    "_"
+        #                 # 如果是当前 Op 正在处理的轴 (Y_s 或 X_i)，保持为 "_"
                         
         #             arg.indices = new_indices
         
@@ -1107,6 +1113,7 @@ def apply_cooize_transformation(
     spformat: Format,
     root_format: Format,
     transform: CooizeTransformation,
+    coo_storage_policy: str = "compact_prefix",
 ) -> Tuple[Schedule, ArrayDefCollection, AtomicFormat]:
     schedule, array_defs = (
         deepcopy(schedule),
@@ -1138,20 +1145,27 @@ def apply_cooize_transformation(
         idx_x, idx_y = val_def.index_of(axis_x), val_def.index_of(axis_y)
         # idx_x and idx_y should be the last two dimensions
         assert idx_x and idx_y and idx_x + 1 == idx_y and idx_y == len(val_def.axes) - 1
-        # coo_off_def = ArrayDef(
-        #     name=MyNameManager.new_name(val_def.name + "_coo_off"),
-        #     axes=val_def.axes[:-2],
-        #     dims=val_def.dims[:-2],
-        #     type=ArrayType.OFFSET,
-        #     datatype=DataType.INT,
-        # )
-        coo_len_def = ArrayDef(
-            name=MyNameManager.new_name(val_def.name + "_coo_len"),
-            axes=val_def.axes[:-2],
-            dims=val_def.dims[:-2],
-            type=ArrayType.SPLEN,
-            datatype=DataType.INT,
-        )
+        coo_len_def = None
+        coo_off_def = None
+        if coo_storage_policy == "padded_offset_pair":
+            coo_off_def = ArrayDef(
+                name=MyNameManager.new_name(val_def.name + "_coo_off"),
+                axes=val_def.axes[:-2] + [f"{axis_x}_{axis_y}_coo_off_pair"],
+                dims=val_def.dims[:-2] + [2],
+                type=ArrayType.OFFSET,
+                datatype=DataType.INT,
+            )
+        elif coo_storage_policy == "compact_prefix":
+            coo_len_def = ArrayDef(
+                name=MyNameManager.new_name(val_def.name + "_coo_len"),
+                axes=val_def.axes[:-2],
+                dims=val_def.dims[:-2],
+                type=ArrayType.SPLEN,
+                datatype=DataType.INT,
+            )
+        else:
+            raise ValueError(f"Unsupported COO storage policy: {coo_storage_policy}")
+
         coo_idx_def = ArrayDef(
             name=MyNameManager.new_name(val_def.name + "_coo_idx"),
             axes=val_def.axes[:-2] + [f"{axis_x}_{axis_y}_coo"],
@@ -1166,9 +1180,17 @@ def apply_cooize_transformation(
             type=ArrayType.VAL,
             datatype=val_def.datatype,
         )
-        varlen2LenArrayTable = SymbolTable.global_table("varlen2LenArrayTable")
-        varlen2LenArrayTable[str(merged_axis.length)] = coo_len_def
-        array_defs.replace([val_def.name], [coo_idx_def, coo_val_def, coo_len_def])
+        if coo_len_def is not None:
+            varlen2LenArrayTable = SymbolTable.global_table("varlen2LenArrayTable")
+            varlen2LenArrayTable[str(merged_axis.length)] = coo_len_def
+            coo_metadata_def = coo_len_def
+            replacement_defs = [coo_idx_def, coo_val_def, coo_len_def]
+        else:
+            assert coo_off_def is not None
+            coo_metadata_def = coo_off_def
+            replacement_defs = [coo_idx_def, coo_val_def, coo_off_def]
+
+        array_defs.replace([val_def.name], replacement_defs)
 
     update_st_array_def(array_defs)
 
@@ -1214,9 +1236,9 @@ def apply_cooize_transformation(
     assert isinstance(axis_ref, AtomicFormatOp)
     assert axis_ref.type == AtomicFormatType.DENSE
 
-    # ---     ：        ---
-    # 1.    AtomicFormatOp           val   （   B_val    ）
-    #      val_def.name      
+    # --- 核心修改：提取并继承索引 ---
+    # 1. 在原 AtomicFormatOp 的参数中找到原始的 val 引用（即非 B_val 的那个）
+    # 我们使用 val_def.name 来精准匹配
     orig_val_arg = next(
         filter(
             lambda arg: isinstance(arg, ArrayRef) and arg.array == val_def.name,
@@ -1224,28 +1246,29 @@ def apply_cooize_transformation(
         )
     )
     
-    # 2.       。   AtomicFormatOp           ，
-    #          [..., _, _]。           （  [i1, i2]）
-    #               
+    # 2. 提取外层索引。由于 AtomicFormatOp 处理的是最后两个维度，
+    # 对应的索引通常是 [..., _, _]。我们需要保留前面的部分（如 [i1, i2]）
+    # 这里使用切片去掉最后两个位置
     inherited_indices = list(orig_val_arg.indices[:-2])
     
-    # 3.      COO AtomicFormatOp
+    # 3. 构造新的 COO AtomicFormatOp
     new_axis_ref = AtomicFormatOp(
         axes=(axis_x, axis_y),
         axes_len=(axis_ref.axes_len[0], axis_ref.axes_len[1]),
         type=AtomicFormatType.COO,
         args=[
-            # coo_len        ：val_coo_len[i1, i2]
-            ArrayRef(array=coo_len_def.name, indices=inherited_indices),
+            # compact policy uses coo_len[i1, i2]; padded policy uses
+            # coo_off[i1, i2] and the pair dimension is addressed by the loader.
+            ArrayRef(array=coo_metadata_def.name, indices=inherited_indices),
             
-            # coo_idx   coo_val        +    COO       "_"
+            # coo_idx 和 coo_val 需要外层索引 + 一个 COO 轴的占位符 "_"
             # val_coo_idx[i1, i2, _]
             ArrayRef(array=coo_idx_def.name, indices=inherited_indices + ["_"]),
             
             # val_coo_val[i1, i2, _]
             ArrayRef(array=coo_val_def.name, indices=inherited_indices + ["_"]),
             
-            #    B_val   
+            # 保持 B_val 不变
             next(
                 filter(
                     lambda arg: isinstance(arg, ArrayRef) and arg.array == "B_val",
@@ -1262,7 +1285,7 @@ def apply_cooize_transformation(
         assert isinstance(parent_axis_ref, AxisVisitor)
         parent_axis_ref.body = new_axis_ref
     else:
-        #        ，         ，     schedule   
+        # 如果没有父节点，说明当前节点就是根，直接更新 schedule 引用
         schedule = new_axis_ref
 
     return schedule, array_defs, new_format
@@ -1299,10 +1322,14 @@ def apply_mcoize_transformation(
         idx_x, idx_y = val_def.index_of(axis_x), val_def.index_of(axis_y)
         # idx_x and idx_y should be the last two dimensions
         assert idx_x and idx_y and idx_x + 1 == idx_y and idx_y == len(val_def.axes) - 1
+        mask_axis_name = f"{axis_x}_{axis_y}_mco_mask"
+        mask_tile_shape = (val_def.dims[idx_x] * val_def.dims[idx_y]) / Number(64)
         mco_mask_def = ArrayDef(
             name=MyNameManager.new_name(val_def.name + "_mco_mask"),
-            axes=val_def.axes[:-2],
-            dims=val_def.dims[:-2],
+            # Keep the mask-vector dimension explicit so the generated gmem
+            # interface matches the handwritten kernels: [num_masks, nnz_block].
+            axes=[mask_axis_name] + val_def.axes[:-2],
+            dims=[mask_tile_shape] + val_def.dims[:-2],
             type=ArrayType.MASK,
             datatype=DataType.INT,
         )
@@ -1337,7 +1364,7 @@ def apply_mcoize_transformation(
     #     type=AtomicFormatType.MCO,
     #     axes_len=(axis_ref.axes_len[0], axis_ref.axes_len[1]),
     #     args=[
-    #         # TODO: ArrayRef  Expr
+    #         # TODO: ArrayRef改成Expr
     #         ArrayRef(array=mco_len_def.name, indices=[]),
     #         ArrayRef(array=mco_mask_def.name, indices=[]),
     #         ArrayRef(array=mco_val_def.name, indices=[]),
@@ -1367,8 +1394,8 @@ def apply_mcoize_transformation(
     assert isinstance(axis_ref, AtomicFormatOp)
     assert axis_ref.type == AtomicFormatType.DENSE
 
-    # ---     ：        ---
-    # 1.    AtomicFormatOp         val     (   val_def.name)
+    # --- 核心修改：提取并继承索引 ---
+    # 1. 在原 AtomicFormatOp 参数中定位原始 val 的引用 (依据 val_def.name)
     orig_val_arg = next(
         filter(
             lambda arg: isinstance(arg, ArrayRef) and arg.array == val_def.name,
@@ -1376,24 +1403,24 @@ def apply_mcoize_transformation(
         )
     )
     
-    # 2.         。       "_"    
-    #   ：  [i3, i4, _, _]     [i3, i4]
+    # 2. 提取外层索引前缀。去掉最后两个 "_" 占位符
+    # 例如：从 [i3, i4, _, _] 提取出 [i3, i4]
     inherited_indices = list(orig_val_arg.indices[:-2])
     
-    # 3.      MCO AtomicFormatOp
+    # 3. 构造新的 MCO AtomicFormatOp
     new_axis_ref = AtomicFormatOp(
         axes=(axis_x, axis_y),
         type=AtomicFormatType.MCO,
         axes_len=(axis_ref.axes_len[0], axis_ref.axes_len[1]),
         args=[
-            # mco_len   mco_mask        : [i3, i4]
+            # mco_len 和 mco_mask 仅保留外层索引: [i3, i4]
             ArrayRef(array=mco_len_def.name, indices=inherited_indices),
             ArrayRef(array=mco_mask_def.name, indices=inherited_indices),
             
-            # mco_val        MCO     : [i3, i4, _]
+            # mco_val 增加合并后的 MCO 轴占位符: [i3, i4, _]
             ArrayRef(array=mco_val_def.name, indices=inherited_indices + ["_"]),
             
-            #    B_val              
+            # 保持 B_val 引用及其复杂的索引逻辑不变
             next(
                 filter(
                     lambda arg: isinstance(arg, ArrayRef) and arg.array == "B_val",
@@ -1410,9 +1437,326 @@ def apply_mcoize_transformation(
         assert isinstance(parent_axis_ref, AxisVisitor)
         parent_axis_ref.body = new_axis_ref
     else:
-        #        ，     ，   schedule   
+        # 如果没有父节点，说明是顶层，更新 schedule 引用
         schedule = new_axis_ref
     
+    return schedule, array_defs, new_format
+
+
+def apply_csrize_transformation(
+    schedule: Schedule,
+    array_defs: ArrayDefCollection,
+    spformat: Format,
+    root_format: Format,
+    transform: CsrizeTransformation,
+) -> Tuple[Schedule, ArrayDefCollection, AtomicFormat]:
+    schedule, array_defs = (
+        deepcopy(schedule),
+        deepcopy(array_defs),
+    )
+    update_st_array_def(array_defs)
+
+    # 1. Handle format
+    axis_x, axis_y = spformat.axes[0].name, spformat.axes[1].name
+    assert len(spformat.axes) == 2 and spformat.is_dense()
+
+    new_format = csr_atomic_format(
+        x_name=axis_x,
+        y_name=axis_y,
+        col_major=spformat.axes[0].direction == Direction.COL,
+    )
+    new_format.axes[0].length = spformat.axes[0].length
+    new_format.axes[1].length = spformat.axes[1].length
+    merged_axis = new_format.axes[2]
+    merged_axis.length = Function('varlen')(Symbol("nnz"))
+    update_st_axis(new_format)
+
+    # 2. Handle array_defs
+    assert len(array_defs[ArrayType.VAL]) == 1
+    for val_def in array_defs[ArrayType.VAL]:
+        idx_x, idx_y = val_def.index_of(axis_x), val_def.index_of(axis_y)
+        assert idx_x and idx_y and idx_x + 1 == idx_y and idx_y == len(val_def.axes) - 1
+
+        csr_len_def = ArrayDef(
+            name=MyNameManager.new_name(val_def.name + "_csr_len"),
+            axes=val_def.axes[:-2],
+            dims=val_def.dims[:-2],
+            type=ArrayType.SPLEN,
+            datatype=DataType.INT,
+        )
+        csr_idx_def = ArrayDef(
+            name=MyNameManager.new_name(val_def.name + "_csr_idx"),
+            axes=val_def.axes[:-2] + [f"{axis_x}_{axis_y}_csr"],
+            dims=val_def.dims[:-2] + [merged_axis.length],
+            type=ArrayType.COO_IDX,
+            datatype=DataType.INT,
+        )
+        csr_val_def = ArrayDef(
+            name=MyNameManager.new_name(val_def.name + "_csr_val"),
+            axes=val_def.axes[:-2] + [f"{axis_x}_{axis_y}_csr"],
+            dims=val_def.dims[:-2] + [merged_axis.length],
+            type=ArrayType.VAL,
+            datatype=val_def.datatype,
+        )
+        varlen2LenArrayTable = SymbolTable.global_table("varlen2LenArrayTable")
+        varlen2LenArrayTable[str(merged_axis.length)] = csr_len_def
+        csr_row_ptr_def = ArrayDef(
+            name=MyNameManager.new_name(val_def.name + "_csr_row_ptr"),
+            axes=val_def.axes[:-2] + [axis_x],
+            dims=val_def.dims[:-2] + [Symbol("BLK_M") + Number(1)],
+            type=ArrayType.IDX,
+            datatype=DataType.INT,
+        )
+        array_defs.replace([val_def.name], [csr_idx_def, csr_val_def, csr_len_def, csr_row_ptr_def])
+        _captured_row_ptr_name = csr_row_ptr_def.name
+
+    update_st_array_def(array_defs)
+
+    # 3. Handle schedule
+    axis_ref = schedule.find_axis_ref(axis_x)
+    assert axis_ref is schedule.find_axis_ref(axis_y)
+    assert isinstance(axis_ref, AtomicFormatOp)
+    assert axis_ref.type == AtomicFormatType.DENSE
+
+    orig_val_arg = next(
+        filter(
+            lambda arg: isinstance(arg, ArrayRef) and arg.array == val_def.name,
+            axis_ref.args,
+        )
+    )
+    inherited_indices = list(orig_val_arg.indices[:-2])
+
+    new_axis_ref = AtomicFormatOp(
+        axes=(axis_x, axis_y),
+        axes_len=(axis_ref.axes_len[0], axis_ref.axes_len[1]),
+        type=AtomicFormatType.CSR,
+        args=[
+            ArrayRef(array=csr_len_def.name, indices=inherited_indices),
+            ArrayRef(array=csr_idx_def.name, indices=inherited_indices + ["_"]),
+            ArrayRef(array=csr_val_def.name, indices=inherited_indices + ["_"]),
+            next(
+                filter(
+                    lambda arg: isinstance(arg, ArrayRef) and arg.array == "B_val",
+                    axis_ref.args,
+                )
+            ),
+            ArrayRef(array=csr_row_ptr_def.name, indices=inherited_indices),
+        ],
+        parent=axis_ref.get_parent(),
+    )
+
+    parent_axis_ref = axis_ref.get_parent()
+    if parent_axis_ref is not None:
+        assert isinstance(parent_axis_ref, AxisVisitor)
+        parent_axis_ref.body = new_axis_ref
+    else:
+        schedule = new_axis_ref
+
+    return schedule, array_defs, new_format
+
+
+def apply_ellize_transformation(
+    schedule: Schedule,
+    array_defs: ArrayDefCollection,
+    spformat: Format,
+    root_format: Format,
+    transform: EllizeTransformation,
+) -> Tuple[Schedule, ArrayDefCollection, AtomicFormat]:
+    """ELL atomic format: packed 2D [BLK_M, max_nnz_per_row] with per-block ell_len scalar."""
+    schedule, array_defs = (
+        deepcopy(schedule),
+        deepcopy(array_defs),
+    )
+    update_st_array_def(array_defs)
+
+    # 1. Handle format
+    axis_x, axis_y = spformat.axes[0].name, spformat.axes[1].name
+    assert len(spformat.axes) == 2 and spformat.is_dense()
+
+    new_format = ell_atomic_format(
+        x_name=axis_x,
+        y_name=axis_y,
+        col_major=spformat.axes[0].direction == Direction.COL,
+    )
+    new_format.axes[0].length = spformat.axes[0].length
+    new_format.axes[1].length = spformat.axes[1].length
+    merged_axis = new_format.axes[2]
+    merged_axis.length = Function('varlen')(Symbol("nnz"))
+    update_st_axis(new_format)
+
+    # 2. Handle array_defs
+    assert len(array_defs[ArrayType.VAL]) == 1
+    for val_def in array_defs[ArrayType.VAL]:
+        idx_x, idx_y = val_def.index_of(axis_x), val_def.index_of(axis_y)
+        assert idx_x and idx_y and idx_x + 1 == idx_y and idx_y == len(val_def.axes) - 1
+
+        ell_len_def = ArrayDef(
+            name=MyNameManager.new_name(val_def.name + "_ell_len"),
+            axes=val_def.axes[:-2],
+            dims=val_def.dims[:-2],
+            type=ArrayType.SPLEN,
+            datatype=DataType.INT,
+        )
+        ell_idx_def = ArrayDef(
+            name=MyNameManager.new_name(val_def.name + "_ell_idx"),
+            axes=val_def.axes[:-2] + [f"{axis_x}_{axis_y}_ell"],
+            dims=val_def.dims[:-2] + [merged_axis.length],
+            type=ArrayType.COO_IDX,
+            datatype=DataType.INT,
+        )
+        ell_val_def = ArrayDef(
+            name=MyNameManager.new_name(val_def.name + "_ell_val"),
+            axes=val_def.axes[:-2] + [f"{axis_x}_{axis_y}_ell"],
+            dims=val_def.dims[:-2] + [merged_axis.length],
+            type=ArrayType.VAL,
+            datatype=val_def.datatype,
+        )
+        varlen2LenArrayTable = SymbolTable.global_table("varlen2LenArrayTable")
+        varlen2LenArrayTable[str(merged_axis.length)] = ell_len_def
+        array_defs.replace([val_def.name], [ell_idx_def, ell_val_def, ell_len_def])
+
+    update_st_array_def(array_defs)
+
+    # 3. Handle schedule
+    axis_ref = schedule.find_axis_ref(axis_x)
+    assert axis_ref is schedule.find_axis_ref(axis_y)
+    assert isinstance(axis_ref, AtomicFormatOp)
+    assert axis_ref.type == AtomicFormatType.DENSE
+
+    orig_val_arg = next(
+        filter(
+            lambda arg: isinstance(arg, ArrayRef) and arg.array == val_def.name,
+            axis_ref.args,
+        )
+    )
+    inherited_indices = list(orig_val_arg.indices[:-2])
+
+    new_axis_ref = AtomicFormatOp(
+        axes=(axis_x, axis_y),
+        axes_len=(axis_ref.axes_len[0], axis_ref.axes_len[1]),
+        type=AtomicFormatType.ELL,
+        args=[
+            ArrayRef(array=ell_len_def.name, indices=inherited_indices),
+            ArrayRef(array=ell_idx_def.name, indices=inherited_indices + ["_"]),
+            ArrayRef(array=ell_val_def.name, indices=inherited_indices + ["_"]),
+            next(
+                filter(
+                    lambda arg: isinstance(arg, ArrayRef) and arg.array == "B_val",
+                    axis_ref.args,
+                )
+            ),
+        ],
+        parent=axis_ref.get_parent(),
+    )
+
+    parent_axis_ref = axis_ref.get_parent()
+    if parent_axis_ref is not None:
+        assert isinstance(parent_axis_ref, AxisVisitor)
+        parent_axis_ref.body = new_axis_ref
+    else:
+        schedule = new_axis_ref
+
+    return schedule, array_defs, new_format
+
+
+def apply_diaize_transformation(
+    schedule: Schedule,
+    array_defs: ArrayDefCollection,
+    spformat: Format,
+    root_format: Format,
+    transform: DiaizeTransformation,
+) -> Tuple[Schedule, ArrayDefCollection, AtomicFormat]:
+    """DIA atomic format: per-block diag_offsets[num_diags] + val[num_diags, BLK_K]."""
+    schedule, array_defs = (
+        deepcopy(schedule),
+        deepcopy(array_defs),
+    )
+    update_st_array_def(array_defs)
+
+    axis_x, axis_y = spformat.axes[0].name, spformat.axes[1].name
+    assert len(spformat.axes) == 2 and spformat.is_dense()
+
+    new_format = dia_atomic_format(
+        x_name=axis_x,
+        y_name=axis_y,
+        col_major=spformat.axes[0].direction == Direction.COL,
+    )
+    new_format.axes[0].length = spformat.axes[0].length
+    new_format.axes[1].length = spformat.axes[1].length
+    merged_axis = new_format.axes[2]
+    merged_axis.length = Function("varlen")(Symbol("nnz"))
+    update_st_axis(new_format)
+
+    assert len(array_defs[ArrayType.VAL]) == 1
+    for val_def in array_defs[ArrayType.VAL]:
+        idx_x, idx_y = val_def.index_of(axis_x), val_def.index_of(axis_y)
+        assert idx_x and idx_y and idx_x + 1 == idx_y and idx_y == len(val_def.axes) - 1
+
+        dia_len_def = ArrayDef(
+            name=MyNameManager.new_name(val_def.name + "_dia_len"),
+            axes=val_def.axes[:-2],
+            dims=val_def.dims[:-2],
+            type=ArrayType.SPLEN,
+            datatype=DataType.INT,
+        )
+        dia_idx_def = ArrayDef(
+            name=MyNameManager.new_name(val_def.name + "_dia_idx"),
+            axes=val_def.axes[:-2] + [f"{axis_x}_{axis_y}_dia"],
+            dims=val_def.dims[:-2] + [merged_axis.length],
+            type=ArrayType.IDX,
+            datatype=DataType.INT,
+        )
+        dia_val_def = ArrayDef(
+            name=MyNameManager.new_name(val_def.name + "_dia_val"),
+            axes=val_def.axes[:-2] + [f"{axis_x}_{axis_y}_dia"],
+            dims=val_def.dims[:-2] + [merged_axis.length],
+            type=ArrayType.VAL,
+            datatype=val_def.datatype,
+        )
+        varlen2LenArrayTable = SymbolTable.global_table("varlen2LenArrayTable")
+        varlen2LenArrayTable[str(merged_axis.length)] = dia_len_def
+        array_defs.replace([val_def.name], [dia_idx_def, dia_val_def, dia_len_def])
+
+    update_st_array_def(array_defs)
+
+    axis_ref = schedule.find_axis_ref(axis_x)
+    assert axis_ref is schedule.find_axis_ref(axis_y)
+    assert isinstance(axis_ref, AtomicFormatOp)
+    assert axis_ref.type == AtomicFormatType.DENSE
+
+    orig_val_arg = next(
+        filter(
+            lambda arg: isinstance(arg, ArrayRef) and arg.array == val_def.name,
+            axis_ref.args,
+        )
+    )
+    inherited_indices = list(orig_val_arg.indices[:-2])
+
+    new_axis_ref = AtomicFormatOp(
+        axes=(axis_x, axis_y),
+        axes_len=(axis_ref.axes_len[0], axis_ref.axes_len[1]),
+        type=AtomicFormatType.DIA,
+        args=[
+            ArrayRef(array=dia_len_def.name, indices=inherited_indices),
+            ArrayRef(array=dia_idx_def.name, indices=inherited_indices + ["_"]),
+            ArrayRef(array=dia_val_def.name, indices=inherited_indices + ["_"]),
+            next(
+                filter(
+                    lambda arg: isinstance(arg, ArrayRef) and arg.array == "B_val",
+                    axis_ref.args,
+                )
+            ),
+        ],
+        parent=axis_ref.get_parent(),
+    )
+
+    parent_axis_ref = axis_ref.get_parent()
+    if parent_axis_ref is not None:
+        assert isinstance(parent_axis_ref, AxisVisitor)
+        parent_axis_ref.body = new_axis_ref
+    else:
+        schedule = new_axis_ref
+
     return schedule, array_defs, new_format
 
 
@@ -1424,7 +1768,7 @@ def add_metadata(schedule: Optional[Schedule], format: Format) -> None:
     while sch is not None:
         if (
             isinstance(sch, AxisVisitor)
-            and format.get_axis(sch.axis).direction == Direction.COL  #      Y
+            and format.get_axis(sch.axis).direction == Direction.COL  # 找到第一个Y
         ):
             sch.metadata = {
                 "reduction_axis": True,
@@ -1440,7 +1784,7 @@ def add_metadata(schedule: Optional[Schedule], format: Format) -> None:
                 raise ValueError(
                     f"Missing block_idx_x.axis outside of reduction axis {sch.axis}"
                 )
-            if format.get_axis(sch.axis).direction == Direction.ROW:  #      X
+            if format.get_axis(sch.axis).direction == Direction.ROW:  # 找到第一个X
                 sch.metadata = {
                     "block_idx_x_axis": True,
                 }
@@ -1454,7 +1798,16 @@ def add_metadata(schedule: Optional[Schedule], format: Format) -> None:
         )
 
 
-def computent_from_rts(name: str, rts: TransformationSequence) -> Computent:
+def computent_from_rts(
+    name: str,
+    rts: TransformationSequence,
+    coo_storage_policy: str = "auto",
+) -> Computent:
+    if coo_storage_policy == "auto":
+        coo_storage_policy = "padded_offset_pair" if name == "ME_TCF" else "compact_prefix"
+    if coo_storage_policy not in {"compact_prefix", "padded_offset_pair"}:
+        raise ValueError(f"Unsupported COO storage policy: {coo_storage_policy}")
+
     spformat = deepcopy(DENSE_FORMAT)
     root_format = Format(axes=[], child=spformat)
     assert isinstance(root_format.child, Format)
@@ -1509,12 +1862,35 @@ def computent_from_rts(name: str, rts: TransformationSequence) -> Computent:
             assert isinstance(spformat, Format)
         elif isinstance(transform, CooizeTransformation):
             schedule, array_defs, atomic_format = apply_cooize_transformation(
-                schedule, array_defs, spformat, root_format.child, transform
+                schedule,
+                array_defs,
+                spformat,
+                root_format.child,
+                transform,
+                coo_storage_policy=coo_storage_policy,
             )
             parent_format.child = atomic_format
             atomic_format_reached = True
         elif isinstance(transform, McoizeTransformation):
             schedule, array_defs, atomic_format = apply_mcoize_transformation(
+                schedule, array_defs, spformat, root_format.child, transform
+            )
+            parent_format.child = atomic_format
+            atomic_format_reached = True
+        elif isinstance(transform, CsrizeTransformation):
+            schedule, array_defs, atomic_format = apply_csrize_transformation(
+                schedule, array_defs, spformat, root_format.child, transform
+            )
+            parent_format.child = atomic_format
+            atomic_format_reached = True
+        elif isinstance(transform, EllizeTransformation):
+            schedule, array_defs, atomic_format = apply_ellize_transformation(
+                schedule, array_defs, spformat, root_format.child, transform
+            )
+            parent_format.child = atomic_format
+            atomic_format_reached = True
+        elif isinstance(transform, DiaizeTransformation):
+            schedule, array_defs, atomic_format = apply_diaize_transformation(
                 schedule, array_defs, spformat, root_format.child, transform
             )
             parent_format.child = atomic_format

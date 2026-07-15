@@ -295,28 +295,28 @@ class Printer:
         )
     
     def dump_load_offset_op(self, op: LoadOffsetOp, indent_level: int = 0) -> str:
-        # 1.         （         Type   ，   array<int>[M/BLK_M + 1]）
+        # 1. 提取要访问的数组（通常打印时会带上 Type 信息，比如 array<int>[M/BLK_M + 1]）
         array = self.dump_op_operand(op.operands[0])
         
-        # 2.       （   %i1）
+        # 2. 提取基准索引（例如 %i1）
         indices = [self.dump_op_operand(idx, with_type=False) for idx in op.operands[1:]]
         
-        # 3.      
-        #      : load_offset(%val_len_offset: array<int>[M/BLK_M + 1], indices=([%i1]))
+        # 3. 格式化输出
+        # 结果类似于: load_offset(%val_len_offset: array<int>[M/BLK_M + 1], indices=([%i1]))
         return self._indent_lines(
             f"load_offset({array}, indices=([{', '.join(indices)}]))", indent_level
         )
 
     def dump_arange_op(self, op: ArangeOp, indent_level: int = 0) -> str:
-        # 1.           （       operand）
+        # 1. 提取起始偏移的操作数（通常是第一个 operand）
         start = self.dump_op_operand(op.operands[0], with_type=False)
         
-        # 2.      ArrayType       (length)
-        #    ArangeOp        ArrayType([length], IntType())
+        # 2. 从结果的 ArrayType 中提取长度 (length)
+        # 假设 ArangeOp 的结果类型是 ArrayType([length], IntType())
         assert isinstance(op.result.type, ArrayType)
         length = op.result.type.dims[0]
         
-        # 3.      ：arange %start, length=BLK_K
+        # 3. 格式化输出：arange %start, length=BLK_K
         return self._indent_lines(f"arange ({start}, length={length})", indent_level)
 
     def dump_block(self, block: Block, indent_level: int = 0) -> str:
@@ -339,7 +339,7 @@ class Printer:
         return f"array<{self.dump_type(type.datatype)}>[{']['.join(dims)}]"
 
     def dump_value(self, value: Value, with_type: bool = True) -> str:
-        #>      dump value，   
+        #> 修改原来的dump value，他会讲
         if getattr(value, "defining_op", None) is None and value.name_hint == "_":
             return "_"
         type_str = self.dump_type(value.type)

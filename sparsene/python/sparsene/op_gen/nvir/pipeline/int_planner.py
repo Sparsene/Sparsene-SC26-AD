@@ -14,10 +14,10 @@ def is_valid_permutation(perm, constraints):
     return True
 
 
-# 1.    op    -> m!
-# 2.   opgraph   ，          ->        
-# 3.      ，        -> 2^(m-1) (max_stage=4) (min_op_score_sum_in_stage=2)
-# 4.      shifts(range=1~3)
+# 1. 我会对op做排列 -> m!
+# 2. 根据opgraph的约束，剪枝掉不合法的排列 -> 得到合法的排列
+# 3. 生成分隔符，插入到排列之间 -> 2^(m-1) (max_stage=4) (min_op_score_sum_in_stage=2)
+# 4. 遍历可能的shifts(range=1~3)
 def generate_all_partitions_with_constraints(
     m: int,
     constraints: List[Tuple[int, int]],

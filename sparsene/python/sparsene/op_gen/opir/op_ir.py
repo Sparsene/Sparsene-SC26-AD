@@ -415,21 +415,21 @@ class ArrayRefOp(Op):
         new_base_dims = []
         extra_dims = []
 
-        # 1.    indices，          
+        # 1. 遍历 indices，对照原始维度进行判断
         for i, index in enumerate(indices):
-            #       "_" (      )，      
-            #      "_"            Value    name_hint   "_"
+            # 如果索引是 "_" (下划线占位符)，则保留该维度
+            # 假设你的 "_" 被包装成了某种特殊的 Value 或其 name_hint 是 "_"
             if getattr(index, "name_hint", None) == "_":
                 new_base_dims.append(old_dims[i])
             
-            #              （      ）
+            # 如果索引本身是带维度的数组（高级索引逻辑）
             if isinstance(index.type, ArrayType):
                 extra_dims.extend(index.type.dims)
 
-        # 2.                    
+        # 2. 加上原数组中完全没有被索引到的剩余维度
         new_base_dims.extend(old_dims[len(indices):])
 
-        #      =         +   /     
+        # 最终形状 = 嵌套带来的维度 + 保留/剩余的维度
         array_dims = extra_dims + new_base_dims
         
         super().__init__(
@@ -450,35 +450,35 @@ class ArrayRefOp(Op):
 
 class LoadOp(Op):
     """
-         ArrayRef          。
+    从数组或 ArrayRef 的结果中加载标量值。
     """
     def __init__(self, array_or_ref: Value, indices: Sequence[Value] = [], name_hint: str | None = None):
-        #     array_or_ref     ExternalSymbol(ArrayType)     ArrayRefOp    
+        # 这里的 array_or_ref 可能是 ExternalSymbol(ArrayType) 或者是 ArrayRefOp 的结果
         assert isinstance(array_or_ref.type, ArrayType)
 
         original_dims = array_or_ref.type.dims
         preserved_dims = []
 
 
-        #     ，         ，     
+        # 遍历索引，决定哪些维度被消除，哪些被保留
         for i, idx in enumerate(indices):
-            #        "_"，      
+            # 如果是占位符 "_"，则保留该维度
             if getattr(idx, "name_hint", None) == "_":
                 preserved_dims.append(original_dims[i])
-            #        （  %i13），      （    preserved_dims）
+            # 如果是普通索引（如 %i13），该维度被消除（不加入 preserved_dims）
             else:
                 pass
         
-        #                ，         
+        # 如果索引没覆盖完数组的所有维度，剩下的维度也要保留
         if len(indices) < len(original_dims):
             preserved_dims.extend(original_dims[len(indices):])
 
-        #         
+        # 确定最终返回类型
         if len(preserved_dims) == 0:
-            #          ，    
+            # 所有维度都被索引了，返回标量
             result_type = array_or_ref.type.datatype
         else:
-            #       ，     （Tile）
+            # 还有维度保留，返回子数组（Tile）
             result_type = ArrayType(preserved_dims, array_or_ref.type.datatype)
 
         super().__init__(
@@ -493,13 +493,13 @@ class LoadOp(Op):
             ]
         )
         
-        #       indices，               ArrayRef   ，
-        #        LoadOp     。           。
+        # 如果提供了 indices，我们可以先内部构建一个隐式的 ArrayRef 逻辑，
+        # 或者直接作为 LoadOp 的操作数。这里采用直接作为操作数。
         # super().__init__(
         #     operands=[array_or_ref] + list(indices),
         #     results=[
         #         OpResult(
-        #             type=array_or_ref.type.datatype, #             (Int/Float)
+        #             type=array_or_ref.type.datatype, # 返回数组的底层数据类型 (Int/Float)
         #             defining_op=self,
         #             result_idx_in_owner=0
         #         )
@@ -512,7 +512,7 @@ class LoadOp(Op):
 
 class LoadOffsetOp(Op):
     def __init__(self, array: Value, indices: Sequence[Value], name_hint: str | None = None):
-        #       ：left_offset, right_offset
+        # 返回两个结果：left_offset, right_offset
         results = [
             OpResult(type=IntType(), name_hint=f"{name_hint}_l" if name_hint else "l", defining_op=self, result_idx_in_owner=0),
             OpResult(type=IntType(), name_hint=f"{name_hint}_r" if name_hint else "r", defining_op=self, result_idx_in_owner=1)
@@ -676,9 +676,9 @@ class LoopResultOp(Op):
 
 
 class ArithmeticOp(Op):
-    """      """
+    """算术运算基类"""
     def __init__(self, lhs: Value, rhs: Value):
-        #       ：       Float，      Float
+        # 推导结果类型：如果有一个是 Float，结果通常是 Float
         res_type = FloatType() if isinstance(lhs.type, FloatType) or isinstance(rhs.type, FloatType) else IntType()
         super().__init__(
             operands=[lhs, rhs],

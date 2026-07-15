@@ -158,6 +158,36 @@ class McoizeTransformation(NullaryTransformation):
 
 
 @dataclass(kw_only=True)
+class CsrizeTransformation(NullaryTransformation):
+    def __init__(self, name: Optional[str] = None):
+        self.axes = ()
+        if name is not None:
+            self.name = name
+
+    name: str = "csrize"
+
+
+@dataclass(kw_only=True)
+class EllizeTransformation(NullaryTransformation):
+    def __init__(self, name: Optional[str] = None):
+        self.axes = ()
+        if name is not None:
+            self.name = name
+
+    name: str = "ellize"
+
+
+@dataclass(kw_only=True)
+class DiaizeTransformation(NullaryTransformation):
+    def __init__(self, name: Optional[str] = None):
+        self.axes = ()
+        if name is not None:
+            self.name = name
+
+    name: str = "diaize"
+
+
+@dataclass(kw_only=True)
 class TransformationSequence:
     sequence: List[Transformation] = field(default_factory=list)
 

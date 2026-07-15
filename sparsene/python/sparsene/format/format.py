@@ -137,6 +137,21 @@ class McoAtomicFormat(AtomicFormat):
 
 
 @dataclass(kw_only=True)
+class CsrAtomicFormat(AtomicFormat):
+    atomic_type: str = "csr"
+
+
+@dataclass(kw_only=True)
+class EllAtomicFormat(AtomicFormat):
+    atomic_type: str = "ell"
+
+
+@dataclass(kw_only=True)
+class DiaAtomicFormat(AtomicFormat):
+    atomic_type: str = "dia"
+
+
+@dataclass(kw_only=True)
 class Format(FormatBase):
     child: Optional[Format | AtomicFormat] = None
 
@@ -297,6 +312,107 @@ def mco_atomic_format(
     )
 
 
+def csr_atomic_format(
+    x_name: str, y_name: str, col_major: bool = False
+) -> AtomicFormat:
+    """CSR atomic format: each TC block stores row_ptr[BLK_M+1] + col_idx[nnz] + val[nnz].
+
+    Compared to COO: uses per-row cumulative offsets instead of [start,end] pairs,
+    and col_idx holds global column indices (not swizzled per-block).
+    """
+    return CsrAtomicFormat(
+        name="csr",
+        axes=[
+            Axis(
+                name=x_name,
+                direction=Direction.COL if col_major else Direction.ROW,
+                is_sparse=False,
+                is_varlen=False,
+            ),
+            Axis(
+                name=y_name,
+                direction=Direction.ROW if col_major else Direction.COL,
+                is_sparse=False,
+                is_varlen=False,
+            ),
+            Axis(
+                name=f"{x_name}_{y_name}_csr",
+                direction=Direction.COL if col_major else Direction.ROW,
+                is_sparse=True,
+                is_varlen=True,
+            ),
+        ],
+    )
+
+
+def ell_atomic_format(
+    x_name: str, y_name: str, col_major: bool = False
+) -> AtomicFormat:
+    """ELL atomic format: each TC block stores col_idx[BLK_M, max_nnz_per_row] + val[BLK_M, max_nnz_per_row].
+
+    ELL stores a padded 2D array where each row has exactly max_nnz_per_row entries.
+    The per-block max_nnz (ell_len) is a scalar integer.
+    Compared to COO/CSR: no row_ptr or flat NNZ axis; the tile is a direct 2D reshape.
+    """
+    return EllAtomicFormat(
+        name="ell",
+        axes=[
+            Axis(
+                name=x_name,
+                direction=Direction.COL if col_major else Direction.ROW,
+                is_sparse=False,
+                is_varlen=False,
+            ),
+            Axis(
+                name=y_name,
+                direction=Direction.ROW if col_major else Direction.COL,
+                is_sparse=False,
+                is_varlen=False,
+            ),
+            Axis(
+                name=f"{x_name}_{y_name}_ell",
+                direction=Direction.COL if col_major else Direction.ROW,
+                is_sparse=True,
+                is_varlen=True,
+            ),
+        ],
+    )
+
+
+def dia_atomic_format(
+    x_name: str, y_name: str, col_major: bool = False
+) -> AtomicFormat:
+    """DIA atomic format: each TC block stores diag_offsets[num_diags] + val[num_diags, BLK_K].
+
+    Offsets are logical diagonal ids `diag = col - row` within the block. Values are
+    packed by diagonal, with a fixed BLK_K-wide slot per diagonal. Missing entries
+    on an active diagonal are represented as zeros in the padded value row.
+    """
+    return DiaAtomicFormat(
+        name="dia",
+        axes=[
+            Axis(
+                name=x_name,
+                direction=Direction.COL if col_major else Direction.ROW,
+                is_sparse=False,
+                is_varlen=False,
+            ),
+            Axis(
+                name=y_name,
+                direction=Direction.ROW if col_major else Direction.COL,
+                is_sparse=False,
+                is_varlen=False,
+            ),
+            Axis(
+                name=f"{x_name}_{y_name}_dia",
+                direction=Direction.COL if col_major else Direction.ROW,
+                is_sparse=True,
+                is_varlen=True,
+            ),
+        ],
+    )
+
+
 def dense_atomic_format(
     x_name: str, y_name: str, col_major: bool = False
 ) -> AtomicFormat:
@@ -327,6 +443,12 @@ def atomic_format(
             return coo_atomic_format(x_name, y_name, col_major)
         case "mco":
             return mco_atomic_format(x_name, y_name, col_major)
+        case "csr":
+            return csr_atomic_format(x_name, y_name, col_major)
+        case "ell":
+            return ell_atomic_format(x_name, y_name, col_major)
+        case "dia":
+            return dia_atomic_format(x_name, y_name, col_major)
         case "dense":
             return dense_atomic_format(x_name, y_name, col_major)
         case _:

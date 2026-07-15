@@ -31,10 +31,10 @@ from sparsene.op_gen.opir.ops import (
 
 class CValFlattenPass:
     """
-        C_val   ：
-    1)     C_val        [..., N]     [M, N]
-    2)   C    /              (offset) + len
-    3)            C     
+    规范化 C_val 访问：
+    1) 将外部 C_val 类型从层次化 [..., N] 扁平为 [M, N]
+    2) 将 C 的切片/写回统一重写为基于物理行偏移(offset) + len
+    3) 在循环和别名之间传播 C 基址偏移
     """
 
     def __init__(
@@ -43,7 +43,7 @@ class CValFlattenPass:
         varlen2IdxArrayTable: Optional[Dict[str, Any]] = None
     ):
         self.op_builder = op_builder
-        #          ，   {'varlen(M)': ArrayDef(val_sidx, ...)}
+        # 接收前端传来的字典，形如 {'varlen(M)': ArrayDef(val_sidx, ...)}
         self.varlen2IdxArrayTable = varlen2IdxArrayTable or {}
         
         self._root_c_val: Optional[Value] = None
@@ -66,14 +66,14 @@ class CValFlattenPass:
         if len(old_c_type.dims) < 2:
             return root
             
-        #    BLK_M    ，     1D sidx       
+        # 保存 BLK_M 表达式，稍后用于 1D sidx 的物理行计算
         self._c_blk_m_expr = old_c_type.dims[-2] if len(old_c_type.dims) >= 2 else Integer(1)
         self._m_sparse_row_sidx = self._find_m_sparse_row_sidx(root, old_c_type)
             
         c_outer_dim = str(old_c_type.dims[0])
         is_sparse_m = self._is_varlen_m_dim(c_outer_dim) or self._m_sparse_row_sidx is not None
 
-        #    C        ，                [M, N]
+        # 如果 C 的首维被压缩过，说明其物理容器一定对应着真实的 [M, N]
         if is_sparse_m:
             flat_m = Symbol("M")
         else:
@@ -381,7 +381,7 @@ class CValFlattenPass:
         if not isinstance(sidx_type, ArrayType) or len(sidx_type.dims) < 2:
             return False
 
-        #    C:[varlen(M)/BLK_M][BLK_M][N], sidx:[varlen(M)/BLK_M][BLK_M]
+        # 例如 C:[varlen(M)/BLK_M][BLK_M][N], sidx:[varlen(M)/BLK_M][BLK_M]
         return str(dims[1]) == str(sidx_type.dims[1])
 
     def _build_sparse_row_indices(
@@ -396,7 +396,7 @@ class CValFlattenPass:
         sidx_type = self._m_sparse_row_sidx.type
         
         if len(sidx_type.dims) == 1:
-            # 1D   : load(idx) * BLK_M 
+            # 1D 数组: load(idx) * BLK_M
             from sparsene.op_gen.opir.ops import LoadOp
             load_op = LoadOp(self._m_sparse_row_sidx, [logical_idx])
             generated_ops.append(load_op)
@@ -406,13 +406,13 @@ class CValFlattenPass:
             generated_ops.append(mul_op)
             return mul_op.result
         else:
-            # 2D   :       BLK_M   idx     
+            # 2D 数组: 获取长度为 BLK_M 的 idx 数组向量
             placeholder = Value(IntType(), name_hint="_")
             
-            # ---     ：   name_hint    ---
+            # --- 修改这里：移除 name_hint 参数 ---
             row_idx_ref = ArrayRefOp(self._m_sparse_row_sidx, [logical_idx, placeholder])
             
-            #      result    
+            # 手动设置 result 的名字
             if row_idx_ref.num_results > 0:
                 row_idx_ref.result.name_hint = "sidx_slice"
                 
@@ -420,7 +420,7 @@ class CValFlattenPass:
             return row_idx_ref.result
 
     def _find_m_sparse_row_sidx(self, root: MetaOp, c_type: ArrayType) -> Optional[Value]:
-        # 1.          (         )
+        # 1. 优先尝试从表里读 (如果前端未来支持了)
         if self.varlen2IdxArrayTable and 'varlen(M)' in self.varlen2IdxArrayTable:
             base_name = self.varlen2IdxArrayTable['varlen(M)'].name
             for op in root.block.ops:
@@ -429,7 +429,7 @@ class CValFlattenPass:
                     if symbol_name.startswith(base_name):
                         return op.result
 
-        # 2.       ，        (Heuristic Search)
+        # 2. 如果表里没有，启动启发式搜索 (Heuristic Search)
         c_outer_dim = str(c_type.dims[0])
         c_blk_m_dim = c_type.dims[1] if len(c_type.dims) > 1 else None
 
@@ -443,22 +443,22 @@ class CValFlattenPass:
             if len(sidx_dims) == 0:
                 continue
 
-            #       1:      sidx   idx
+            # 启发式规则 1: 名字包含 sidx 或 idx
             symbol_name = str(op.attributes.get("symbol", op.result.name_hint or ""))
             if "sidx" not in symbol_name and "idx" not in symbol_name:
                 continue
 
-            #       2:       nnz_dim_M   varlen(M)
+            # 启发式规则 2: 第一维匹配 nnz_dim_M 或 varlen(M)
             first_dim_match = (str(sidx_dims[0]) == c_outer_dim)
             if not first_dim_match:
                 first_dim_match = self._is_varlen_m_dim(sidx_dims[0]) and self._is_varlen_m_dim(c_outer_dim)
 
             if first_dim_match:
-                #       3:     2D   ，          BLK_M
+                # 启发式规则 3: 如果是 2D 数组，第二维必须完美匹配 BLK_M
                 if len(sidx_dims) >= 2 and c_blk_m_dim is not None:
                     if str(sidx_dims[1]) == str(c_blk_m_dim):
                         return op.result
-                #     1D   ，    
+                # 如果是 1D 数组，直接采用
                 elif len(sidx_dims) == 1:
                     return op.result
 
@@ -469,10 +469,10 @@ class CValFlattenPass:
             if not isinstance(op, ExternalSymbolOp):
                 continue
             
-            #      symbol name
+            # 安全获取 symbol name
             symbol = str(op.attributes.get("symbol", op.result.name_hint or ""))
             
-            #     C_val    (   C_val_new, C_val_1_new  )     
+            # 只要是 C_val 开头 (包容 C_val_new, C_val_1_new 等) 即可命中
             if symbol.startswith("C_val"):
                 return op
                 

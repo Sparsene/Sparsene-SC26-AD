@@ -16,6 +16,9 @@ from sparsene.transform.transformation import (
     DensifyTransformation,
     CooizeTransformation,
     McoizeTransformation,
+    CsrizeTransformation,
+    EllizeTransformation,
+    DiaizeTransformation,
     Transformation,
 )
 
@@ -67,28 +70,28 @@ def derive_rts(format: Format) -> TransformationSequence:
 
     def _squeeze_new(axes: List[Axis]) -> None:
         """
-                 Axis      。
-                ，   swap           。
+        把相邻相同方向的 Axis 合并成一个。
+        在不能直接合并时，通过 swap 把能合并的轴移到一起。
         """
         while len(axes) > 2:
             merged = False
-            #       （   merge   ）
+            # 倒数第二个轴（候选 merge 目标）
             last = axes[-2]
             prev = axes[-3]
 
             if last.direction == prev.direction:
-                # ✅     
+                # ✅ 直接合并
                 seq.prepend(SplitTransformation(len(axes) - 3, last.length))
                 axes.pop(-2)
                 merged = True
             else:
-                # ❌   : swap      
+                # ❌ 不行: swap 最后两个轴
                 seq.prepend(SwapTransformation(len(axes) - 2, len(axes) - 1))
                 axes[-1], axes[-2] = axes[-2], axes[-1]
-                #          merge
+                # 再下一轮继续尝试 merge
 
             if not merged:
-                #    swap      merge，      
+                # 如果 swap 后还不能 merge，下轮继续循环
                 continue
 
 
@@ -100,6 +103,12 @@ def derive_rts(format: Format) -> TransformationSequence:
                         seq.prepend(CooizeTransformation())
                     case "mco":
                         seq.prepend(McoizeTransformation())
+                    case "csr":
+                        seq.prepend(CsrizeTransformation())
+                    case "ell":
+                        seq.prepend(EllizeTransformation())
+                    case "dia":
+                        seq.prepend(DiaizeTransformation())
                     case "dense":
                         pass
                     case _:

@@ -152,6 +152,7 @@ class SwizzleLayout:
     b: int
     m: int
     s: int
+    adaptive_blk_k: bool = False
 
 
 @dataclass
@@ -240,7 +241,7 @@ class NvOpOutput:
     tensor: NvOpTensor
     owning: bool
     origin: Optional[NvOpOutput]
-    unique: bool  # unique output nbuf     1
+    unique: bool  # unique的output的nbuf维度永远为1
     attrs: Dict[str, Any]
     consumers: List[NvOp]
     op: Optional[NvOp]
@@ -328,15 +329,15 @@ class LayoutHint:
 
 
 class NvOpType(Enum):
-    # 1d-copy:   1D        
-    # 2d-copy:   2D    ，    
-    # 2d-copy-sp:   2D    ，    ，     （        ）  
-    # others:   
+    # 1d-copy: 稠密1D通用线性内存拷贝
+    # 2d-copy: 稠密2D内存拷贝，用于矩阵
+    # 2d-copy-sp: 稀疏2D内存拷贝，用于矩阵，允许行或列（目前暂时只支持行）离散
+    # others: 其他
     COPY_1D = "copy_1d"
     COPY_2D = "copy_2d"
     COPY_2D_SP = "copy_2d_sp"
-    LOAD_LR_OFF = "load_lr_off"  #    offset     l,r
-    LOAD_LR_PAIR = "load_lr_pair"  #        l r offset     l,r
+    LOAD_LR_OFF = "load_lr_off"  # 从一个offset数组中读取l,r
+    LOAD_LR_PAIR = "load_lr_pair"  # 从一个同时存了l和r的offset数组中读取l,r
     OTHERS = "others"
     UNKNOWN = "unknown"
 
@@ -404,8 +405,10 @@ class NvOp:
         return varlens
 
     def all_parameters(self) -> Set[str]:
-        # print("WAKUWAKU", self.name, self.parameters)
-        return set(self.parameters.keys())
+        # External symbol params (value == key, e.g. "K": "K") are passed
+        # as constructor arguments, NOT template parameters.  Only template
+        # params (value != key, e.g. "nbuf": 1) become template classes.
+        return {k for k, v in self.parameters.items() if v != k}
 
 
 class ConstantNvOp(NvOp):
@@ -644,6 +647,7 @@ class NvOpProgram:
     meta_op: MetaNvOp
     gmem_inouts: Dict[str, GmemInout]
     gmem_tensor_ops: Dict[str, GmemTensorNvOp]
+    attrs: Dict[str, Any]
 
     def __init__(
         self,
@@ -651,6 +655,7 @@ class NvOpProgram:
         gmem_inouts: Dict[str, GmemInout],
     ):
         self.name = name
+        self.attrs = {}
         self.meta_op = MetaNvOp(
             name=name,
             body=NvOpSequence(),

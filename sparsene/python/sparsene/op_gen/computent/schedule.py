@@ -41,6 +41,9 @@ class AtomicFormatType(Enum):
     DENSE = 0
     COO = 1
     MCO = 2
+    CSR = 3
+    ELL = 4
+    DIA = 5
 
 class NameManager:
     def __init__(self):
