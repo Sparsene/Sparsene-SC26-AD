@@ -36,10 +36,16 @@ logger = get_logger(__name__)
 
 
 class NvIrCodeGenerator:
-    def __init__(self, indent_size: int = 4, debug_indent: bool = False):
+    def __init__(
+        self,
+        indent_size: int = 4,
+        debug_indent: bool = False,
+        legacy_compat: bool = True,
+    ):
         self.indent_size = indent_size
         self.debug_indent = debug_indent
         self.debug_chars = "."
+        self.legacy_compat = legacy_compat
 
     def _get_indent(self, indent_level: int) -> str:
         return (
@@ -115,10 +121,10 @@ class NvIrCodeGenerator:
             map(lambda out: self.dump_output_decl(out), op.outputs)
         )
 
-        hw_param_str = f"// Hardware parameters\nint lid;"
+        hw_param_str = f"// Hardware parameters\nint tid, lid, wid;"
 
         def dump_constructor_head() -> str:
-            hw_constructor_params = ["int lid"]
+            hw_constructor_params = ["int tid", "int lid", "int wid"]
             output_constructor_params = []
             for out in op.outputs:
                 if not out.owning:
@@ -153,7 +159,7 @@ class NvIrCodeGenerator:
             return f"CUTE_DEVICE {op.name}({constructor_params})"
 
         constructor_head_str = dump_constructor_head()
-        hw_param_constructor_init_list = ["lid(lid)"]
+        hw_param_constructor_init_list = ["tid(tid)", "lid(lid)", "wid(wid)"]
         varlen_shapes_constructor_init_list = self.dump_init_input_varlen_shape(
             op
         ) + self.dump_init_output_varlen_shape(op)
@@ -606,7 +612,33 @@ class NvIrCodeGenerator:
             else:
                 return f"get<{shape_indices[-1]}>({dump_nested_tuple_access(shape, shape_indices[:-1])})"
 
-        code_str = op.impl.code_template
+        static_assert_strs = []
+
+        def dump_static_asserts() -> None:
+            def visit(
+                shape: Shape, inp: NvOpInput, parent_shape_indices: List[int]
+            ) -> None:
+                for i, shape_ele in enumerate(shape):
+                    if isinstance(shape_ele, VarlenShape):
+                        continue
+                    if isinstance(shape_ele, Shape):
+                        visit(shape_ele, inp, parent_shape_indices + [i])
+                        continue
+                    static_assert_strs.append(
+                        f"CUTE_STATIC_ASSERT_V(("
+                        f"{dump_nested_tuple_access(f'shape_i{inp.idx}', parent_shape_indices + [i])}"
+                        f" == "
+                        f"{dump_nested_tuple_access(f'shape({inp.name})', parent_shape_indices + [i], size_outside=True)}"
+                        "));"
+                    )
+
+            for inp in op.inputs:
+                visit(inp.tensor.shape, inp, [])
+
+        if self.legacy_compat:
+            dump_static_asserts()
+
+        code_str = "\n".join([*static_assert_strs, op.impl.code_template])
         if op.pipelined:
             for out in op.outputs:
                 if len(out.tensor.shape) == 0:
@@ -1339,7 +1371,7 @@ class NvIrCodeGenerator:
                 if isinstance(s, VarlenShape):
                     varlen_modes.append(s.name)
 
-        args_0 = ["lid"]
+        args_0 = ["tid", "lid", "wid"]
         args_1 = outputs
         args_2 = varlen_modes
         if args_0 and args_1 and args_2:
@@ -1420,7 +1452,7 @@ class NvIrCodeGenerator:
             f"using {op_name}_t = {op_name}<{template_args_str}>;\n"
             f"using {op_name}_layout_o0 = typename {op_name}_t::Layout_o0;\n"
             f"{dtype} {op_name}_tensor_o0[cosize_v<{op_name}_layout_o0>];\n"
-            f"{op_name}_t {op_name}_v{{lid, {op_name}_tensor_o0{extern_create_args}}};"
+            f"{op_name}_t {op_name}_v{{tid, lid, wid, {op_name}_tensor_o0{extern_create_args}}};"
         )
 
     def dump_for_loop_nvop_create(
@@ -1596,7 +1628,7 @@ class NvIrCodeGenerator:
                         instructions.append(PipelineWait(wait_num=wait_num))
                         pipeline_waited = True
                 if sync_threads_on_smem_input and has_smem_input(op_call.op):
-                    if not pipeline_waited:
+                    if self.legacy_compat or not pipeline_waited:
                         instructions.append(SyncThreads())
 
                 instructions.append(
@@ -2130,14 +2162,17 @@ class NvIrCodeGenerator:
         tile_b = getattr(tensor, "tile_b", 64)
         b_smem_swizzle = getattr(tensor, "b_smem_swizzle", "swizzle_323")
         coo_restore_swizzle = getattr(tensor, "coo_restore_swizzle", "swizzle_123")
-        generated_metadata = "\n".join(
-            [
-                f"#define SPARSENE_GENERATED_TILE_B {int(tile_b)}",
-                f'#define SPARSENE_GENERATED_B_SMEM_SWIZZLE "{b_smem_swizzle}"',
-                f'#define SPARSENE_GENERATED_COO_RESTORE_SWIZZLE "{coo_restore_swizzle}"',
-            ]
-        )
+        generated_metadata = ""
         device_helper_functions = templates.DTC_HELPER_FUNCTIONS
+        if not self.legacy_compat:
+            generated_metadata = "\n".join(
+                [
+                    f"#define SPARSENE_GENERATED_TILE_B {int(tile_b)}",
+                    f'#define SPARSENE_GENERATED_B_SMEM_SWIZZLE "{b_smem_swizzle}"',
+                    f'#define SPARSENE_GENERATED_COO_RESTORE_SWIZZLE "{coo_restore_swizzle}"',
+                ]
+            ) + "\n\n"
+            device_helper_functions += "\n" + templates.SPARSENE_COPY_G2S_128_HELPER
         nvop_defs = self.dump_nvop_class_defs(program)
         global_function = self.dump_nvop_global_function(program)
         return templates.CUDA_SOURCE_SKELETON.format(

@@ -56,8 +56,9 @@ __device__ __forceinline__ void unpack_half_short(uint32_t packed, half& h, shor
     h = *reinterpret_cast<half*>(&half_bits);
     s = static_cast<short>(short_bits);
 }
+"""
 
-template <class TElem, class TSrc, class TDst>
+SPARSENE_COPY_G2S_128_HELPER = r"""template <class TElem, class TSrc, class TDst>
 __device__ __forceinline__ void sparsene_copy_g2s_128(TSrc&& src, TDst&& dst) {
 #if defined(__CUDA_ARCH__) && (__CUDA_ARCH__ >= 800)
     copy(Copy_Atom<SM80_CP_ASYNC_CACHEGLOBAL<cute::uint128_t>, TElem>{}, src, dst);
@@ -129,14 +130,14 @@ public:
 {outputs}
 
     // Hardware parameters
-    int lid;
+    int tid, lid, wid;
 
     // Body Ops
 {visible_ops}
 
     // Constructor
-    CUTE_DEVICE {op_name}(int lid{visible_op_as_params}{non_owning_tensor_as_params})
-    : lid(lid){visible_op_inits}{non_owning_tensor_inits} {{}}
+    CUTE_DEVICE {op_name}(int tid, int lid, int wid{visible_op_as_params}{non_owning_tensor_as_params})
+    : tid(tid), lid(lid), wid(wid){visible_op_inits}{non_owning_tensor_inits} {{}}
 
     // Pipeline methods
 {pipeline_methods}
@@ -160,14 +161,14 @@ public:
     int _idx;
 
     // Hardware parameters
-    int lid;
+    int tid, lid, wid;
 
     // Body Ops
 {visible_ops}
 
     // Constructor
-    CUTE_DEVICE {op_name}(int lid{visible_op_as_params})
-    : lid(lid){visible_op_inits} {{}}
+    CUTE_DEVICE {op_name}(int tid, int lid, int wid{visible_op_as_params})
+    : tid(tid), lid(lid), wid(wid){visible_op_inits} {{}}
 
     // Body
     CUTE_DEVICE void body() {{
@@ -194,14 +195,14 @@ public:
 {loop_result_outputs}
 
     // Hardware parameters
-    int lid;
+    int tid, lid, wid;
 
     // Body Ops
 {visible_ops}
 
     // Constructor
-    CUTE_DEVICE {op_name}(int lid{visible_op_as_params}{non_owning_tensor_as_params})
-    : lid(lid){visible_op_inits}{non_owning_tensor_inits} {{}}
+    CUTE_DEVICE {op_name}(int tid, int lid, int wid{visible_op_as_params}{non_owning_tensor_as_params})
+    : tid(tid), lid(lid), wid(wid){visible_op_inits}{non_owning_tensor_inits} {{}}
 
 {loop_result_outputs_method}
 
@@ -226,11 +227,11 @@ public:
 {extern_members}
 {outputs}
     // Hardware parameters
-    int lid;
+    int tid, lid, wid;
 
     // Constructor
-    CUTE_DEVICE {op_name}(int lid, TO0 *{tensor_name}{extern_ctor_params})
-    : lid(lid), {tensor_name}(make_tensor(make_{mem_type_str}_ptr({tensor_name}), Layout_o0{{}})){extern_ctor_inits} {{}}
+    CUTE_DEVICE {op_name}(int tid, int lid, int wid, TO0 *{tensor_name}{extern_ctor_params})
+    : tid(tid), lid(lid), wid(wid), {tensor_name}(make_tensor(make_{mem_type_str}_ptr({tensor_name}), Layout_o0{{}})){extern_ctor_inits} {{}}
 
     // output
 {get_output_method}
@@ -254,11 +255,11 @@ public:
     Tensor_o0 {tensor_name};
 
     // Hardware parameters
-    int lid;
+    int tid, lid, wid;
 
     // Constructor
-    CUTE_DEVICE {op_name}(int lid{varlen_modes_constructor_params}, TO0 *d{tensor_name})
-    : lid(lid),
+    CUTE_DEVICE {op_name}(int tid, int lid, int wid{varlen_modes_constructor_params}, TO0 *d{tensor_name})
+    : tid(tid), lid(lid), wid(wid),
     shape_o0({tensor_str}.shape()),
     layout_o0({tensor_str}.layout()),
     {tensor_name}({tensor_str}) {{}}
@@ -323,9 +324,7 @@ using namespace cute;
 #define DIVUP(a, b) (((a) - 1) / (b) + 1)
 #define ALIGN(a,b) (DIVUP(a,b)*(b))
 
-{generated_metadata}
-
-{device_helper_functions}
+{generated_metadata}{device_helper_functions}
 
 {nvop_defs}
 
@@ -333,12 +332,12 @@ using namespace cute;
 {global_function}"""
 
 GMEM_TENSOR_NVOP_CREATE_SKELETON = """using {op_name}_t = {op_name}<BLK_MNK, MMA_MNK, BLK_MMA_MNK, WARP_MNK>;
-{op_name}_t {op_name}_v{{lid{varlen_modes_constructor_args}, d{tensor_name}}};"""
+{op_name}_t {op_name}_v{{tid, lid, wid{varlen_modes_constructor_args}, d{tensor_name}}};"""
 
 CONSTANT_NVOP_CREATE_SKELETON = """using {op_name}_t = {op_name}<BLK_MNK, MMA_MNK, BLK_MMA_MNK, WARP_MNK>;
 using {op_name}_layout_o0 = typename {op_name}_t::Layout_o0;
 {dtype} {op_name}_tensor_o0[cosize_v<{op_name}_layout_o0>];
-{op_name}_t {op_name}_v{{lid, {op_name}_tensor_o0{extern_create_args}}};"""
+{op_name}_t {op_name}_v{{tid, lid, wid, {op_name}_tensor_o0{extern_create_args}}};"""
 
 FOR_LOOP_NVOP_CREATE_SKELETON = """using {op_name}_t = {op_name}<BLK_MNK, MMA_MNK, BLK_MMA_MNK, WARP_MNK{visible_op_type_template_args}{non_owning_tensor_type_template_args}>;
-{op_name}_t {op_name}_v{{lid{visible_op_as_args}{non_owning_tensor_as_args}}};"""
+{op_name}_t {op_name}_v{{tid, lid, wid{visible_op_as_args}{non_owning_tensor_as_args}}};"""

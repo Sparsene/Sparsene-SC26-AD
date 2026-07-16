@@ -2147,7 +2147,7 @@ def _dump_code(program: NvOpProgram, output_path: Union[str, Path]):
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     
-    codegen = NvIrCodeGenerator()
+    codegen = NvIrCodeGenerator(legacy_compat=False)
     code_str = codegen.dump_nvop_program(program)
     
     with open(output_path, "w") as f:
