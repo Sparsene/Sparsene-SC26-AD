@@ -51,7 +51,14 @@ void ncu_test(int threadblock_num_x,
               dtypeMask* dval_mco_mask,
               int* dval_mco_off,
               dtypeA* dval_mco_val) {
-    dim3 grid(threadblock_num_y, threadblock_num_x);
+    // CUDA limits grid.y to 65535.  Keep x as the feature-tile axis and
+    // split the row-tile axis across y/z so matrices with more than
+    // 65535 row tiles still launch correctly.
+    constexpr unsigned int kMaxGridY = 65535;
+    unsigned int grid_y = std::min<unsigned int>(threadblock_num_x, kMaxGridY);
+    unsigned int grid_z = DIVUP(threadblock_num_x, grid_y);
+    assert(grid_z <= 65535);
+    dim3 grid(threadblock_num_y, grid_y, grid_z);
     dim3 block(thread_num);
 
     constexpr auto blk_mnk = make_shape(Int<Tile_M>{}, Int<Tile_N>{}, Int<Tile_K>{});
@@ -111,7 +118,12 @@ void repeat_test(int threadblock_num_x,
                  dtypeA* dval_mco_val,
                  int warmup_time,
                  int execute_time) {
-    dim3 grid(threadblock_num_y, threadblock_num_x);
+    // See ncu_test(): linear row tiles are mapped through grid.y/grid.z.
+    constexpr unsigned int kMaxGridY = 65535;
+    unsigned int grid_y = std::min<unsigned int>(threadblock_num_x, kMaxGridY);
+    unsigned int grid_z = DIVUP(threadblock_num_x, grid_y);
+    assert(grid_z <= 65535);
+    dim3 grid(threadblock_num_y, grid_y, grid_z);
     dim3 block(thread_num);
 
     constexpr auto blk_mnk = make_shape(Int<Tile_M>{}, Int<Tile_N>{}, Int<Tile_K>{});

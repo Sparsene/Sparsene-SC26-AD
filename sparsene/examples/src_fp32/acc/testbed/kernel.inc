@@ -146,9 +146,9 @@ public:
     // Constructor
     CUTE_DEVICE C_valOp(int tid, int lid, int wid, int M, int N, TO0 *dC_val)
     : tid(tid), lid(lid), wid(wid),
-    shape_o0(logical_divide(make_tensor(make_gmem_ptr(dC_val), make_layout(make_shape(M, N), make_stride(N, _1{}))), select<0, 1>(BLK_MNK{}))(make_coord(_, blockIdx.y), make_coord(_, blockIdx.x)).shape()),
-    layout_o0(logical_divide(make_tensor(make_gmem_ptr(dC_val), make_layout(make_shape(M, N), make_stride(N, _1{}))), select<0, 1>(BLK_MNK{}))(make_coord(_, blockIdx.y), make_coord(_, blockIdx.x)).layout()),
-    C_val(logical_divide(make_tensor(make_gmem_ptr(dC_val), make_layout(make_shape(M, N), make_stride(N, _1{}))), select<0, 1>(BLK_MNK{}))(make_coord(_, blockIdx.y), make_coord(_, blockIdx.x))) {}
+    shape_o0(logical_divide(make_tensor(make_gmem_ptr(dC_val), make_layout(make_shape(M, N), make_stride(N, _1{}))), select<0, 1>(BLK_MNK{}))(make_coord(_, blockIdx.y + blockIdx.z * gridDim.y), make_coord(_, blockIdx.x)).shape()),
+    layout_o0(logical_divide(make_tensor(make_gmem_ptr(dC_val), make_layout(make_shape(M, N), make_stride(N, _1{}))), select<0, 1>(BLK_MNK{}))(make_coord(_, blockIdx.y + blockIdx.z * gridDim.y), make_coord(_, blockIdx.x)).layout()),
+    C_val(logical_divide(make_tensor(make_gmem_ptr(dC_val), make_layout(make_shape(M, N), make_stride(N, _1{}))), select<0, 1>(BLK_MNK{}))(make_coord(_, blockIdx.y + blockIdx.z * gridDim.y), make_coord(_, blockIdx.x))) {}
 
     // output
     template<int output_idx>
@@ -1885,7 +1885,7 @@ public:
     CUTE_DEVICE void body() {
         G2rSparseOffsetLoadOp_v.template f<>(
             val_soffOp_v.template output<0>(),
-            blockIdx.y
+            blockIdx.y + blockIdx.z * gridDim.y
         );
         ZerosOp_v.template f<>();
         AccMainLoopOp_v.template f<>(
@@ -1939,7 +1939,7 @@ public:
     // f
     template<typename = void>
     CUTE_DEVICE void f() {
-        this->_idx = blockIdx.y;
+        this->_idx = blockIdx.y + blockIdx.z * gridDim.y;
         body();
     }
 };
@@ -1956,6 +1956,10 @@ __global__ void acc_spmm_kernel_tf32tf32fp32(
     int *dval_soff,
     int K, int M, int Mo, int N, int nnz, int nnz_block
 ) {
+    const unsigned int row_tile = blockIdx.y + blockIdx.z * gridDim.y;
+    if (row_tile >= static_cast<unsigned int>(Mo)) {
+        return;
+    }
     const int tid = threadIdx.x;
     const int lid = tid % 32;
     const int wid = tid / 32;

@@ -124,6 +124,20 @@ std::string extractMatrixName(const std::string& file_path) {
     return filename;
 }
 
+std::string checkpointPath(const std::string& checkpoint_filename) {
+    const char* configured_dir = std::getenv("SPARSENE_DTC_CACHE_DIR");
+    std::filesystem::path cache_dir = configured_dir && *configured_dir
+        ? std::filesystem::path(configured_dir)
+        : std::filesystem::temp_directory_path() / "sparsene-sc26-cache" / "dtc";
+    std::error_code error;
+    std::filesystem::create_directories(cache_dir, error);
+    if (error) {
+        std::cerr << "Failed to create cache directory " << cache_dir << ": "
+                  << error.message() << std::endl;
+    }
+    return (cache_dir / checkpoint_filename).string();
+}
+
 // -------------------------
 // storeCheckpoint for ME-TCF
 // -------------------------
@@ -142,7 +156,7 @@ int storeCheckpoint(
                                  "_M" + to_string(M) + 
                                  "_K" + to_string(K) + 
                                  "_METCF.checkpoint";
-    string full_path = "/workspace/sparsene/examples/src_fp32/dtc/testbed/mtx_cache/" + checkpoint_filename;
+    string full_path = checkpointPath(checkpoint_filename);
 
     std::ofstream outputFile(full_path, std::ios::binary);
     if (!outputFile.is_open()) {
@@ -189,7 +203,7 @@ int loadCheckpoint(
                                  "_M" + to_string(M) + 
                                  "_K" + to_string(K) + 
                                  "_METCF.checkpoint";
-    string full_path = "/workspace/sparsene/examples/src_fp32/dtc/testbed/mtx_cache/" + checkpoint_filename;
+    string full_path = checkpointPath(checkpoint_filename);
 
     std::ifstream inputFile(full_path, std::ios::binary);
     if (!inputFile.is_open()) {
@@ -634,7 +648,8 @@ void verify_new(float* C_cpu, float* C_cuda, int M, int N) {
         for (int j = 0; j < N; j++) {
             float cusparse_val = C_cpu[OFFSET_ROW(i, j, N)];
             float mykernel_val = C_cuda[OFFSET_ROW(i, j, N)];
-            if (fabs(cusparse_val - mykernel_val) > 0.01) {
+            if (!std::isfinite(cusparse_val) || !std::isfinite(mykernel_val) ||
+                fabs(cusparse_val - mykernel_val) > 0.01) {
                 flag++;
                 if (flag < 200)
                 printf("Error(%d, %d): cusp(%.1f) mykernel(%.1f)\n", i, j, cusparse_val,
