@@ -2,6 +2,7 @@
 #include <cuda.h>
 #include <cuda_runtime.h>
 #include <cusparse.h>
+#include <cstdlib>
 #include <fstream>
 #include <mma.h>
 #include <sputnik/spmm/cuda_spmm.h>
@@ -19,6 +20,13 @@
 #define NUM_SM_GPU 128 // 4090
 #define USE_SPUTNIK
 using namespace nvcuda;
+
+static const char *dtcspmm_result_file() {
+  const char *path = std::getenv("DTCSPMM_RESULT_FILE");
+  return (path != nullptr && path[0] != '\0')
+             ? path
+             : "DTCSpMM_exe_time_and_throughput.csv";
+}
 
 struct GpuTimer {
   cudaEvent_t start;
@@ -927,7 +935,7 @@ std::vector<torch::Tensor> spmm_forward_improved_ptx_uint8_cuda(
 	}
     float dtc_time = timer.Elapsed() / EXE_TIME;
 	std::ofstream res_file;
-	res_file.open("/workspace/Sparsene-AD-repo/results/DTCSpMM_exe_time_and_throughput.csv", std::ios::app);
+	res_file.open(dtcspmm_result_file(), std::ios::app);
 	float spmm_flop = float(num_edges) * float(embedding_dim) * 2.0;
 	float DTC_SpMM_throughput_ = (float(spmm_flop * 1000.))/(dtc_time * 1000. * 1000. * 1000.);
 	res_file << "DTCSpMM:" << "," << dtc_time << "," << DTC_SpMM_throughput_ << ",";
@@ -1181,7 +1189,7 @@ std::vector<torch::Tensor> spmm_balance_forward_cuda_ptx_unit8_prefetch(
 
 	float DTC_time = timer.Elapsed() / EXE_TIME;
 	std::ofstream res_file;
-	res_file.open("/workspace/Sparsene-AD-repo/results/DTCSpMM_exe_time_and_throughput.csv", std::ios::app);
+	res_file.open(dtcspmm_result_file(), std::ios::app);
 	float spmm_flop = float(num_edges) * float(embedding_dim) * 2.0;
 	float DTC_throughput = (float(spmm_flop * 1000.))/(DTC_time * 1000. * 1000. * 1000.);
 	res_file << "DTCSpMM:" << "," << DTC_time << "," << DTC_throughput;

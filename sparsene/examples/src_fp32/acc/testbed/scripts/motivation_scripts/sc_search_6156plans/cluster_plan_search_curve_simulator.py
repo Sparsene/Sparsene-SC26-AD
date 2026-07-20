@@ -694,7 +694,8 @@ def run_online_cluster_search(
             return True
 
         choose_t = time.perf_counter()
-        chosen_elapsed = choose_t - search_start_time
+        chosen_wall_elapsed = choose_t - search_start_time
+        chosen_elapsed = chosen_wall_elapsed if use_real_timing else elapsed_subprocess
         if use_real_timing:
             one = measure_one_plan(
                 plan_id=pid,
@@ -711,13 +712,15 @@ def run_online_cluster_search(
         done_t = time.perf_counter()
         step_wall_sec = done_t - choose_t
         elapsed_wall = done_t - search_start_time
+        elapsed_subprocess += one["total_sec"]
+        finished_elapsed = elapsed_wall if use_real_timing else elapsed_subprocess
 
         measured_runtime[pid] = one["kernel_time_ms"]
-        elapsed_times.append(elapsed_wall)
-        elapsed_subprocess += one["total_sec"]
+        elapsed_times.append(finished_elapsed)
 
         one["step_wall_sec"] = step_wall_sec
         one["chosen_elapsed_sec"] = chosen_elapsed
+        one["finished_elapsed_sec"] = finished_elapsed
         one["elapsed_wall_sec"] = elapsed_wall
         one["elapsed_subprocess_sec"] = elapsed_subprocess
         details[pid] = one
@@ -728,7 +731,8 @@ def run_online_cluster_search(
                 "step": float(len(eval_order)),
                 "plan_id": float(pid),
                 "chosen_elapsed_sec": chosen_elapsed,
-                "finished_elapsed_sec": elapsed_wall,
+                "finished_elapsed_sec": finished_elapsed,
+                "finished_wall_elapsed_sec": elapsed_wall,
                 "kernel_time_ms": one["kernel_time_ms"],
                 "compile_sec": one["compile_sec"],
                 "run_sec": one["run_sec"],
@@ -746,7 +750,7 @@ def run_online_cluster_search(
                 one["compile_sec"],
                 one["run_sec"],
                 step_wall_sec,
-                elapsed_wall,
+                finished_elapsed,
             )
         )
         return True
@@ -1094,7 +1098,8 @@ def measure_eval_order_with_timing(
 
     for i, pid in enumerate(eval_order, start=1):
         choose_t = time.perf_counter()
-        chosen_elapsed = choose_t - search_start_time
+        chosen_wall_elapsed = choose_t - search_start_time
+        chosen_elapsed = chosen_wall_elapsed if use_real_timing else elapsed_subprocess
 
         if use_real_timing:
             one = measure_one_plan(
@@ -1112,16 +1117,18 @@ def measure_eval_order_with_timing(
             )
 
         done_t = time.perf_counter()
-        finished_elapsed = done_t - search_start_time
+        elapsed_wall = done_t - search_start_time
         step_wall_sec = done_t - choose_t
 
         measured_runtime[pid] = one["kernel_time_ms"]
+        elapsed_subprocess += one["total_sec"]
+        finished_elapsed = elapsed_wall if use_real_timing else elapsed_subprocess
         elapsed_times.append(finished_elapsed)
 
-        elapsed_subprocess += one["total_sec"]
         one["step_wall_sec"] = step_wall_sec
         one["chosen_elapsed_sec"] = chosen_elapsed
-        one["elapsed_wall_sec"] = finished_elapsed
+        one["finished_elapsed_sec"] = finished_elapsed
+        one["elapsed_wall_sec"] = elapsed_wall
         one["elapsed_subprocess_sec"] = elapsed_subprocess
         details[pid] = one
 
@@ -1131,6 +1138,7 @@ def measure_eval_order_with_timing(
                 "plan_id": float(pid),
                 "chosen_elapsed_sec": chosen_elapsed,
                 "finished_elapsed_sec": finished_elapsed,
+                "finished_wall_elapsed_sec": elapsed_wall,
                 "kernel_time_ms": one["kernel_time_ms"],
                 "compile_sec": one["compile_sec"],
                 "run_sec": one["run_sec"],
@@ -1492,7 +1500,8 @@ def main() -> None:
             cluster_cache_status = "miss"
             print(f"[cluster-cache] miss: {args.cluster_cache_file}")
 
-    search_start_time = time.perf_counter()
+    pre_search_start_time = time.perf_counter()
+    measurement_start_time = pre_search_start_time
     run_args = [x for x in args.run_args.split() if x]
     bad_start_ids_used: List[int] = []
 
@@ -1543,6 +1552,7 @@ def main() -> None:
 
         cluster_budget: Optional[int] = args.cluster_real_budget if args.cluster_real_budget > 0 else None
 
+        measurement_start_time = time.perf_counter()
         online = run_online_cluster_search(
             flow=flow,
             distance_fn=distance_fn,
@@ -1649,9 +1659,10 @@ def main() -> None:
 
         bad_start_ids_used = bad_start_ids
 
+        measurement_start_time = time.perf_counter()
         runtime_for_curve, elapsed_times, measured_details, timeline = measure_eval_order_with_timing(
             eval_order=eval_order,
-            search_start_time=search_start_time,
+            search_start_time=measurement_start_time,
             use_real_timing=args.use_real_timing,
             build_dir=args.build_dir,
             target_template=args.target_template,
@@ -1759,9 +1770,10 @@ def main() -> None:
         "measured_elapsed_total_sec": (
             elapsed_times_total[-1] if elapsed_times_total else len(eval_order_total) * args.profile_cost_sec
         ),
-        "pre_search_elapsed_sec": flow_built_time - search_start_time,
-        "measurement_elapsed_sec": eval_done_time - flow_built_time,
-        "search_total_elapsed_sec": eval_done_time - search_start_time,
+        "flow_build_elapsed_sec": flow_built_time - pre_search_start_time,
+        "pre_search_elapsed_sec": measurement_start_time - pre_search_start_time,
+        "measurement_elapsed_sec": eval_done_time - measurement_start_time,
+        "search_total_elapsed_sec": eval_done_time - pre_search_start_time,
         "script_total_elapsed_sec": eval_done_time - script_start_time,
         "time_to_best_sec": curve_rows[
             next(i for i, r in enumerate(curve_rows) if int(r["plan_id"]) == best_found_id)

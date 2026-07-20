@@ -231,7 +231,7 @@ int main(int argc, char** argv) {
     spmm_throughput = (float(numEdges) * float(feature_dim) * 2.0 * 1000.) 
                     / (elapsed_time * 1000. * 1000. * 1000.);
 
-    std::ofstream outFile("/workspace/Sparsene-AD-repo/results/acc-result.csv", std::ios::app);
+    std::ofstream outFile("../results/acc-result.csv", std::ios::app);
     if (!outFile) {
         std::cerr << "Error Opening result.csv" << std::endl;
     }

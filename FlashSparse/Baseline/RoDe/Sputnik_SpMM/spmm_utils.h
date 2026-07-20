@@ -302,12 +302,9 @@ struct SparseTile {
         for(int k_item_idx = 0; k_item_idx < kThreadItemsK_; ++k_item_idx) {
             Store(SPC::Load(values_),values_tile);
 
-            if(TypeUtils<ScalarValue>::IsMixed()) {
-                
-                Store(SPC::Load(column_idxs_),column_idxs_tile);
-            } else {
-                VectorCompute<Value>::Mul(rhs_columns_,SPC::Load(column_idxs_),column_idxs_tile);
-            }
+            // Keep column indices unscaled here. Scaling byte offsets in the
+            // 32-bit shared-memory index type overflows for large K and N.
+            Store(SPC::Load(column_idxs_),column_idxs_tile);
 
             values_ += kBlockWidth;
             column_idxs_ += kBlockWidth;
@@ -358,11 +355,7 @@ struct SparseTile {
 
             Store(SPC::Load(values),values_tile);
 
-            if (TypeUtils<ScalarValue>::IsMixed()) {
-                Store(SPC::Load(column_idxs), column_idxs_tile);
-            } else {
-                VectorCompute<ScalarValue>::Mul(rhs_columns_, SPC::Load(column_idxs), column_idxs_tile);
-            }
+            Store(SPC::Load(column_idxs), column_idxs_tile);
             values += kBlockWidth;
             column_idxs += kBlockWidth;
             values_tile += kBlockWidth;
@@ -455,15 +448,12 @@ struct DenseTile {
         Convert(row_offsets, scaled_indices);
         #pragma unroll
         for (int elt_idx = 0; elt_idx < kElementsPerScalar_; ++elt_idx) {
-            // Possibly scale the indices s.t. they properly index into the
-            // right-hand size dense matrix.
-            if (TypeUtils<ScalarValue>::IsMixed()) {
-                scaled_indices[elt_idx] *= rhs_columns_;
-            }
+            const int64_t scaled_index =
+                static_cast<int64_t>(scaled_indices[elt_idx]) * rhs_columns_;
 
             // Increment the matrix pointer.
             const Value *matrix =
-                OffsetCast<const Value>(matrix_base_, scaled_indices[elt_idx]);
+                OffsetCast<const Value>(matrix_base_, scaled_index);
             #pragma unroll
             for (int x_item_idx = 0; x_item_idx < kThreadItemsX_; ++x_item_idx) {
             // NOTE: There are a few different ways we could have expressed
@@ -518,15 +508,12 @@ struct DenseTile {
             Convert(lhs_tile + k_item_idx, lhs_values);
             #pragma unroll
             for (int elt_idx = 0; elt_idx < kElementsPerScalar_; ++elt_idx) {
-            // Possibly scale the indices s.t. they properly index into the
-            // right-hand size dense matrix.
-                if (TypeUtils<ScalarValue>::IsMixed()) {
-                    scaled_indices[elt_idx] *= rhs_columns_;
-                }
+                const int64_t scaled_index =
+                    static_cast<int64_t>(scaled_indices[elt_idx]) * rhs_columns_;
 
             // Increment hte matrix pointer.
             const Value *matrix =
-                OffsetCast<const Value>(matrix_base_, scaled_indices[elt_idx]);
+                OffsetCast<const Value>(matrix_base_, scaled_index);
             #pragma unroll
             for (int x_item_idx = 0; x_item_idx < kThreadItemsX_; ++x_item_idx) {
                 // NOTE: We special-case kThreadItemsX_ == 1 to generate cleaner

@@ -23,6 +23,7 @@ SPARSENE_PYTHON="$REPO_ROOT/python"
 
 FORMAT=""; ARCH=""; GPUS="0"; OUTPUT_DIR=""; GPU_NAME=""
 COMPILE_JOBS=32; KEEP_BINARIES=0; MAX_PLANS=0
+SAMPLE_DIVISOR=1; SAMPLE_SEED=2026; PRECOMPUTED_RESULTS=""
 M=1024; K=1024; N=64; SPARSITY=0.9; WARMUP=10; REPEAT=100
 SKIP_GENERATE=0; SKIP_PROFILE=0; SKIP_TIMING=0
 
@@ -35,6 +36,9 @@ while [[ $# -gt 0 ]]; do
         -o|--output) OUTPUT_DIR="$2"; shift 2;;
         --compile-jobs) COMPILE_JOBS="$2"; shift 2;;
         --max-plans) MAX_PLANS="$2"; shift 2;;
+        --sample-divisor) SAMPLE_DIVISOR="$2"; shift 2;;
+        --sample-seed) SAMPLE_SEED="$2"; shift 2;;
+        --precomputed-results) PRECOMPUTED_RESULTS="$2"; shift 2;;
         -M) M="$2"; shift 2;;
         -K) K="$2"; shift 2;;
         -N) N="$2"; shift 2;;
@@ -52,6 +56,10 @@ while [[ $# -gt 0 ]]; do
             echo "  -o DIR              Output directory"
             echo "  --compile-jobs N    Parallel nvcc workers (default: 32)"
             echo "  --max-plans N       Limit generation to first N plans (for quick tests; default: all)"
+            echo "  --sample-divisor N  Measure a deterministic 1/N sample (default: 1, measure all)"
+            echo "  --sample-seed N     Random seed used to select the sample (default: 2026)"
+            echo "  --precomputed-results FILE"
+            echo "                      Fill unmeasured plans from a full combined-results JSON"
             echo "  --keep-binaries     Don't delete binaries after timing"
             echo "  --skip-generate     Reuse existing plans"
             echo "  --skip-profile      Use placeholder op profiles"
@@ -63,6 +71,8 @@ done
 
 [ -z "$FORMAT" ] && echo "ERROR: --format required (acc or bitbsr)" && exit 1
 [ -z "$ARCH" ] && echo "ERROR: --arch required (e.g. sm_80, sm_89)" && exit 1
+[[ "$SAMPLE_DIVISOR" =~ ^[1-9][0-9]*$ ]] || { echo "ERROR: --sample-divisor must be a positive integer"; exit 1; }
+[[ "$SAMPLE_SEED" =~ ^-?[0-9]+$ ]] || { echo "ERROR: --sample-seed must be an integer"; exit 1; }
 
 if [ -z "$GPU_NAME" ]; then
     case "$ARCH" in
@@ -81,13 +91,24 @@ esac
 [ ! -d "$TESTBED" ] && echo "ERROR: $TESTBED not found" && exit 1
 [ -z "$OUTPUT_DIR" ] && OUTPUT_DIR="$TESTBED/results_${ARCH}"
 
+# Compilation happens after changing into TESTBED.  Preserve a caller-supplied
+# relative output path by resolving it before that directory change.
+if [[ "$OUTPUT_DIR" != /* ]]; then
+    OUTPUT_DIR="$(pwd)/$OUTPUT_DIR"
+fi
+if [ -n "$PRECOMPUTED_RESULTS" ] && [[ "$PRECOMPUTED_RESULTS" != /* ]]; then
+    PRECOMPUTED_RESULTS="$(pwd)/$PRECOMPUTED_RESULTS"
+fi
+[ -n "$PRECOMPUTED_RESULTS" ] && [ ! -f "$PRECOMPUTED_RESULTS" ] && {
+    echo "ERROR: precomputed results not found: $PRECOMPUTED_RESULTS"; exit 1;
+}
+
 export PYTHONPATH="$SPARSENE_PYTHON:${PYTHONPATH:-}"
 IFS=',' read -ra GPU_ARR <<< "$GPUS"
 FIRST_GPU="${GPU_ARR[0]}"
 NGPU=${#GPU_ARR[@]}
 
 command -v nvcc >/dev/null 2>&1 || { echo "ERROR: nvcc not in PATH"; exit 1; }
-python3 -c "import graphviz" 2>/dev/null || { echo "ERROR: pip install graphviz"; exit 1; }
 
 echo "============================================================"
 echo " Simulator Evaluation: $FORMAT on $ARCH ($GPU_NAME)"
@@ -95,6 +116,8 @@ echo "============================================================"
 echo " Output:  $OUTPUT_DIR"
 echo " GPUs:    $GPUS ($NGPU)"
 echo " Matrix:  M=$M K=$K N=$N sparsity=$SPARSITY"
+echo " Sample:  1/$SAMPLE_DIVISOR (seed=$SAMPLE_SEED)"
+[ -n "$PRECOMPUTED_RESULTS" ] && echo " Baseline: $PRECOMPUTED_RESULTS"
 echo "============================================================"
 
 mkdir -p "$OUTPUT_DIR/obj" "$OUTPUT_DIR/outputs"
@@ -150,6 +173,26 @@ print(f'  Codegen: {time.time()-t0:.1f}s')
     TOTAL=$(python3 -c "import json; print(len(json.load(open('$MANIFEST'))))")
 fi
 echo ""
+
+# Select an exact, deterministic sample without changing plan IDs or manifest.
+PLAN_LIST="$OUTPUT_DIR/obj/selected_plans.txt"
+python3 - "$PLANS_DIR" "$TOTAL" "$SAMPLE_DIVISOR" "$SAMPLE_SEED" "$PLAN_LIST" << 'PYEOF'
+import random
+import sys
+from pathlib import Path
+
+plans_dir, total, divisor, seed, output = sys.argv[1:]
+total, divisor, seed = int(total), int(divisor), int(seed)
+count = total if divisor == 1 else (total + divisor - 1) // divisor
+ids = list(range(total)) if divisor == 1 else sorted(random.Random(seed).sample(range(total), count))
+paths = [Path(plans_dir) / f"plan_{pid:04d}.inc" for pid in ids]
+missing = [str(path) for path in paths if not path.is_file()]
+if missing:
+    raise SystemExit(f"ERROR: selected plan file is missing: {missing[0]}")
+Path(output).write_text("".join(f"{path}\n" for path in paths))
+print(f">>> Selected {len(paths)} / {total} plans for compile+time")
+PYEOF
+SELECTED=$(wc -l < "$PLAN_LIST")
 
 # ===== Step 2: Profile =====
 if [ "$SKIP_PROFILE" -eq 1 ]; then
@@ -227,7 +270,7 @@ echo ""
 if [ "$SKIP_TIMING" -eq 1 ]; then
     echo ">>> Step 3: Skipping compile+time"
 else
-    echo ">>> Step 3: Compile+time $TOTAL plans ($COMPILE_JOBS workers, GPUs: $GPUS)"
+    echo ">>> Step 3: Compile+time $SELECTED / $TOTAL plans ($COMPILE_JOBS workers, GPUs: $GPUS)"
 
     # Clean empty timing files from previous failed runs
     find "$OUTPUT_DIR/outputs" -name "*.txt" -empty -delete 2>/dev/null
@@ -241,7 +284,7 @@ else
     COMMON="$OUTPUT_DIR/obj/utils.o $OUTPUT_DIR/obj/mmio.o $OUTPUT_DIR/obj/mmio_highlevel.o"
 
     # Sanity
-    P0=$(ls "$PLANS_DIR"/plan_0000.inc)
+    P0=$(head -n 1 "$PLAN_LIST")
     sed "s|#include \"kernel.inc\"|#include \"$P0\"|" host_program.cu > "$OUTPUT_DIR/obj/_s.cu"
     nvcc $NVCC_FLAGS $INC -dc -o "$OUTPUT_DIR/obj/_s.o" "$OUTPUT_DIR/obj/_s.cu" 2>/dev/null
     nvcc $NVCC_FLAGS -o "$OUTPUT_DIR/obj/_s" "$OUTPUT_DIR/obj/_s.o" "$OUTPUT_DIR/obj/main.o" $COMMON $LINK 2>/dev/null
@@ -295,13 +338,13 @@ COMPILE_SCRIPT
     chmod +x "$OUTPUT_DIR/obj/_compile_one.sh"
     export TESTBED OUTPUT_DIR NVCC_FLAGS INC LINK COMMON
 
-    ls "$PLANS_DIR"/plan_*.inc | xargs -P $COMPILE_JOBS -I{} bash "$OUTPUT_DIR/obj/_compile_one.sh" {}
+    xargs -P "$COMPILE_JOBS" -I{} bash "$OUTPUT_DIR/obj/_compile_one.sh" {} < "$PLAN_LIST"
     touch "$OUTPUT_DIR/ready/ALL_DONE"
     for P in $TPIDS; do wait $P; done
     rm -rf "$OUTPUT_DIR/ready"
 
     TIMED=$(find "$OUTPUT_DIR/outputs" -name "*.txt" -size +0 | wc -l)
-    echo "  Timed: $TIMED / $TOTAL"
+    echo "  Timing files available: $TIMED (selected: $SELECTED / total: $TOTAL)"
 fi
 echo ""
 
@@ -323,16 +366,55 @@ prof_path = "$OUTPUT_DIR/op_profiles.json"
 profiles = load_profiles(prof_path, defaults=make_profiles()) if os.path.exists(prof_path) else make_profiles()
 manifest = json.load(open("$MANIFEST"))
 id_to_entry = {e["id"]: e for e in manifest}
+selected_ids = {
+    int(os.path.basename(line.strip()).replace("plan_", "").replace(".inc", ""))
+    for line in open("$PLAN_LIST") if line.strip()
+}
 
-timing = {}
+measured_timing = {}
 out_dir = "$OUTPUT_DIR/outputs"
 if os.path.isdir(out_dir):
     for f in os.listdir(out_dir):
         if not f.endswith("_timing.txt"): continue
         pid = int(f.replace("plan_","").replace("_timing.txt",""))
+        if pid not in selected_ids: continue
         for line in open(f"{out_dir}/{f}"):
             m = re.match(r"mykernel_time:\s+([\d.]+)", line)
-            if m: timing[pid] = float(m.group(1)) * 1000; break
+            if m: measured_timing[pid] = float(m.group(1)) * 1000; break
+
+if not $SKIP_TIMING and len(measured_timing) != len(selected_ids):
+    raise SystemExit(
+        f"ERROR: only {len(measured_timing)} / {len(selected_ids)} selected plans produced valid timing data"
+    )
+
+precomputed_path = "$PRECOMPUTED_RESULTS"
+precomputed_timing = {}
+if precomputed_path:
+    baseline = json.load(open(precomputed_path))
+    expected = {
+        "format": "fp32_$FORMAT",
+        "arch": "$ARCH",
+        "matrix": "M=${M} K=${K} N=${N} sparsity=${SPARSITY}",
+    }
+    for key, value in expected.items():
+        actual = baseline.get("metadata", {}).get(key)
+        if actual != value:
+            raise SystemExit(f"ERROR: precomputed {key} mismatch: expected {value!r}, got {actual!r}")
+    baseline_by_id = {p["id"]: p for p in baseline.get("plans", [])}
+    if set(baseline_by_id) != set(id_to_entry):
+        raise SystemExit("ERROR: precomputed plan IDs do not match the generated manifest")
+    for pid, entry in id_to_entry.items():
+        old = baseline_by_id[pid]
+        if old.get("stages") != entry.get("stages") or old.get("shifts") != entry.get("shifts"):
+            raise SystemExit(f"ERROR: precomputed plan_{pid:04d} does not match the generated manifest")
+        if old.get("kernel_time_us") is not None:
+            precomputed_timing[pid] = old["kernel_time_us"]
+
+# Fresh/reused sampled timing always takes precedence over the baseline.
+timing = dict(precomputed_timing)
+timing.update(measured_timing)
+if precomputed_path and len(timing) != len(id_to_entry):
+    raise SystemExit(f"ERROR: only {len(timing)} / {len(id_to_entry)} plans have timing data after baseline merge")
 
 sim = {}
 for pid in (timing or id_to_entry):
@@ -377,12 +459,16 @@ if n >= 2:
         if key in metrics: print(f"  Top-{k} best real rank: {metrics[key]}")
 
 op_prof = json.loads(open(prof_path).read()).get("op_profiles",{}) if os.path.exists(prof_path) else {}
+precomputed_used = sum(pid not in measured_timing for pid in timing)
 json.dump({"metadata":{"format":"fp32_$FORMAT","arch":"$ARCH","gpu":"$GPU_NAME","matrix":"M=${M} K=${K} N=${N} sparsity=${SPARSITY}",
-    "n_plans":len(plans),"n_timed":len(timing)}, "metrics":metrics, "op_profiles":op_prof, "plans":plans},
+    "n_plans":len(plans),"n_timed":len(timing),"n_sampled_timing":len(measured_timing),
+    "n_precomputed_timing":precomputed_used,"sample_divisor":$SAMPLE_DIVISOR,"sample_seed":$SAMPLE_SEED,
+    "precomputed_results":precomputed_path or None}, "metrics":metrics, "op_profiles":op_prof, "plans":plans},
     open("$OUTPUT_DIR/combined_results.json","w"), indent=2)
 
 if timing:
     bp = min(timing, key=timing.get)
+    print(f"  Timings: {len(measured_timing)} sampled/reused + {precomputed_used} precomputed")
     print(f"  Best: plan_{bp} = {timing[bp]:.1f} us, Worst: {max(timing.values()):.1f} us")
 print(f"  Saved $OUTPUT_DIR/combined_results.json ({len(plans)} plans)")
 PYEOF

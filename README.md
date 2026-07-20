@@ -30,7 +30,7 @@ Sparsene is a format-driven automated optimization framework for SpMM that syste
 ### 0. Clone This Repository
 
 ```bash
-git clone https://github.com/Sparsene/Sparsene-SC26-AD.git
+git clone --recurse-submodules https://github.com/Sparsene/Sparsene-SC26-AD.git
 cd Sparsene-SC26-AD
 ```
 
@@ -49,7 +49,7 @@ We evaluate performance on three NVIDIA GPUs:
 - Python packages:
 
 ```bash
-pip install tqdm pandas matplotlib
+pip install tqdm pandas matplotlib scipy graphviz
 ```
 
 ### 3. Baselines
@@ -69,19 +69,22 @@ We use sparse matrices from SuiteSparse, as well as datasets from TC-GNN, SNAP, 
 
 **Download the dataset:**
 
-Download `sparsene_sc26_dataset.tar.gz` from Google Drive and extract it into the `Sparsene/dataset` directory:
+Download `sparsene_sc26_dataset.tar.gz` from Google Drive and extract it into the `<Sparsene-SC26-AD>/dataset` directory:
 
 https://drive.google.com/drive/folders/1f5KP5H1jxJ98tB_cFiRvJZcKTp6_E94q?usp=sharing
 
 ```bash
-tar -xzf sparsene_sc26_dataset.tar.gz -C Sparsene/dataset/
+<change directory to <Sparsene-SC26-AD>/>
+tar -xzf sparsene_sc26_dataset.tar.gz -C <Sparsene-SC26-AD>/dataset/
 ```
 
 **Convert matrices for DTC-SpMM and FlashSparse:**
 
 ```bash
+# change directory to <Sparsene-SC26-AD>/dataset/
+cd <Sparsene-SC26-AD>/dataset/
 # Convert .mtx to .npz for DTC-SpMM
-python mtx2npz_selected.py --input_dir ./dataset/mtx/ --output_dir ./selected_npz/
+python mtx2npz_selected.py --input_dir ./selected_mtx/ --output_dir ./selected_npz/
 
 # Convert .npz to FlashSparse format
 python flashsparse_convert_parallel.py --input_dir ./selected_npz/ --output_dir ./flashsparse_npz/
@@ -93,23 +96,39 @@ python flashsparse_convert_parallel.py --input_dir ./selected_npz/ --output_dir 
 
 ### Sparsene and Baselines Installation (~20 min)
 
-We provide an `install.sh` script for Sparsene and for each baseline in their respective directories:
+We provide an `install_<xxx>.sh` script for Sparsene and for each baseline in their respective directories:
+
+```bash
+# set cuda path in ~/.bashrc
+export CUDA_HOME=/usr/local/cuda
+export CUDA_PATH="$CUDA_HOME"
+export CUDACXX="$CUDA_HOME/bin/nvcc"
+export PATH="$CUDA_HOME/bin:$PATH"
+export LD_LIBRARY_PATH="$CUDA_HOME/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+```
 
 ```bash
 # Install Sparsene
-cd Sparsene && bash install.sh && cd ..
+cd sparsene 
+bash install_sparsene.sh 
+cd ..
 
 # Install DTC-SpMM
-cd DTC-SpMM && bash install.sh && cd ..
+cd <DTC-SpMM> 
+bash install_dtcspmm.sh 
+source ./init_dtc.sh
+source ./third_party/init_sputnik.sh
+cd ..
 
 # Install Acc-SpMM
 cd Acc-SpMM && bash install.sh && cd ..
 
-# Install SparseTIR
-cd SparseTIR && bash install.sh && cd ..
-
-# Install FlashSparse
+# Install FlashSparse and sputnik
+apt install libgoogle-glog-dev
 cd FlashSparse && bash install.sh && cd ..
+
+# Install SparseTIR (only support in xxx)
+cd SparseTIR && bash install.sh && cd ..
 ```
 
 > **Note:** Sputnik and cuSPARSE are included in the Sparsene and FlashSparse scripts and do not require separate installation.
@@ -123,7 +142,7 @@ The end-to-end experiments (T2) require three additional baselines (PyG, DGL, DT
 After installation, run a quick test to verify correctness of Sparsene and all baselines:
 
 ```bash
-cd Sparsene && bash quick_test.sh
+cd sparsene && bash quick_test.sh
 ```
 
 ---
@@ -135,19 +154,61 @@ The full execution flow is: **T1 → T2 → T3 → T4 → T5 → T7**, or use **
 ### T1: Run Sparsene and All Baselines (~300 min)
 
 ```bash
-cd Sparsene   && bash run_sparsene_kernel.sh    && cd ..
-cd DTC-SpMM   && bash run_dtc_spmm_kernel.sh    && cd ..
+# test sparsene and cusparse
+cd sparsene
+bash run_sparsene_kernel.sh  
+bash run_cusparse_kernel.sh
+cd ..
+# test dtc
+cd <DTC-SpMM>   && bash run_dtc_spmm_kernel.sh    && cd ..
+# test acc
 cd Acc-SpMM   && bash run_acc_spmm_kernel.sh    && cd ..
+# test FlashSparse and sputnik
+cd FlashSparse 
+bash run_flashsparse_kernel.sh
+bash run_sputnik_kernel.sh
+cd ..
+# test sparsetir
 cd SparseTIR  && bash run_sparsetir_kernel.sh   && cd ..
-cd FlashSparse && bash run_flashsparse_kernel.sh && cd ..
 ```
 
 > cuSPARSE and Sputnik results are collected within the Sparsene and FlashSparse scripts.
 
 ### T2: Run End-to-End Experiments (~240 min)
 
+DGL baseline needs new env
+
 ```bash
-cd Sparsene/end2end
+# create venv for dgl
+python3 -m pip install -U virtualenv
+python3 -m virtualenv /workspace/venv_dgl
+source /workspace/venv_dgl/bin/activate
+
+python -m pip install torch==2.4.0+cu121 torchvision==0.19.0+cu121 torchaudio==2.4.0+cu121 --index-url https://download.pytorch.org/whl/cu121
+
+# Install CUDA DGL (nightly wheel index used by current container setup).
+python -m pip install --pre dgl -f https://data.dgl.ai/wheels-test/torch-2.4/cu124/repo.html
+
+# verify DGL installation
+/workspace/venv_dgl/bin/python - <<'PY'
+import torch
+import dgl
+import dgl.nn.pytorch as dglnn
+
+print('torch:', torch.__version__, 'cuda:', torch.version.cuda, 'cuda_available:', torch.cuda.is_available())
+print('dgl:', dgl.__version__)
+
+dev = torch.device('cuda:0')
+g = dgl.graph((torch.tensor([0], device=dev), torch.tensor([0], device=dev)), num_nodes=1, device=dev)
+x = torch.ones((1, 1), device=dev)
+conv = dglnn.GraphConv(1, 1, norm='none', weight=False, bias=False, allow_zero_in_degree=True).to(dev)
+_ = conv(g, x)
+print('DGL CUDA check: OK')
+PY
+```
+
+```bash
+cd sparsene/end2end
 bash run_sparsene_end2end.sh
 bash run_flashsparse_end2end.sh
 bash run_dtc_spmm_end2end.sh
@@ -159,8 +220,8 @@ cd ../..
 ### T3: Run Load Balance Experiments (~5 min)
 
 ```bash
-cd Sparsene/load_balance
-bash build.sh          # Build the load balance operators
+cd sparsene/load_balance
+bash install_sparsene_lb.sh          # Build the load balance operators
 bash run_load_balance.sh
 cd ../..
 ```
@@ -176,7 +237,7 @@ cd ../..
 ### T5: Run Search Convergence Experiments (~180 min)
 
 ```bash
-cd Sparsene/search_convergence
+cd sparsene/search_convergence
 bash run_search_convergence.sh
 cd ../..
 ```

@@ -11,9 +11,9 @@ python process_sparsene_test_log.py ../results/sparsene_fp32_N128.log ../results
 python process_sparsene_test_log.py ../results/sparsene_fp32_N256.log ../results/jsons/sparsene_fp32_N256.json fp32
 python process_sparsene_test_log.py ../results/sparsene_fp32_N512.log ../results/jsons/sparsene_fp32_N512.json fp32
 # flashsparse
-python process_flashsparse_test_csv.py -N 128 ../FlashSparse/result/FlashSparse/spmm/spmm_tf32_128.csv ../results/jsons/flashsparse_fp32_N128.json
-python process_flashsparse_test_csv.py -N 256 ../FlashSparse/result/FlashSparse/spmm/spmm_tf32_256.csv ../results/jsons/flashsparse_fp32_N256.json
-python process_flashsparse_test_csv.py -N 512 ../FlashSparse/result/FlashSparse/spmm/spmm_tf32_512.csv ../results/jsons/flashsparse_fp32_N512.json
+python process_flashsparse_test_csv.py -N 128 ../FlashSparse/result/FlashSparse/spmm/spmm_tf32_128_new.csv ../results/jsons/flashsparse_fp32_N128.json
+python process_flashsparse_test_csv.py -N 256 ../FlashSparse/result/FlashSparse/spmm/spmm_tf32_256_new.csv ../results/jsons/flashsparse_fp32_N256.json
+python process_flashsparse_test_csv.py -N 512 ../FlashSparse/result/FlashSparse/spmm/spmm_tf32_512_new.csv ../results/jsons/flashsparse_fp32_N512.json
 # acc-spmm
 python process_acc_test_csv.py ../results/acc-result.csv ../results/jsons/acc_fp32.json
 # dtc-spmm

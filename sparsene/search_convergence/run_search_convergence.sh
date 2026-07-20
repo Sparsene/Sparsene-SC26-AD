@@ -36,7 +36,7 @@ python cluster_plan_search_curve_simulator.py \
   --strategy sim-cluster-hybrid \
   --plans plans_6156.txt \
   --results plan_result.json \
-  --sim-results results/sim_scores_6156_const.json \
+  --sim-results sim_scores_6156_const.json \
   --sim-metric sim_cost \
   --metric time_ms \
   --real-budget 64 \

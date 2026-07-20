@@ -6,7 +6,7 @@ from statistics import fmean
 
 #! FP32
 DEVICE_TO_FILE_FP32 = {
-    "A100": "a100_fp32_merged.json",
+    "A100": "a100_fp32_merged2.json",
     "H100": "h800_fp32_merged.json",
     "4090": "4090_fp32_merged.json",
 }

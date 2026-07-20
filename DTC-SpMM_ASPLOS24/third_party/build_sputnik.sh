@@ -1,4 +1,4 @@
-cd ${DTC_HOME}/third_party/glog  && mkdir build && cd build
+cd ${DTC_HOME}/third_party/glog  && rm -rf build && mkdir -p build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=${DTC_HOME}/third_party/glog/build ..
 make -j
 make install 
@@ -17,7 +17,7 @@ fi
 
 
 
-cd ${DTC_HOME}/third_party/sputnik  && mkdir build && cd build
+cd ${DTC_HOME}/third_party/sputnik && rm -rf build && mkdir -p build && cd build
 cmake .. -DGLOG_INCLUDE_DIR=$GLOG_PATH/build/include -DGLOG_LIBRARY=$GLOG_PATH/build/lib/libglog.so -DCMAKE_BUILD_TYPE=Release -DBUILD_TEST=OFF -DBUILD_BENCHMARK=OFF -DCUDA_ARCHS="89;86"
 make -j12 
 

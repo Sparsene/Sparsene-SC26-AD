@@ -21,9 +21,9 @@ cp sparsetir.log ../SparseTIR-exp/examples/spmm/
 # spmm_tf32_128.csv -> FlashSparse/result/FlashSparse/spmm
 # spmm_tf32_256.csv -> FlashSparse/result/FlashSparse/spmm
 # spmm_tf32_512.csv -> FlashSparse/result/FlashSparse/spmm
-cp spmm_tf32_128.csv ../FlashSparse/result/FlashSparse/spmm/
-cp spmm_tf32_256.csv ../FlashSparse/result/FlashSparse/spmm/
-cp spmm_tf32_512.csv ../FlashSparse/result/FlashSparse/spmm/
+cp spmm_tf32_128.csv ../FlashSparse/result/FlashSparse/spmm/spmm_tf32_128_new.csv
+cp spmm_tf32_256.csv ../FlashSparse/result/FlashSparse/spmm/spmm_tf32_256_new.csv
+cp spmm_tf32_512.csv ../FlashSparse/result/FlashSparse/spmm/spmm_tf32_512_new.csv
 #> cuSPARSE
 # cusparse_fp32_N128.log -> results
 # cusparse_fp32_N256.log -> results

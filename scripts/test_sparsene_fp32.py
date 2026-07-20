@@ -9,7 +9,7 @@ from pathlib import Path
 OLD_REPO_ROOT = "/workspace/Sparsene-AD-repo"
 
 
-def normalize_dataset_path(raw_path: str, repo_root: Path) -> str:
+def normalize_dataset_path(raw_path: str, repo_root: Path, matrix_list_dir: Path) -> str:
     path = raw_path.strip()
     if not path:
         return ""
@@ -18,7 +18,7 @@ def normalize_dataset_path(raw_path: str, repo_root: Path) -> str:
         return str(repo_root / relative)
     if os.path.isabs(path):
         return path
-    return str(repo_root / path)
+    return str(matrix_list_dir / path)
 
 
 def load_exe_list(exe_list_file: Path, repo_root: Path):
@@ -39,7 +39,11 @@ def load_exe_list(exe_list_file: Path, repo_root: Path):
 
 def load_mtx_list(filtered_mtx_file: Path, repo_root: Path):
     with filtered_mtx_file.open("r") as f:
-        return [normalize_dataset_path(line, repo_root) for line in f if line.strip()]
+        return [
+            normalize_dataset_path(line, repo_root, filtered_mtx_file.parent)
+            for line in f
+            if line.strip()
+        ]
 
 
 def main():

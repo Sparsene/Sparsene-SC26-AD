@@ -231,7 +231,7 @@ struct VectorCompute<half8> {
 
 //  tiling **********************************
 template <typename OutType, typename InType>
-__device__ __forceinline__ OutType* OffsetCast(InType* ptr, int offset) {
+__device__ __forceinline__ OutType* OffsetCast(InType* ptr, int64_t offset) {
   return reinterpret_cast<OutType*>(
       const_cast<char*>(reinterpret_cast<const char*>(ptr)) + offset);
 }
