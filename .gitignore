@@ -6,3 +6,10 @@ dataset/sparsene_sc26_dataset.tar.gz
 __pycache__/
 build/
 build_test/
+.sparsene-scae/
+/results/
+sparsene/end2end/result/
+sparsene/examples/src_fp32/acc/testbed/scripts/motivation_scripts/sc_search_6156plans/cache/
+sparsene/examples/src_fp32/acc/testbed/search_results/simulation/
+sparsene/examples/src_fp32/bitbsr/testbed/search_results/simulation/
+sparsene/examples/src_fp32/acc/testbed/scripts/motivation_scripts/sc_search_6156plans/results/
