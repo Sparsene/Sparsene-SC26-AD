@@ -113,7 +113,7 @@ cd sparsene
 bash install_sparsene.sh 
 cd ..
 
-# Install DTC-SpMM
+# Install DTC-SpMM (have to apt install python3.10-dev first)
 cd <DTC-SpMM> 
 bash install_dtcspmm.sh 
 source ./init_dtc.sh
