@@ -7,26 +7,26 @@ SPARSENE_AD_ROOT=$(pwd)
 #! T1: kernels
 pushd $SPARSENE_AD_ROOT/scripts
 # sparsene
-python process_sparsene_test_log.py ../results/sparsene_fp32_N128.log ../results/jsons/sparsene_fp32_N128.json fp32
-python process_sparsene_test_log.py ../results/sparsene_fp32_N256.log ../results/jsons/sparsene_fp32_N256.json fp32
+# python process_sparsene_test_log.py ../results/sparsene_fp32_N128.log ../results/jsons/sparsene_fp32_N128.json fp32
+# python process_sparsene_test_log.py ../results/sparsene_fp32_N256.log ../results/jsons/sparsene_fp32_N256.json fp32
 python process_sparsene_test_log.py ../results/sparsene_fp32_N512.log ../results/jsons/sparsene_fp32_N512.json fp32
 # flashsparse
-python process_flashsparse_test_csv.py -N 128 ../FlashSparse/result/FlashSparse/spmm/spmm_tf32_128_new.csv ../results/jsons/flashsparse_fp32_N128.json
-python process_flashsparse_test_csv.py -N 256 ../FlashSparse/result/FlashSparse/spmm/spmm_tf32_256_new.csv ../results/jsons/flashsparse_fp32_N256.json
+# python process_flashsparse_test_csv.py -N 128 ../FlashSparse/result/FlashSparse/spmm/spmm_tf32_128_new.csv ../results/jsons/flashsparse_fp32_N128.json
+# python process_flashsparse_test_csv.py -N 256 ../FlashSparse/result/FlashSparse/spmm/spmm_tf32_256_new.csv ../results/jsons/flashsparse_fp32_N256.json
 python process_flashsparse_test_csv.py -N 512 ../FlashSparse/result/FlashSparse/spmm/spmm_tf32_512_new.csv ../results/jsons/flashsparse_fp32_N512.json
 # acc-spmm
 python process_acc_test_csv.py ../results/acc-result.csv ../results/jsons/acc_fp32.json
 # dtc-spmm
 python process_dtc_test_csv.py ../results/DTCSpMM_exe_time_and_throughput.csv ../results/jsons/dtc_fp32.json
 # cusparse
-python process_cusparse_test_log.py ../results/cusparse_fp32_N128.log ../results/jsons/cusparse_fp32_N128.json fp32
-python process_cusparse_test_log.py ../results/cusparse_fp32_N256.log ../results/jsons/cusparse_fp32_N256.json fp32
+# python process_cusparse_test_log.py ../results/cusparse_fp32_N128.log ../results/jsons/cusparse_fp32_N128.json fp32
+# python process_cusparse_test_log.py ../results/cusparse_fp32_N256.log ../results/jsons/cusparse_fp32_N256.json fp32
 python process_cusparse_test_log.py ../results/cusparse_fp32_N512.log ../results/jsons/cusparse_fp32_N512.json fp32
 # sparsetir
 python process_sparsetir_test_log.py ../SparseTIR-exp/examples/spmm/sparsetir.log ../results/jsons/
 # sputnik
-python process_sputnik_test_csv.py ../FlashSparse/result/Baseline/spmm/rode_spmm_f32_n128.csv ../results/jsons/sputnik_fp32_N128.json 128
-python process_sputnik_test_csv.py ../FlashSparse/result/Baseline/spmm/rode_spmm_f32_n256.csv ../results/jsons/sputnik_fp32_N256.json 256
+# python process_sputnik_test_csv.py ../FlashSparse/result/Baseline/spmm/rode_spmm_f32_n128.csv ../results/jsons/sputnik_fp32_N128.json 128
+# python process_sputnik_test_csv.py ../FlashSparse/result/Baseline/spmm/rode_spmm_f32_n256.csv ../results/jsons/sputnik_fp32_N256.json 256
 python process_sputnik_test_csv.py ../FlashSparse/result/Baseline/spmm/rode_spmm_f32_n512.csv ../results/jsons/sputnik_fp32_N512.json 512
 
 # merge all json files
