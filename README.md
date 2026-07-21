@@ -127,7 +127,7 @@ cd Acc-SpMM && bash install.sh && cd ..
 apt install libgoogle-glog-dev
 cd FlashSparse && bash install.sh && cd ..
 
-# Install SparseTIR (only support in xxx)
+# Install SparseTIR (only support in Ubuntu20.04. Please refer to README.md in SparseTIR for installation and evaluation)
 cd SparseTIR && bash install.sh && cd ..
 ```
 
