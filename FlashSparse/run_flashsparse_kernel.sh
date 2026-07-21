@@ -11,7 +11,7 @@ MTX_DIR="${2:-$REPO_ROOT/dataset/selected_mtx}"
 
 pushd $FLASHSPARSE_DIR/eva/kernel/spmm
 # python -u "$PY_SCRIPT" 128 "$REPO_ROOT" "$DATA_FILTER_FILE" "$MTX_DIR"
-python -u "$PY_SCRIPT" 128 "$REPO_ROOT" "$DATA_FILTER_FILE" "$MTX_DIR" &&
-python -u "$PY_SCRIPT" 256 "$REPO_ROOT" "$DATA_FILTER_FILE" "$MTX_DIR" &&
+# python -u "$PY_SCRIPT" 128 "$REPO_ROOT" "$DATA_FILTER_FILE" "$MTX_DIR" &&
+# python -u "$PY_SCRIPT" 256 "$REPO_ROOT" "$DATA_FILTER_FILE" "$MTX_DIR" &&
 python -u "$PY_SCRIPT" 512 "$REPO_ROOT" "$DATA_FILTER_FILE" "$MTX_DIR"
 popd

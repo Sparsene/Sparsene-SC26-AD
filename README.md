@@ -163,7 +163,7 @@ cd ..
 # test dtc
 cd <DTC-SpMM>   && bash run_dtc_spmm_kernel.sh    && cd ..
 # test acc
-cd Acc-SpMM   && bash run_acc_spmm_kernel.sh    && cd ..
+cd AccSpMM   && bash run_acc_spmm_kernel.sh    && cd ..
 # test FlashSparse and sputnik
 cd FlashSparse 
 bash run_flashsparse_kernel.sh
