@@ -142,7 +142,8 @@ The end-to-end experiments (T2) require three additional baselines (PyG, DGL, DT
 After installation, run a quick test to verify correctness of Sparsene and all baselines:
 
 ```bash
-cd sparsene && bash quick_test.sh
+cd <Sparsene-SC26-AD>
+bash quick_test.sh
 ```
 
 ---
