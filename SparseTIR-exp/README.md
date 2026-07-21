@@ -39,15 +39,19 @@ cd ..
 # Navigate to python directory, install python binding and dependencies (don't miss the dot!)
 cd python
 conda activate sptir
-pip install . dgl==1.0.0 torchdata==0.7.0 pandas pyyaml torch==2.1.0 "numpy<2" pydantic setuptools==65.5.1 pytest ogb
+pip install . dgl==1.0.0 torchdata==0.7.0 pandas pyyaml tqdm torch==2.1.0 "numpy<2" pydantic setuptools==65.5.1 pytest ogb
 cd ..
 
 # Experiment path
 cd examples/spmm
 
-# Prepare mat_list.txt
-python /work/sparsene/exp/find_mats.py <dir> > mat_list.txt
+# The checked-in mat_list.txt contains paths relative to the artifact's
+# dataset directory. By default, exp.py resolves them under:
+#   <repository-root>/dataset
 
 # Run experiment
 python exp.py
+
+# Optional: use a dataset directory outside the repository
+python exp.py --dataset-dir /path/to/dataset
 ```
