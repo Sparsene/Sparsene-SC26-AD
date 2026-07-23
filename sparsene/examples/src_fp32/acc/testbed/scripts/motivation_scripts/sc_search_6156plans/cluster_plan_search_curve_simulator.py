@@ -570,9 +570,12 @@ def evaluate_plan_oracle(
     plan_id: int,
     runtime_oracle: Dict[int, float],
     profile_cost_sec: float,
+    sleep_for_profile: bool = False,
 ) -> Dict[str, float]:
     if plan_id not in runtime_oracle:
         raise RuntimeError(f"Plan {plan_id} is missing in oracle results")
+    if sleep_for_profile:
+        time.sleep(profile_cost_sec)
     t = runtime_oracle[plan_id]
     return {
         "kernel_time_ms": t,
@@ -661,6 +664,7 @@ def run_online_cluster_search(
     ucb_beta: float,
     seed: int,
     use_real_timing: bool,
+    quick_repro: bool,
     build_dir: Path,
     target_template: str,
     run_args: List[str],
@@ -707,7 +711,12 @@ def run_online_cluster_search(
         else:
             if runtime_oracle is None:
                 raise RuntimeError("runtime_oracle is required when not using real timing")
-            one = evaluate_plan_oracle(pid, runtime_oracle, profile_cost_sec)
+            one = evaluate_plan_oracle(
+                pid,
+                runtime_oracle,
+                profile_cost_sec,
+                sleep_for_profile=quick_repro,
+            )
 
         done_t = time.perf_counter()
         step_wall_sec = done_t - choose_t
@@ -740,19 +749,25 @@ def run_online_cluster_search(
             }
         )
 
-        mode = "real" if use_real_timing else "oracle"
-        print(
-            "[{}] step={}/? plan={} kernel_ms={:.6f} compile_s={:.3f} run_s={:.3f} wall_s={:.3f} elapsed_s={:.3f}".format(
-                mode,
-                len(eval_order),
-                pid,
-                one["kernel_time_ms"],
-                one["compile_sec"],
-                one["run_sec"],
-                step_wall_sec,
-                finished_elapsed,
+        mode = "real" if use_real_timing else ("quick-repro" if quick_repro else "oracle")
+        if quick_repro:
+            print(
+                f"step={len(eval_order)}/? "
+                f"plan={pid} kernel_ms={one['kernel_time_ms']:.6f}"
             )
-        )
+        else:
+            print(
+                "[{}] step={}/? plan={} kernel_ms={:.6f} compile_s={:.3f} run_s={:.3f} wall_s={:.3f} elapsed_s={:.3f}".format(
+                    mode,
+                    len(eval_order),
+                    pid,
+                    one["kernel_time_ms"],
+                    one["compile_sec"],
+                    one["run_sec"],
+                    step_wall_sec,
+                    finished_elapsed,
+                )
+            )
         return True
 
     reps_by_cluster: Dict[int, List[int]] = {}
@@ -1083,6 +1098,7 @@ def measure_eval_order_with_timing(
     eval_order: List[int],
     search_start_time: float,
     use_real_timing: bool,
+    quick_repro: bool,
     build_dir: Path,
     target_template: str,
     run_args: List[str],
@@ -1114,6 +1130,7 @@ def measure_eval_order_with_timing(
                 plan_id=pid,
                 runtime_oracle=runtime_oracle,
                 profile_cost_sec=profile_cost_sec,
+                sleep_for_profile=quick_repro,
             )
 
         done_t = time.perf_counter()
@@ -1146,20 +1163,26 @@ def measure_eval_order_with_timing(
             }
         )
 
-        mode = "real" if use_real_timing else "oracle"
-        print(
-            "[{}] step={}/{} plan={} kernel_ms={:.6f} compile_s={:.3f} run_s={:.3f} wall_s={:.3f} elapsed_s={:.3f}".format(
-                mode,
-                i,
-                len(eval_order),
-                pid,
-                one["kernel_time_ms"],
-                one["compile_sec"],
-                one["run_sec"],
-                step_wall_sec,
-                finished_elapsed,
+        mode = "real" if use_real_timing else ("quick-repro" if quick_repro else "oracle")
+        if quick_repro:
+            print(
+                f"step={i}/{len(eval_order)} "
+                f"plan={pid} kernel_ms={one['kernel_time_ms']:.6f}"
             )
-        )
+        else:
+            print(
+                "[{}] step={}/{} plan={} kernel_ms={:.6f} compile_s={:.3f} run_s={:.3f} wall_s={:.3f} elapsed_s={:.3f}".format(
+                    mode,
+                    i,
+                    len(eval_order),
+                    pid,
+                    one["kernel_time_ms"],
+                    one["compile_sec"],
+                    one["run_sec"],
+                    step_wall_sec,
+                    finished_elapsed,
+                )
+            )
 
     return measured_runtime, elapsed_times, details, timeline
 
@@ -1345,7 +1368,12 @@ def main() -> None:
     parser.add_argument("--ucb-beta", type=float, default=0.8)
     parser.add_argument("--seed", type=int, default=0)
 
-    parser.add_argument("--profile-cost-sec", type=float, default=2.0, help="Cost of profiling one plan in seconds")
+    parser.add_argument(
+        "--profile-cost-sec",
+        type=float,
+        default=None,
+        help="Cost of profiling one plan in seconds (default: 2.0, or 0.5 with --quick-repro)",
+    )
     parser.add_argument(
         "--cluster-real-budget",
         type=int,
@@ -1413,6 +1441,14 @@ def main() -> None:
         help="Measure each evaluated plan by real compile+run and use cumulative wall-time for curve x-axis.",
     )
     parser.add_argument(
+        "--quick-repro",
+        action="store_true",
+        help=(
+            "Skip build/executable measurement, read real kernel times from --results, "
+            "and sleep 0.5 seconds per profiled plan by default."
+        ),
+    )
+    parser.add_argument(
         "--build-dir",
         type=Path,
         default=Path("/workspace/sparsene/examples/src_fp32/acc/testbed/build"),
@@ -1440,6 +1476,21 @@ def main() -> None:
     parser.add_argument("--output-csv", type=Path, default=Path("cluster_search_curve.csv"))
     parser.add_argument("--output-plot", type=Path, default=Path("cluster_search_curve.png"))
     args = parser.parse_args()
+
+    if args.quick_repro and args.use_real_timing:
+        parser.error("--quick-repro and --use-real-timing cannot be used together")
+    if args.quick_repro and args.results is None:
+        parser.error("--quick-repro requires --results")
+    if args.profile_cost_sec is None:
+        args.profile_cost_sec = 0.5 if args.quick_repro else 2.0
+    if args.profile_cost_sec <= 0.0:
+        parser.error("--profile-cost-sec must be greater than zero")
+
+    if args.quick_repro:
+        print(
+            f"using kernel times from {args.results}; "
+            f"profiling delay={args.profile_cost_sec:.3f}s/plan"
+        )
 
     plans_all = load_plans(args.plans)
 
@@ -1562,6 +1613,7 @@ def main() -> None:
             ucb_beta=args.ucb_beta,
             seed=args.seed,
             use_real_timing=args.use_real_timing,
+            quick_repro=args.quick_repro,
             build_dir=args.build_dir,
             target_template=args.target_template,
             run_args=run_args,
@@ -1664,6 +1716,7 @@ def main() -> None:
             eval_order=eval_order,
             search_start_time=measurement_start_time,
             use_real_timing=args.use_real_timing,
+            quick_repro=args.quick_repro,
             build_dir=args.build_dir,
             target_template=args.target_template,
             run_args=run_args,
@@ -1751,6 +1804,7 @@ def main() -> None:
         "cluster_cache_status": cluster_cache_status,
         "profile_cost_sec": args.profile_cost_sec,
         "use_real_timing": args.use_real_timing,
+        "quick_repro": args.quick_repro,
         "n_evaluated": len(eval_order),
         "n_evaluated_total": len(eval_order_total),
         "eval_ratio": len(eval_order) / len(common_ids),
@@ -1817,7 +1871,7 @@ def main() -> None:
 
     print("=== Time-Performance Curve Summary ===")
     print(f"strategy={args.strategy}")
-    mode = "real" if args.use_real_timing else "oracle"
+    mode = "real" if args.use_real_timing else ("quick-repro" if args.quick_repro else "oracle")
     print(f"timing_mode={mode}")
     print(
         f"plans={len(common_ids)} clusters={n_clusters} "
