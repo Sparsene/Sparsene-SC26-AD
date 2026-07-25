@@ -114,14 +114,14 @@ bash install_sparsene.sh
 cd ..
 
 # Install DTC-SpMM (have to apt install python3.10-dev first)
-cd <DTC-SpMM> 
+cd DTC-SpMM_ASPLOS24 
 bash install_dtcspmm.sh 
 source ./init_dtc.sh
 source ./third_party/init_sputnik.sh
 cd ..
 
 # Install Acc-SpMM
-cd Acc-SpMM && bash install_accspmm.sh && cd ..
+cd AccSpMM && bash install_accspmm.sh && cd ..
 
 # Install FlashSparse and sputnik
 apt install libgoogle-glog-dev
@@ -146,13 +146,17 @@ cd <Sparsene-SC26-AD>
 bash quick_test.sh
 ```
 
+> **Note (provided AE server):** on the provided remote server, activate the main
+> Python environment first — `source /workspace/.sparsene-scae/bin/activate` —
+> before running any of the scripts below. Without it, `python` is not on `PATH`.
+
 ---
 
 ## Artifact Execution
 
 The full execution flow is: **T1 → T2 → T3 → T4 → T5 → T7**, or use **T6 → T7** for quick reproduction from pre-collected data.
 
-### T1: Run Sparsene and All Baselines (~300 min)
+### T1: Run Sparsene and All Baselines (~200 min)
 
 ```bash
 # test sparsene and cusparse
@@ -161,7 +165,7 @@ bash run_sparsene_kernel.sh
 bash run_cusparse_kernel.sh
 cd ..
 # test dtc
-cd <DTC-SpMM>   && bash run_dtc_spmm_kernel.sh    && cd ..
+cd DTC-SpMM_ASPLOS24   && bash run_dtc_spmm_kernel.sh    && cd ..
 # test acc
 cd AccSpMM   && bash run_acc_spmm_kernel.sh    && cd ..
 # test FlashSparse and sputnik
@@ -175,7 +179,7 @@ cd SparseTIR  && bash run_sparsetir_kernel.sh   && cd ..
 
 > cuSPARSE and Sputnik results are collected within the Sparsene and FlashSparse scripts.
 
-### T2: Run End-to-End Experiments (~240 min)
+### T2: Run End-to-End Experiments (~80 min)
 
 DGL baseline needs new env
 
@@ -227,38 +231,38 @@ bash run_load_balance.sh
 cd ../..
 ```
 
-### T4: Run Hardware-Aware Pipeline Simulation (~600 min)
+### T4: Run Hardware-Aware Pipeline Simulation (~90 min)
 
 ```bash
-cd Sparsene/simulator
+cd sparsene/simulator
 bash run_simulator_accuracy.sh
 cd ../..
 ```
 
-### T5: Run Search Convergence Experiments (~180 min)
+### T5: Run Search Convergence Experiments (~10 min)
 
 ```bash
 cd sparsene/search_convergence
-bash run_search_convergence.sh
+bash run_search_convergence.sh --no-quick-repro
 cd ../..
 ```
 
 ### T6: Quick Reproduction from Pre-collected Data
 
-We provide all pre-collected experimental results in `Sparsene_AD/results_precomputed/`. To skip T1–T5:
+We provide all pre-collected experimental results in `results_precomputed/`. To skip T1–T5:
 
 ```bash
-bash quick_reproduce.sh
+bash results_precomputed/quick_reproduce.sh
 ```
 
-This copies the pre-collected data into `Sparsene_AD/results/`.
+This copies the pre-collected data into the locations that `generate_figures_tables.sh` reads (`results/` and the per-experiment result directories).
 
 ### T7: Generate Figures and Tables
 
+Run from the repository root:
+
 ```bash
-cd Sparsene
 bash generate_figures_tables.sh
-cd ..
 ```
 
 This produces all figures and tables in the paper: Figure 11, Figure 13, Figure 14, Table III, Table IV, and Table V.
@@ -294,11 +298,11 @@ Taking A100 GPU as an example:
 
 | Task | Time |
 |---|---|
-| T1 – Kernel benchmarks | ~300 min |
-| T2 – End-to-end experiments | ~240 min |
+| T1 – Kernel benchmarks | ~200 min |
+| T2 – End-to-end experiments | ~80 min |
 | T3 – Load balance | ~5 min |
-| T4 – Simulator accuracy | ~600 min |
-| T5 – Search convergence | ~180 min |
-| **Total** | **~1325 min** |
+| T4 – Simulator accuracy | ~90 min |
+| T5 – Search convergence | ~10 min |
+| **Total** | **~385 min** |
 
 Use **T6 → T7** for instant reproduction from pre-collected data.

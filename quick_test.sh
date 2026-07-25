@@ -77,6 +77,13 @@ if [ ! -f "$DTCSPMM_NPZ_FILE" ]; then
     exit 1
 fi
 
+# DTC-SpMM needs libsputnik/glog on LD_LIBRARY_PATH; init scripts must be
+# sourced from the DTC-SpMM directory (init_dtc.sh uses $(pwd)).
+pushd $SPARSENE_AD_ROOT/DTC-SpMM_ASPLOS24
+source ./init_dtc.sh
+source ./third_party/init_sputnik.sh
+popd
+
 pushd $SPARSENE_AD_ROOT/DTC-SpMM_ASPLOS24/scripts/DTCSpMM
 python run_DTC_SpMM_selected.py --dataset cop20k_A
 log_ok "DTC-SpMM quick test finished."

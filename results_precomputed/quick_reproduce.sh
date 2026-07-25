@@ -1,3 +1,9 @@
+#!/bin/bash
+# Copies the pre-collected results into the locations that
+# generate_figures_tables.sh reads from. Safe to run from any directory.
+set -e
+cd "$(dirname "$0")"
+
 #! T1: kernel
 #> Sparsene
 # sparsene_fp32_N128.log -> results
@@ -70,21 +76,24 @@ cp sc-ad-gcn_e2e_dgl_26_128-512.csv ../sparsene/end2end/result
 cp sc-ad-gcn_e2e_pyg_26_128-512.csv ../sparsene/end2end/result
 
 #! T3: load balance
-# mip1_dtc_load_balance.log -> results
-# mip1_dtc_multi_binding_load_balance.log -> results
-# ddi_dtc_load_balance.log -> results
-# ddi_dtc_strict_lb_load_balance.log -> results
-cp mip1_dtc_load_balance.log ../results/
-cp mip1_dtc_multi_binding_load_balance.log ../results/
-cp ddi_dtc_load_balance.log ../results/
-cp ddi_dtc_strict_lb_load_balance.log ../results/
+# mip1_no_balance.log -> results
+# mip1_multi_bind.log -> results
+# ddi_no_balance.log -> results
+# ddi_strict_lb.log -> results
+cp mip1_no_balance.log ../results/
+cp mip1_multi_bind.log ../results/
+cp ddi_no_balance.log ../results/
+cp ddi_strict_lb.log ../results/
 
 
 #! T4: pipeline simulator
-# acc_combined_results.json -> sparsene/simulator/results/a100/acc/combined_results.json
-# bitbsr_combined_results.json -> sparsene/simulator/results/a100/bitbsr/combined_results.json
-cp acc_combined_results.json ../sparsene/simulator/results/a100/acc/combined_results.json
-cp bitbsr_combined_results.json ../sparsene/simulator/results/a100/bitbsr/combined_results.json
+# generate_figures_tables.sh reads results/a100_sampled/, which is where the
+# live T4 run (run_simulator_accuracy.sh) also writes its output.
+# acc_combined_results.json -> sparsene/simulator/results/a100_sampled/acc/combined_results.json
+# bitbsr_combined_results.json -> sparsene/simulator/results/a100_sampled/bitbsr/combined_results.json
+mkdir -p ../sparsene/simulator/results/a100_sampled/acc ../sparsene/simulator/results/a100_sampled/bitbsr
+cp acc_combined_results.json ../sparsene/simulator/results/a100_sampled/acc/combined_results.json
+cp bitbsr_combined_results.json ../sparsene/simulator/results/a100_sampled/bitbsr/combined_results.json
 
 #! T5: search convergence
 # run_sim_cluster_hybrid.json -> sparsene/examples/src_fp32/acc/testbed/scripts/motivation_scripts/sc_search_6156plans/results
